@@ -173,11 +173,22 @@ export class LancerMechSheet extends LancerActorSheet<EntryType.MECH> {
   // Allows user to change mount size via right click ctx
   _activateMountContextMenus(html: any) {
     let mount_options: any[] = [];
+    const i18n_mounts = {
+      [MountType.Main]: "lancer.mech-sheet.mounted-weapons.main.label",
+      [MountType.Aux]: "lancer.mech-sheet.mounted-weapons.aux.label",
+      [MountType.AuxAux]: "lancer.mech-sheet.mounted-weapons.aux-aux.label",
+      [MountType.MainAux]: "lancer.mech-sheet.mounted-weapons.main-aux.label",
+      [MountType.Flex]: "lancer.mech-sheet.mounted-weapons.flex.label",
+      [MountType.Heavy]: "lancer.mech-sheet.mounted-weapons.heavy.label",
+      [MountType.Superheavy]: "lancer.mech-sheet.mounted-weapons.superheavy.label",
+      [MountType.Integrated]: "lancer.mech-sheet.mounted-weapons.integrated.label",
+      [MountType.Unknown]: "lancer.mech-sheet.mounted-weapons.unknown.label",
+    };
 
     // Handle generic mount type
     for (let selection of Object.values(MountType)) {
       mount_options.push({
-        name: selection,
+        name: i18n_mounts[selection],
         icon: "",
         callback: async (html: JQuery) => {
           let mountPath = html[0].dataset.path ?? "";
@@ -220,7 +231,7 @@ export class LancerMechSheet extends LancerActorSheet<EntryType.MECH> {
 
     // Add a bracing option
     mount_options.push({
-      name: "Superheavy Bracing",
+      name: game.i18n.localize("lancer.mech-sheet.mounted-weapons.superheavy-bracing.label"),
       icon: "",
       callback: async (html: JQuery) => {
         let cd = await this.getData();

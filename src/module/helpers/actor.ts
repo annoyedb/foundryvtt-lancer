@@ -243,13 +243,15 @@ export function action_button(
   action: ActionType,
   options: HelperOptions & { rollable?: boolean }
 ): string {
-  let action_val = resolveHelperDotpath(options, data_path);
+  const i18n_title = game.i18n.localize(title);
+  const action_val = resolveHelperDotpath(options, data_path);
   let active: boolean;
-  if (action == "move") {
+  if (action === "move") {
     active = (action_val as number) > 0;
-    title = `${title} (${action_val})`;
+    title = `${i18n_title} (${action_val})`;
   } else {
     active = action_val as boolean;
+    title = i18n_title;
   }
 
   let enabled = false;
@@ -261,7 +263,7 @@ export function action_button(
 
   return `
     <button
-      class="lancer-action-button lancer-button${enabled ? " enabled" : ""}${active ? ` active lancer-${action}` : ""}"
+      class="lancer-action-button lancer-button ${enabled ? "enabled" : ""} ${active ? `active lancer-${action}` : ""}"
       data-action="${action}"
       data-val="${action_val}"
   >

@@ -39,7 +39,7 @@
   {{!-- Mounts --}}
   <div class="flexcol">
     <div>
-      <span class="minor" style="float: left">AVAILABLE WEAPON MOUNTS</span>
+      <span class="minor" style="float: left">{{localize "lancer.mech-sheet.available-weapon-mounts.label"}}</span>
       <a
         class="gen-control"
         data-action="append"
@@ -53,14 +53,14 @@
         <div class="flexrow mount arrayed-item">
           <select class="mount-selector" name="system.mounts.{{key}}" data-type="String" index="{{key}}">
             {{#select mount}}
-              <option value="Aux/Aux">AUX/AUX</option>
-              <option value="Main">MAIN</option>
-              <option value="Main/Aux">MAIN/AUX</option>
-              <option value="Flex">FLEX</option>
-              <option value="Heavy">HEAVY</option>
-              <option value="Integrated">INTEGRATED</option>
-              <option value="Superheavy">SUPERHEAVY</option>
-              <option value="delete">DELETE</option>
+              <option value="Aux/Aux">{{localize "lancer.mech-sheet.mounted-weapons.aux-aux.label"}}</option>
+              <option value="Main">{{localize "lancer.mech-sheet.mounted-weapons.main.label"}}</option>
+              <option value="Main/Aux">{{localize "lancer.mech-sheet.mounted-weapons.main-aux.label"}}</option>
+              <option value="Flex">{{localize "lancer.mech-sheet.mounted-weapons.flex.label"}}</option>
+              <option value="Heavy">{{localize "lancer.mech-sheet.mounted-weapons.heavy.label"}}</option>
+              <option value="Integrated">{{localize "lancer.mech-sheet.mounted-weapons.integrated.label"}}</option>
+              <option value="Superheavy">{{localize "lancer.mech-sheet.mounted-weapons.superheavy.label"}}</option>
+              <option value="delete">{{localize "lancer.common.descriptor.delete.label"}}</option>
             {{/select}}
           </select>
         </div>
@@ -71,7 +71,7 @@
   {{!-- Traits --}}
   <div class="card">
     <div class="lancer-header lancer-primary">
-      <span class="major left">TRAITS</span>
+      <span class="major left">{{localize "lancer.mech-sheet.traits.label"}}</span>
       <a
         class="gen-control"
         data-action="append"
@@ -113,14 +113,14 @@
         value="{{system.core_system.name}}"
         data-dtype="String"
       >
-      <div class="medium faded" style="justify-self: right">// CORE SYSTEM</div>
+      <div class="medium faded" style="justify-self: right">// {{localize "lancer.mech-sheet.core-system.label"}}</div>
       {{{popout-editor-button "system.core_system.description"}}}
     </div>
     <div class="desc-text">{{{safe-html system.core_system.description}}}</div>
 
     {{!-- Integrated --}}
     <div class="integrated-wrapper card clipped flexcol">
-      <div class="lancer-header lancer-primary">INTEGRATED GEAR</div>
+      <div class="lancer-header lancer-primary">{{localize "lancer.mech-sheet.integrated-gear.label"}}</div>
       <ul>
         {{#each system.core_system.integrated as |integrated index|}}
           <li>
@@ -143,7 +143,9 @@
           value="{{system.core_system.passive_name}}"
           data-dtype="String"
         >
-        <div class="medium faded" style="justify-self: right">// PASSIVE</div>
+        <div class="medium faded" style="justify-self: right">
+          // {{localize "lancer.common.descriptor.passive.label"}}
+        </div>
         {{{popout-editor-button "system.core_system.passive_effect"}}}
       </div>
       <div class="desc-text">{{{safe-html system.core_system.passive_effect}}}</div>
@@ -163,7 +165,7 @@
           value="{{system.core_system.active_name}}"
           data-dtype="String"
         >
-        <div class="faded" style="justify-self: right">// ACTIVE</div>
+        <div class="faded" style="justify-self: right">// {{localize "lancer.common.descriptor.active.label"}}</div>
         {{{popout-editor-button "system.core_system.active_effect"}}}
       </div>
       <div class="desc-text">{{{safe-html system.core_system.active_effect}}}</div>

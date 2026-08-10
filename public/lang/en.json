@@ -47,6 +47,129 @@
     "placeholder": {
       "name": "Name"
     },
+    "common": {
+      "descriptor": {
+        "active": {
+          "label": "Active"
+        },
+        "passive": {
+          "label": "Passive"
+        },
+        "use": {
+          "label": "Use"
+        },
+        "uses": {
+          "label": "Uses"
+        },
+        "delete": {
+          "label": "Delete"
+        },
+        "effect": {
+          "label": "Effect"
+        },
+        "effects": {
+          "label": "Effects"
+        },
+        "description": {
+          "label": "Description"
+        },
+        "tag": {
+          "label": "Tag"
+        },
+        "tags": {
+          "label": "Tags"
+        },
+        "type": {
+          "label": "Type"
+        },
+        "size": {
+          "label": "Size"
+        },
+        "status": {
+          "label": "Status"
+        }
+      },
+      "state": {
+        "loaded": {
+          "label": "Loaded"
+        },
+        "charged": {
+          "label": "Charged"
+        }
+      },
+      "activation": {
+        "label": "Activation",
+        "none": {
+          "label": "None"
+        },
+        "passive": {
+          "label": "Passive"
+        },
+        "quick-action": {
+          "label": "Quick Action"
+        },
+        "quick-tech": {
+          "label": "Quick Tech"
+        },
+        "invade": {
+          "label": "Invade"
+        },
+        "full-action": {
+          "label": "Full Action"
+        },
+        "full-tech": {
+          "label": "Full Tech"
+        },
+        "reaction": {
+          "label": "Reaction"
+        },
+        "trigger": {
+          "label": "Trigger"
+        },
+        "init": {
+          "label": "Init"
+        },
+        "on-hit": {
+          "label": "On Hit"
+        },
+        "on-attack": {
+          "label": "On Attack"
+        },
+        "on-crit": {
+          "label": "On Crit"
+        },
+        "protocol": {
+          "label": "Protocol"
+        },
+        "free": {
+          "label": "Free"
+        },
+        "other": {
+          "label": "Other"
+        },
+        "unknown": {
+          "label": "Unknown Action"
+        }
+      },
+      "movement": {
+        "label": "Movement",
+        "move": {
+          "label": "Move"
+        },
+        "boost": {
+          "label": "Boost"
+        }
+      },
+      "attack": {
+        "label": "Attack",
+        "range": {
+          "label": "Range"
+        },
+        "damage": {
+          "label": "Damage"
+        }
+      }
+    },
     "common-sheet": {
       "tabs": {
         "effects": "<EFFECTS//ACTIVE>"
@@ -117,6 +240,78 @@
         "loadout": "<MECH//LOADOUT>",
         "talents": "<PILOT//TALENTS>"
       },
+      "available-weapon-mounts": {
+        "label": "AVAILABLE WEAPON MOUNTS"
+      },
+      "mounted-weapons": {
+        "label": "MOUNTED WEAPONS",
+        "aux": {
+          "label": "AUX"
+        },
+        "aux-aux": {
+          "label": "AUX/AUX"
+        },
+        "main": {
+          "label": "MAIN"
+        },
+        "main-aux": {
+          "label": "MAIN/AUX"
+        },
+        "flex": {
+          "label": "FLEX"
+        },
+        "heavy": {
+          "label": "HEAVY"
+        },
+        "superheavy": {
+          "label": "SUPERHEAVY"
+        },
+        "superheavy-bracing": {
+          "label": "SUPERHEAVY BRACING"
+        },
+        "integrated": {
+          "label": "INTEGRATED"
+        },
+        "unknown": {
+          "label": "UNKNOWN"
+        }
+      },
+      "mounted-systems": {
+        "label": "MOUNTED SYSTEMS"
+      },
+      "weapon-profiles": {
+        "label": "WEAPON PROFILES",
+        "base-actions": {
+          "label": "BASE ACTIONS"
+        },
+        "profile-actions": {
+          "label": "PROFILE ACTIONS"
+        }
+      },
+      "weapon-mod": {
+        "label": "WEAPON MOD",
+        "none": {
+          "label": "No Weapon Mod Installed"
+        },
+        "added-range": {
+          "label": "ADDED RANGE"
+        },
+        "added-damage": {
+          "label": "ADDED DAMAGE"
+        },
+        "added-tags": {
+          "label": "ADDED TAGS"
+        }
+      },
+      "integrated-gear": {
+        "label": "INTEGRATED GEAR"
+      },
+      "core-system": {
+        "label": "CORE SYSTEM"
+      },
+      "traits": {
+        "label": "TRAITS"
+      },
       "core": {
         "label": "CORE"
       },
@@ -127,8 +322,19 @@
         "label": "MACROS"
       },
       "system": {
-        "label": "LOADOUT",
-        "sp-used": "SP USED"
+        "label": "SYSTEM",
+        "used": {
+          "label": "SP USED"
+        },
+        "points": {
+          "label": "SYSTEM POINTS"
+        }
+      },
+      "loadout": {
+        "label": "LOADOUT"
+      },
+      "inventory": {
+        "button": "View Inventory"
       }
     },
     "npc-sheet": {

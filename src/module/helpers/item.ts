@@ -789,7 +789,7 @@ export function weaponModView(mod_path: string, weapon_path: string | null, opti
         data-path="${mod_path}"
         data-accept-types="${EntryType.WEAPON_MOD}">
       <i class="cci cci-weaponmod i--4 i--light"> </i>
-      <span>No Mod Installed</span>
+      <span>${game.i18n.localize("lancer.mech-sheet.weapon-mod.none.label")}</span>
     </div>`;
   }
 
@@ -799,7 +799,7 @@ export function weaponModView(mod_path: string, weapon_path: string | null, opti
   if (mod.system.added_range.length) {
     added_range = `
       <div class="effect-box">
-        <div class="effect-title clipped-bot">ADDED RANGE</div>
+        <div class="effect-title clipped-bot">${game.i18n.localize("lacner.mech-sheet.weapon-mod.added-range.label")}</div>
         ${rangeArrayView(mod.system.added_range, options)}
       </div>`;
   }
@@ -807,7 +807,7 @@ export function weaponModView(mod_path: string, weapon_path: string | null, opti
   if (mod.system.added_damage.length) {
     added_damage = `
       <div class="effect-box">
-        <div class="effect-title clipped-bot">ADDED DAMAGE</div>
+        <div class="effect-title clipped-bot">${game.i18n.localize("lacner.mech-sheet.weapon-mod.added-damage.label")}</div>
         ${damageArrayView(mod.system.added_damage, options)}
       </div>`;
   }
@@ -817,7 +817,7 @@ export function weaponModView(mod_path: string, weapon_path: string | null, opti
   if (mod.system.added_tags.length) {
     added_tags = `
     <div class="effect-box">
-      <span class="effect-title clipped-bot">ADDED TAGS</span>
+      <span class="effect-title clipped-bot">${game.i18n.localize("lacner.mech-sheet.weapon-mod.added-tags.label")}</span>
       ${compactTagListHBS(mod_path + ".system.added_tags", options)}
     </div>
     `;
@@ -1260,7 +1260,11 @@ export function buildChipHTML(
   const themeClass = activationStyle(activation);
   const interactiveClass = options?.nonInteractive ? "noninteractive" : "";
   const label = `${
-    flowData?.label ? `${flowData.label.toUpperCase()} - ` : `${!options?.nonInteractive ? "USE " : ""}`
+    flowData?.label
+      ? `${flowData.label.toUpperCase()} - `
+      : `${
+          !options?.nonInteractive ? `${game.i18n.localize("lancer.common.descriptor.use.label").toUpperCase()} ` : ""
+        }`
   }${activation.toUpperCase()}`;
   if (flowData && flowData.uuid && flowData.path !== undefined) {
     if (!flowData.icon) flowData.icon = `<i class="${activationIcon(activation)} i--3"></i>`;

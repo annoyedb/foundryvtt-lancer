@@ -7,8 +7,7 @@
         name="name"
         type="text"
         value="{{actor.name}}"
-        placeholder='{{localize "
-        lancer.placeholder.name"}}'
+        placeholder='{{localize "lancer.placeholder.name"}}'
       >
     </h1>
     {{{ref-portrait-img actor.img "img" actor}}}
@@ -85,7 +84,9 @@
           {{{stat-rollable-card "eng" "" "system.eng"}}}
         </div>
         <div class="inventory" style="flex: inherit; margin: 3px 10px">
-          <button class="lancer-button" type="button" style="padding: 8px 16px">View Inventory</button>
+          <button class="lancer-button" type="button" style="padding: 8px 16px">
+            {{localize "lancer.mech-sheet.inventory.button"}}
+          </button>
         </div>
       </div>
       <div class="pilot-frame-wrapper flexrow">
@@ -107,11 +108,11 @@
               {{localize "lancer.mech-sheet.actions.label"}}
             </span>
             <div class="lancer-flow-button-grid">
-              {{{action-button "Protocol" "system.action_tracker.protocol" "protocol"}}}
-              {{{action-button "Movement" "system.action_tracker.move" "move"}}}
-              {{{action-button "Full Action" "system.action_tracker.full" "full"}}}
-              {{{action-button "Quick Action" "system.action_tracker.quick" "quick"}}}
-              {{{action-button "Reaction" "system.action_tracker.reaction" "reaction"}}}
+              {{{action-button "lancer.common.activation.protocol.label" "system.action_tracker.protocol" "protocol"}}}
+              {{{action-button "lancer.common.movement.label" "system.action_tracker.move" "move"}}}
+              {{{action-button "lancer.common.activation.full-action.label" "system.action_tracker.full" "full"}}}
+              {{{action-button "lancer.common.activation.quick-action.label" "system.action_tracker.quick" "quick"}}}
+              {{{action-button "lancer.common.activation.reaction.label" "system.action_tracker.reaction" "reaction"}}}
             </div>
           </div>
         {{/if}}
@@ -134,12 +135,12 @@
       <div class="card">
         <div class="lancer-header lancer-primary major">
           <span>
-            {{{localize "lancer.mech-sheet.system.label"}}}
+            {{{localize "lancer.mech-sheet.loadout.label"}}}
           </span>
           <span style="flex-grow: 0">
             <i class="cci cci-system-point i--4"></i>
             {{system.loadout.sp.value}} / {{system.loadout.sp.max}}
-            {{localize "lancer.mech-sheet.system.sp-used"}}
+            {{localize "lancer.mech-sheet.system.used.label"}}
           </span>
         </div>
         {{{mech-loadout}}}
