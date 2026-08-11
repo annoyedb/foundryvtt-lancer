@@ -216,7 +216,8 @@
         "overshield": "O.SHLD",
         "repairs": "REP",
         "size": "SZ",
-        "cost": "COST"
+        "cost": "COST",
+        "xp": "XP"
       }
     },
     "deployable-sheet": {
@@ -390,15 +391,34 @@
       "json-import": {
         "label": "FILE IMPORT",
         "description": "Use this section to import a JSON file exported from Comp/Con.",
-        "placeholder": "Select JSON file…"
+        "placeholder": "Select JSON file…",
+        "browse": {
+          "label": "Browse"
+        }
       },
       "dossier": {
         "cs": "CALLSIGN",
         "name": "NAME",
-        "background": "BACKGROUND"
+        "background": "BACKGROUND",
+        "history": "HISTORY",
+        "notes": "NOTES"
+      },
+      "buttons": {
+        "basic-attack": "BASIC ATTACK"
       },
       "narrative": {
-        "bond": "BOND OF {bondName}",
+        "bond": {
+          "label": "BOND OF {bondName}",
+          "veteran-power": {
+            "label": "Boon XP from another PC"
+          },
+          "tally-xp": {
+            "label": "Tally XP"
+          },
+          "refresh": {
+            "label": "Refresh Powers"
+          }
+        },
         "burdens": "BURDENS",
         "clocks": "CLOCKS"
       },

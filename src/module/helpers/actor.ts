@@ -278,6 +278,7 @@ export function actor_flow_button(
   type: string,
   options: HelperOptions & { rollable?: boolean }
 ): string {
+  const i18n_title = game.i18n.localize(title);
   let args = JSON.stringify({});
   let mIcon;
   const BasicFlowType = LancerFlowState.BasicFlowType;
@@ -310,7 +311,7 @@ export function actor_flow_button(
 
   return `
       <button type="button" class="lancer-flow-button lancer-button lancer-secondary" data-flow-type="${type}" data-flow-args=${args}>
-        <i class="cci ${mIcon} i--4"></i> ${title}
+        <i class="cci ${mIcon} i--4"></i> ${i18n_title}
       </button>
     `;
 }

@@ -1373,7 +1373,7 @@ export function buildCounterArrayHTML(
 
 export function genericCounter(name: string, data: FullBoundedNum, path: string): string {
   const counterData: CounterData = {
-    name,
+    name: game.i18n.localize(name),
     min: data.min,
     max: data.max,
     value: data.value,

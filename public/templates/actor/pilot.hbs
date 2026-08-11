@@ -67,7 +67,7 @@
             style="align-self: center"
             data-action="download"
           >
-            <i class="cci cci-tech-quick i--dark i--5"></i> {{localize 'lancer.pilot-sheet.cloud-download.label'}}
+            <i class="cci cci-tech-quick i--dark i--5"></i>{{localize 'lancer.pilot-sheet.cloud-download.label'}}
           </button>
           <span class="last-sync minor desc-text">
             {{localize "lancer.pilot-sheet.cloud-download.lastSync" timestamp=system.last_cloud_update}}
@@ -88,9 +88,8 @@
                 name="pilot-json-up"
                 accept=".json"
               >
-
               <span class="lancer-file-input-display">
-                <div class="lancer-file-input__button">Browse</div>
+                <div class="lancer-file-input__button">{{localize "lancer.pilot-sheet.json-import.browse.label"}}</div>
                 <span class="lancer-file-input__filenames">{{
                     localize "lancer.pilot-sheet.json-import.placeholder"
                   }}</span>
@@ -117,8 +116,8 @@
           <span class="lancer-header lancer-primary">{{localize "lancer.pilot-sheet.dossier.background"}}</span>
           <input class="lancer-input major" {{{getset "system.background" }}} type="text" data-dtype="String">
         </div>
-        {{{textarea-card "HISTORY" "system.history"}}}
-        {{{textarea-card "NOTES" "system.notes"}}}
+        {{{textarea-card "lancer.pilot-sheet.dossier.history" "system.history"}}}
+        {{{textarea-card "lancer.pilot-sheet.dossier.notes" "system.notes"}}}
       </div>
     </div>
 
@@ -164,12 +163,12 @@
               </div>
               <div class="flexrow flex-center bond-xp-item">
                 {{{std-checkbox "system.bond_state.xp_checklist.veteran_power"}}}
-                <span class="grow">Boon XP from another PC.</span>
+                <span class="grow">{{localize "lancer.pilot-sheet.narrative.bond.veteran-power.label"}}</span>
               </div>
               <div class="flexrow flex-center">
                 <button class="bond-xp-button lancer-tech lancer-button grow">
                   <i class="mdi mdi-arrow-up-bold-hexagon-outline i--3"></i>
-                  Tally XP
+                  {{localize "lancer.pilot-sheet.narrative.bond.tally-xp.label"}}
                 </button>
               </div>
             </div>
@@ -177,11 +176,11 @@
           <div class="flexrow">
             {{!-- Stress, XP, refresh powers --}}
             <div class="flexrow">
-              {{{generic-counter "Stress" system.bond_state.stress "system.bond_state.stress"}}}
-              {{{generic-counter "XP" system.bond_state.xp "system.bond_state.xp"}}}
+              {{{generic-counter "lancer.common-sheet.shortStats.stress" system.bond_state.stress "system.bond_state.stress"}}}
+              {{{generic-counter "lancer.common-sheet.shortStats.xp" system.bond_state.xp "system.bond_state.xp"}}}
               <button class="refresh-powers-button lancer-tech lancer-button flexcol flex-center">
                 <i class="mdi mdi-refresh i--3"></i>
-                Refresh Powers
+                {{localize "lancer.pilot-sheet.narrative.bond.refresh.label"}}
               </button>
             </div>
           </div>
@@ -247,7 +246,7 @@
             localize "lancer.common-sheet.headers.combatUtilities"
           }}</span>
         <div class="lancer-flow-button-grid">
-          {{{flow-button "BASIC ATTACK" "BasicAttack"}}}
+          {{{flow-button "lancer.pilot-sheet.buttons.basic-attack" "BasicAttack"}}}
           {{{flow-button (localize "lancer.common-sheet.buttons.damage") "Damage"}}}
         </div>
       </div>
