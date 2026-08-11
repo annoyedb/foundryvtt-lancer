@@ -158,6 +158,9 @@
         },
         "boost": {
           "label": "Boost"
+        },
+        "standard": {
+          "label": "Standard Move"
         }
       },
       "attack": {
