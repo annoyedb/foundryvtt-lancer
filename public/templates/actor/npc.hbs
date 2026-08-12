@@ -2,7 +2,7 @@
   {{!-- Sheet Header --}}
   <header class="sheet-header card clipped-bot">
     <h1 class="name">
-      <i class="cci cci-npc-tier-{{system.tier}} tier-icon theme--npc" data-tooltip="Tier {{system.tier}}"></i>
+      <i class="cci cci-npc-tier-{{system.tier}} tier-icon theme--npc" data-tooltip="{{localize "lancer.common-sheet.shortStats.tier"}} {{system.tier}}"></i>
       <input
         class="lancer-input"
         name="name"
@@ -103,7 +103,7 @@
           <div style="width: 120px"></div>
           <span>{{localize "lancer.npc-sheet.features.label"}}</span>
           <div class="lancer-button charge-macro" style="margin-top: 2px; margin-bottom: 2px; font-size: 0.75rem">
-            <i class="mdi mdi-refresh i--3"></i> Recharge
+            <i class="mdi mdi-refresh i--3"></i>{{localize "lancer.npc-sheet.recharge.label"}}
           </div>
         </div>
         <div class="wraprow double">
@@ -115,7 +115,7 @@
       </div>
 
       {{!-- Notes --}}
-      {{{textarea-card "NOTES" "system.notes"}}}
+      {{{textarea-card "lancer.common-sheet.notes.label" "system.notes"}}}
 
       {{!-- Active Effects --}}
       <div class="card clipped">

@@ -178,7 +178,13 @@
         "effects": "<EFFECTS//ACTIVE>"
       },
       "headers": {
-        "combatUtilities": "COMBAT UTILITIES"
+        "combatUtilities": "COMBAT UTILITIES",
+        "notes": {
+          "label": "NOTES"
+        },
+        "details": {
+          "label": "DETAILS"
+        }
       },
       "buttons": {
         "basicAttack": "MELEE/RANGED",
@@ -358,6 +364,9 @@
       },
       "effects": {
         "label": "ACTIVE EFFECTS"
+      },
+      "recharge": {
+        "label": "RECHARGE"
       }
     },
     "pilot-sheet": {
@@ -400,8 +409,7 @@
         "cs": "CALLSIGN",
         "name": "NAME",
         "background": "BACKGROUND",
-        "history": "HISTORY",
-        "notes": "NOTES"
+        "history": "HISTORY"
       },
       "buttons": {
         "basic-attack": "BASIC ATTACK"
