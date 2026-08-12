@@ -104,7 +104,7 @@
         {{#if (is-combatant actor)}}
           <div style="min-width: 560px" class="card">
             <span class="lancer-header lancer-primary submajor clipped-top">
-              {{localize "lancer.mech-sheet.actions.label"}}
+              {{upper-case (localize "lancer.common.descriptor.action.plural")}}
             </span>
             <div class="lancer-flow-button-grid">
               {{{action-button "lancer.common.activation.protocol.label" "system.action_tracker.protocol" "protocol"}}}
@@ -121,9 +121,7 @@
     <div class="tab loadout" data-group="primary" data-tab="loadout">
       {{{mech-frame "system.loadout.frame.value" system.core_energy}}}
       <div class="card clipped">
-        <span class="lancer-header lancer-primary submajor">{{
-            localize "lancer.common-sheet.headers.combatUtilities"
-          }}</span>
+        <span class="lancer-header lancer-primary submajor">{{localize "lancer.common-sheet.header.combatUtilities"}}</span>
         <div class="lancer-flow-button-grid">
           {{{flow-button (localize "lancer.common-sheet.buttons.scan") "Scan"}}}
           {{{flow-button (localize "lancer.common-sheet.buttons.basicAttack") "BasicAttack"}}}

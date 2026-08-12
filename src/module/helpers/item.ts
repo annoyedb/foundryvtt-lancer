@@ -799,7 +799,7 @@ export function weaponModView(mod_path: string, weapon_path: string | null, opti
   if (mod.system.added_range.length) {
     added_range = `
       <div class="effect-box">
-        <div class="effect-title clipped-bot">${game.i18n.localize("lacner.mech-sheet.weapon-mod.added-range.label")}</div>
+        <div class="effect-title clipped-bot">${game.i18n.localize("lancer.mech-sheet.weapon-mod.added-range.label")}</div>
         ${rangeArrayView(mod.system.added_range, options)}
       </div>`;
   }
@@ -807,7 +807,7 @@ export function weaponModView(mod_path: string, weapon_path: string | null, opti
   if (mod.system.added_damage.length) {
     added_damage = `
       <div class="effect-box">
-        <div class="effect-title clipped-bot">${game.i18n.localize("lacner.mech-sheet.weapon-mod.added-damage.label")}</div>
+        <div class="effect-title clipped-bot">${game.i18n.localize("lancer.mech-sheet.weapon-mod.added-damage.label")}</div>
         ${damageArrayView(mod.system.added_damage, options)}
       </div>`;
   }
@@ -817,7 +817,7 @@ export function weaponModView(mod_path: string, weapon_path: string | null, opti
   if (mod.system.added_tags.length) {
     added_tags = `
     <div class="effect-box">
-      <span class="effect-title clipped-bot">${game.i18n.localize("lacner.mech-sheet.weapon-mod.added-tags.label")}</span>
+      <span class="effect-title clipped-bot">${game.i18n.localize("lancer.mech-sheet.weapon-mod.added-tags.label")}</span>
       ${compactTagListHBS(mod_path + ".system.added_tags", options)}
     </div>
     `;

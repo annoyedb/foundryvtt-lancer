@@ -117,7 +117,7 @@
           <input class="lancer-input major" {{{getset "system.background" }}} type="text" data-dtype="String">
         </div>
         {{{textarea-card "lancer.pilot-sheet.dossier.history" "system.history"}}}
-        {{{textarea-card "lancer.common-sheet.headers.notes.label" "system.notes"}}}
+        {{{textarea-card "lancer.common-sheet.header.notes.label" "system.notes"}}}
       </div>
     </div>
 
@@ -242,9 +242,7 @@
       </div>
 
       <div class="card clipped">
-        <span class="lancer-header lancer-primary submajor">{{
-            localize "lancer.common-sheet.headers.combatUtilities"
-          }}</span>
+        <span class="lancer-header lancer-primary submajor">{{localize "lancer.common-sheet.header.combatUtilities"}}</span>
         <div class="lancer-flow-button-grid">
           {{{flow-button "lancer.pilot-sheet.buttons.basic-attack" "BasicAttack"}}}
           {{{flow-button (localize "lancer.common-sheet.buttons.damage") "Damage"}}}

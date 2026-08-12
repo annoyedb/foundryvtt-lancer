@@ -87,9 +87,7 @@
 
       {{!-- Basic attack buttons --}}
       <div class="card clipped">
-        <span class="lancer-header lancer-primary submajor">{{
-            localize "lancer.common-sheet.headers.combatUtilities"
-          }}</span>
+        <span class="lancer-header lancer-primary submajor">{{localize "lancer.common-sheet.header.combatUtilities"}}</span>
         <div class="lancer-flow-button-grid">
           {{{flow-button (localize "lancer.common-sheet.buttons.basicAttack") "BasicAttack"}}}
           {{{flow-button (localize "lancer.common-sheet.buttons.damage") "Damage"}}}
@@ -115,7 +113,7 @@
       </div>
 
       {{!-- Notes --}}
-      {{{textarea-card "lancer.common-sheet.headers.notes.label" "system.notes"}}}
+      {{{textarea-card "lancer.common-sheet.header.notes.label" "system.notes"}}}
 
       {{!-- Active Effects --}}
       <div class="card clipped">

@@ -16,23 +16,23 @@
     </div>
   </header>
 
-  {{{textarea-card "DESCRIPTION" "system.description"}}}
+  {{{textarea-card (upper-case (localize "lancer.common.descriptor.description.label")) "system.description"}}}
 
   {{!-- Frame Stats --}}
   <div class="card clipped wraprow quadruple">
     <div class="wraprow quadruple">
-      {{{clicker-stat-card "HP"          "mdi mdi-heart-outline"     "system.stats.hp" false}}}
-      {{{clicker-stat-card "ARMOR"       "mdi mdi-shield-outline"    "system.stats.armor" false}}}
-      {{{clicker-stat-card "REPAIRS"     "cci cci-repair"            "system.stats.repcap" false}}}
-      {{{clicker-stat-card "EVASION"     "cci cci-evasion"           "system.stats.evasion" false}}}
-      {{{clicker-stat-card "E-DEF"       "cci cci-edef"              "system.stats.edef" false}}}
-      {{{clicker-stat-card "HEAT CAP"    "cci cci-heatcap"           "system.stats.heatcap" false}}}
-      {{{clicker-stat-card "SPEED"       "mdi mdi-arrow-right-bold-hexagon-outline" "system.stats.speed" false}}}
-      {{{clicker-stat-card "TECH ATK"    "cci cci-tech-full"         "system.stats.tech_attack" false}}}
-      {{{clicker-stat-card "SENSORS"     "cci cci-sensor"            "system.stats.sensor_range" false}}}
-      {{{clicker-stat-card "SAVE"        "cci cci-save"              "system.stats.save" false}}}
-      {{{clicker-stat-card "SYS POINTS"  "cci cci-system"            "system.stats.sp" false}}}
-      {{{clicker-stat-card "SIZE"        "cci cci-hexagon"           "system.stats.size" false}}}
+      {{{clicker-stat-card (upper-case (localize "lancer.common.stat.hp.label"))          "mdi mdi-heart-outline"     "system.stats.hp" false}}}
+      {{{clicker-stat-card (upper-case (localize "lancer.common.stat.armor.label"))       "mdi mdi-shield-outline"    "system.stats.armor" false}}}
+      {{{clicker-stat-card (upper-case (localize "lancer.common.stat.repair.plural"))     "cci cci-repair"            "system.stats.repcap" false}}}
+      {{{clicker-stat-card (upper-case (localize "lancer.common.stat.evasion.label"))     "cci cci-evasion"           "system.stats.evasion" false}}}
+      {{{clicker-stat-card (upper-case (localize "lancer.common.stat.e-defense.label"))   "cci cci-edef"              "system.stats.edef" false}}}
+      {{{clicker-stat-card (upper-case (localize "lancer.common.stat.heat.cap.label"))    "cci cci-heatcap"           "system.stats.heatcap" false}}}
+      {{{clicker-stat-card (upper-case (localize "lancer.common.stat.speed.label"))       "mdi mdi-arrow-right-bold-hexagon-outline" "system.stats.speed" false}}}
+      {{{clicker-stat-card (upper-case (localize "lancer.common.stat.tech-attack.label")) "cci cci-tech-full"         "system.stats.tech_attack" false}}}
+      {{{clicker-stat-card (upper-case (localize "lancer.common.stat.sensor.label"))      "cci cci-sensor"            "system.stats.sensor_range" false}}}
+      {{{clicker-stat-card (upper-case (localize "lancer.common.stat.save.label"))        "cci cci-save"              "system.stats.save" false}}}
+      {{{clicker-stat-card (upper-case (localize "lancer.mech-sheet.system.points.label"))"cci cci-system"            "system.stats.sp" false}}}
+      {{{clicker-stat-card (upper-case (localize "lancer.common.stat.size.label"))        "cci cci-hexagon"           "system.stats.size" false}}}
     </div>
   </div>
 
@@ -71,7 +71,7 @@
   {{!-- Traits --}}
   <div class="card">
     <div class="lancer-header lancer-primary">
-      <span class="major left">{{localize "lancer.mech-sheet.trait.plural"}}</span>
+      <span class="major left">{{localize "lancer.common.item.trait.plural"}}</span>
       <a
         class="gen-control"
         data-action="append"
@@ -120,7 +120,7 @@
 
     {{!-- Integrated --}}
     <div class="integrated-wrapper card clipped flexcol">
-      <div class="lancer-header lancer-primary">{{localize "lancer.mech-sheet.integrated-gear.label"}}</div>
+      <div class="lancer-header lancer-primary">{{upper-case (localize "lancer.common-sheet.integrated-gear.label")}}</div>
       <ul>
         {{#each system.core_system.integrated as |integrated index|}}
           <li>
@@ -129,7 +129,7 @@
             </code>
           </li>
         {{/each}}
-        {{{item-edit-arrayed-deployables "system.core_system.deployables" "DEPLOYABLES"}}}
+        {{{item-edit-arrayed-deployables "system.core_system.deployables" (localize "lancer.common.item.deployable.plural")}}}
       </ul>
     </div>
 
@@ -151,7 +151,7 @@
       <div class="desc-text">{{{safe-html system.core_system.passive_effect}}}</div>
       {{{bonuses-view "system.core_system.passive_bonuses" editable}}}
       {{#each system.core_system.passive_actions as |action index|}}
-        todo action
+        <!-- todo action-->
       {{/each}}
     </div>
 
@@ -171,9 +171,9 @@
       <div class="desc-text">{{{safe-html system.core_system.active_effect}}}</div>
       {{{bonuses-view "system.core_system.active_bonuses" editable}}}
       {{#each system.core_system.active_actions as |action index|}}
-        todo action
+        <!-- todo action-->
       {{/each}}
     </div>
-    {{{item-edit-arrayed-tags "system.core_system.tags" "TAGS"}}}
+    {{{item-edit-arrayed-tags "system.core_system.tags" (upper-case (localize "lancer.common.descriptor.tag.plural"))}}}
   </div>
 </form>

@@ -211,10 +211,11 @@ export function item_edit_checkboxes_object(title: string, path: string, options
     </div>`;
   }
 
+  const i18n_title = game.i18n.localize(title);
   return `
     <div class="card clipped item-edit-arrayed">
       <span class="lancer-header lancer-primary submajor ">
-        ${title}
+        ${i18n_title}
       </span>
       ${selector_detail}
     </div>`;

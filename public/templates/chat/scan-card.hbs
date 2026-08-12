@@ -20,7 +20,7 @@
         <div class="scan-stat-header"><i class="mdi mdi-alpha-a-box-outline"></i></div>
         {{stats.agi}}
       </div>
-      <div class="scan-stat-item" data-tooltip="lancer.common.stat.system.plural">
+      <div class="scan-stat-item" data-tooltip="lancer.common.stat.systems.label">
         <div class="scan-stat-header"><i class="mdi mdi-alpha-s-box-outline"></i></div>
         {{stats.sys}}
       </div>
@@ -50,7 +50,7 @@
         <div class="scan-stat-header"><i class="cci cci-reactor"></i></div>
         {{stats.stress}}
       </div>
-      <div class="scan-stat-item" data-tooltip="lancer.common.stat.heat.label">
+      <div class="scan-stat-item" data-tooltip="lancer.common.stat.heat.cap.label">
         <div class="scan-stat-header"><i class="cci cci-heat"></i></div>
         {{stats.heat}}
       </div>
@@ -70,11 +70,11 @@
         <div class="scan-stat-header"><i class="mdi mdi-arrow-right-bold-hexagon-outline"></i></div>
         {{stats.speed}}
       </div>
-      <div class="scan-stat-item" data-tooltip="lancer.common.stat.save-target.label">
+      <div class="scan-stat-item" data-tooltip="lancer.common.stat.save.target.label">
         <div class="scan-stat-header"><i class="cci cci-save"></i></div>
         {{stats.save}}
       </div>
-      <div class="scan-stat-item" data-tooltip="lancer.common.stat.sensor-range.label">
+      <div class="scan-stat-item" data-tooltip="lancer.common.stat.sensor.range.label">
         <div class="scan-stat-header"><i class="cci cci-sensor"></i></div>
         {{stats.sensor_range}}
       </div>
@@ -118,7 +118,7 @@
     {{#if traits}}
       <details open class="clipped-top scan-feature-list lancer-trait lancer-border-trait">
         <summary class="lancer-header">
-          <i class="cci cci-trait i--4"></i><span>{{upper-case (localize "lancer.mech-sheet.trait.plural")}}</span><i class="mdi mdi-unfold-less-horizontal"></i>
+          <i class="cci cci-trait i--4"></i><span>{{upper-case (localize "lancer.common.item.trait.plural")}}</span><i class="mdi mdi-unfold-less-horizontal"></i>
         </summary>
         <ul>
           {{#each traits as |trait index|}}

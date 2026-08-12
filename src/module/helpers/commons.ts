@@ -834,8 +834,9 @@ export function std_enum_select<T extends string>(path: string, enum_: { [key: s
         ${choices.join("")}
       </select>`;
   if (options.hash["label"]) {
+    const i18n_title = game.i18n.localize(options.hash["label"]);
     return `<label class="flexrow flex-center no-wrap ${label_classes}">
-      ${options.hash["label"]}
+      ${i18n_title}
       ${select}
     </label>`;
   } else {

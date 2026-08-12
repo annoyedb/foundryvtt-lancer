@@ -12,7 +12,7 @@
     {{!-- Major Ideals --}}
     <div class="card clipped">
       <div class="lancer-header lancer-primary major">
-        <span>MAJOR IDEALS</span>
+        <span>{{localize "lancer.pilot-sheet.narrative.bond.major-ideals.label"}}</span>
         <a class="gen-control fas fa-plus" data-action="append" data-path="system.major_ideals" data-action-value="(struct)string"></a>
       </div>
       <ul>
@@ -32,7 +32,7 @@
     {{!-- Minor Ideals --}}
     <div class="card clipped">
       <div class="lancer-header lancer-primary major">
-        <span>MINOR IDEALS</span>
+        <span>{{localize "lancer.pilot-sheet.narrative.bond.minor-ideals.label"}}</span>
         <a class="gen-control fas fa-plus" data-action="append" data-path="system.minor_ideals" data-action-value="(struct)string"></a>
       </div>
       <ul>
@@ -52,7 +52,7 @@
     {{!-- Questions --}}
     <div class="card clipped">
       <div class="lancer-header lancer-primary major">
-        <span>QUESTIONS</span>
+        <span>{{localize "lancer.pilot-sheet.narrative.bond.questions.label"}}</span>
         <a class="gen-control fas fa-plus" data-action="append" data-path="system.questions" data-action-value="(struct)bond_question"></a>
       </div>
       {{#each system.questions as |question|}}
@@ -88,7 +88,7 @@
     {{!-- Powers --}}
     <div class="card clipped">
       <div class="lancer-header lancer-primary major">
-        <span>POWERS</span>
+        <span>{{localize "lancer.pilot-sheet.narrative.bond.powers.label"}}</span>
         <a class="gen-control fas fa-plus" data-action="append" data-path="system.powers" data-action-value="(struct)power"></a>
       </div>
       {{#each system.powers as |power power_index|}}
@@ -110,7 +110,7 @@
           {{#if (or power.veteran power.master)}}
             <div class="card">
               <div class="lancer-header lancer-primary minor">
-                <span>Prerequisite</span>
+                <span>{{localize "lancer.common.descriptor.prerequisite.label"}}</span>
                 {{{popout-editor-button (concat "system.powers." (concat power_index ".prerequisite")) }}}
               </div>
               <div class="desc-text">{{{safe-html power.prerequisite }}}</div>
@@ -118,7 +118,7 @@
           {{/if}}
           <div class="card">
             <div class="lancer-header lancer-primary minor">
-              <span>Effect</span>
+              <span>{{localize "lancer.common.descriptor.effect.label"}}</span>
               {{{popout-editor-button (concat "system.powers." (concat power_index ".description")) }}}
             </div>
             <div class="desc-text">{{{safe-html power.description }}}</div>

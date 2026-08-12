@@ -49,9 +49,7 @@
         {{{stat-view-card "save" "cci cci-save" "system.save"}}}
 
         <div class="card clipped full lancer-flow-button-grid">
-          <span class="lancer-header lancer-primary submajor">{{
-              localize "lancer.common-sheet.headers.combatUtilities"
-            }}</span>
+          <span class="lancer-header lancer-primary submajor">{{localize "lancer.common-sheet.header.combatUtilities"}}</span>
           <div class="lancer-flow-button-grid">
             {{{flow-button (localize "lancer.common-sheet.buttons.basicAttack") "BasicAttack"}}}
             {{{flow-button (localize "lancer.common-sheet.buttons.damage") "Damage"}}}
@@ -65,7 +63,7 @@
           {{{deployer-slot "system.owner.value"}}}
         </div>
 
-        {{{textarea-card "lancer.common-sheet.headers.details.label" "system.detail"}}}
+        {{{textarea-card (upper-case (localize "lancer.common.descriptor.detail.plural")) "system.detail"}}}
       </div>
     </div>
 

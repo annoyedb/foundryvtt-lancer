@@ -49,6 +49,10 @@
     },
     "common": {
       "descriptor": {
+        "action": {
+          "label": "Action",
+          "plural": "Actions"
+        },
         "active": {
           "label": "Active"
         },
@@ -61,6 +65,9 @@
         },
         "delete": {
           "label": "Delete"
+        },
+        "hidden": {
+          "label": "Hidden"
         },
         "effect": {
           "label": "Effect",
@@ -84,6 +91,22 @@
         },
         "bonus": {
           "label": "Bonus"
+        },
+        "prerequisite": {
+          "label": "Prerequisite"
+        },
+        "source": {
+          "label": "Source"
+        },
+        "consumable": {
+          "label": "Consumable"
+        },
+        "detail": {
+          "label": "Detail",
+          "plural": "Details"
+        },
+        "rank": {
+          "label": "Rank"
         }
       },
       "state": {
@@ -96,6 +119,7 @@
       },
       "activation": {
         "label": "Activation",
+        "plural": "Activations",
         "none": {
           "label": "None"
         },
@@ -162,14 +186,27 @@
       },
       "attack": {
         "label": "Attack",
+        "bonus": {
+          "label": "Attack Bonus"
+        },
         "range": {
           "label": "Range"
         },
         "damage": {
-          "label": "Damage"
+          "label": "Damage",
+          "bonus": {
+            "label": "Damage Bonus"
+          }
+        },
+        "accuracy": {
+          "label": "Accuracy",
+          "bonus": {
+            "label": "Accuracy Bonus"
+          }
         }
       },
       "tech-attack": {
+        "short": "T.ATK",
         "label": "Tech Attack",
         "plural": "Tech Attacks"
       },
@@ -200,7 +237,10 @@
         },
         "heat": {
           "short": "HEAT",
-          "label": "Heat Cap"
+          "label": "Heat",
+          "cap": {
+            "label": "Heat Cap"
+          }
         },
         "stress": {
           "short": "STRESS",
@@ -210,17 +250,28 @@
           "short": "E.DEF",
           "label": "E-Defense"
         },
-        "sensor-range": {
+        "sensor": {
           "short": "SENS",
-          "label": "Sensor Range"
+          "label": "Sensor",
+          "range": {
+            "label": "Sensor Range"
+          }
         },
-        "save-target": {
+        "save": {
           "short": "SAVE",
-          "label": "Save Target"
+          "label": "Save",
+          "target": {
+            "label": "Save Target"
+          }
         },
         "speed": {
           "short": "SPEED",
           "label": "Speed"
+        },
+        "repair": {
+          "short": "REPR",
+          "label": "repair",
+          "plural": "repairs"
         },
         "hull": {
           "short": "HUL",
@@ -232,18 +283,45 @@
         },
         "systems": {
           "short": "SYS",
-          "label": "System",
-          "plural": "Systems"
+          "label": "Systems"
         },
         "engineering": {
           "short": "ENG",
           "label": "Engineering"
+        },
+        "grit": {
+          "short": "GRIT",
+          "label": "Grit"
+        },
+        "license-level": {
+          "short": "LL",
+          "label": "License Level"
         }
       },
       "item": {
         "weapon": {
-          "label": "weapon",
-          "plural": "weapons"
+          "label": "Weapon",
+          "plural": "Weapons"
+        },
+        "system": {
+          "label": "System",
+          "plural": "Systems"
+        },
+        "trait": {
+          "label": "Trait",
+          "plural": "Traits"
+        },
+        "deployable": {
+          "label": "Deployable",
+          "plural": "Deployables"
+        },
+        "tech": {
+          "label": "Tech",
+          "plural": "Techs"
+        },
+        "organization": {
+          "label": "Organization",
+          "plural": "Organizations"
         }
       }
     },
@@ -251,13 +329,13 @@
       "tabs": {
         "effects": "<EFFECTS//ACTIVE>"
       },
-      "headers": {
+      "header": {
         "combatUtilities": "COMBAT UTILITIES",
         "notes": {
           "label": "NOTES"
         },
-        "details": {
-          "label": "DETAILS"
+        "talents": {
+          "label": "TALENTS"
         }
       },
       "buttons": {
@@ -298,6 +376,15 @@
         "size": "SZ",
         "cost": "COST",
         "xp": "XP"
+      },
+      "synergies": {
+        "label": "Synergies"
+      },
+      "integrated-gear": {
+        "label": "Integrated Gear"
+      },
+      "integrated-items": {
+        "label": "Integrated Items"
       }
     },
     "deployable-sheet": {
@@ -363,6 +450,9 @@
       "mounted-systems": {
         "label": "MOUNTED SYSTEMS"
       },
+      "mounted-effect": {
+        "label": "MOUNTED EFFECT"
+      },
       "weapon-profiles": {
         "label": "WEAPON PROFILES",
         "base-actions": {
@@ -378,36 +468,31 @@
           "label": "No Weapon Mod Installed"
         },
         "added-range": {
-          "label": "ADDED RANGE"
+          "label": "Added Range"
         },
         "added-damage": {
-          "label": "ADDED DAMAGE"
+          "label": "Added Damage"
         },
         "added-tags": {
-          "label": "ADDED TAGS"
+          "label": "Added Tags"
+        },
+        "added-actions": {
+          "label": "Added Actions"
+        },
+        "added-deployables": {
+          "label": "Added Deployables"
         }
-      },
-      "integrated-gear": {
-        "label": "INTEGRATED GEAR"
       },
       "core-system": {
         "label": "CORE SYSTEM"
       },
-      "trait": {
-        "label": "TRAIT",
-        "plural": "TRAITS"
-      },
       "core": {
         "label": "CORE"
-      },
-      "actions": {
-        "label": "ACTIONS"
       },
       "macros": {
         "label": "MACROS"
       },
       "system": {
-        "label": "SYSTEM",
         "used": {
           "label": "SP USED"
         },
@@ -435,13 +520,32 @@
         "label": "TEMPLATES"
       },
       "features": {
-        "label": "FEATURES"
+        "label": "FEATURES",
+        "base": {
+          "label": "BASE FEATURES"
+        },
+        "optional": {
+          "label": "OPTIONAL FEATURES"
+        },
+        "type": {
+          "label": "FEATURE TYPE"
+        }
+      },
+      "source-name": {
+        "label": "Source Name"
       },
       "active-effects": {
         "label": "ACTIVE EFFECTS"
       },
       "recharge": {
         "label": "RECHARGE"
+      },
+      "tactics": {
+        "label": "TACTICS"
+      },
+      "tier": {
+        "short": "T",
+        "label": "Tier"
       }
     },
     "pilot-sheet": {
@@ -500,6 +604,18 @@
           },
           "refresh": {
             "label": "Refresh Powers"
+          },
+          "major-ideals": {
+            "label": "MAJOR IDEALS"
+          },
+          "minor-ideals": {
+            "label": "MINOR IDEALS"
+          },
+          "questions": {
+            "label": "QUESTIONS"
+          },
+          "powers": {
+            "label": "POWERS"
           }
         },
         "burdens": "BURDENS",
@@ -513,9 +629,49 @@
         "licenses": "LICENSES",
         "cores": "CORE BONUSES"
       },
+      "unlocked-rank": {
+        "label": "UNLOCKED RANK"
+      },
       "abilities": {
         "skills": "SKILL TRIGGERS",
         "talents": "TALENTS"
+      }
+    },
+    "item-sheet": {
+      "organization": {
+        "purpose": {
+          "label": "Purpose"
+        },
+        "efficiency": {
+          "label": "Efficiency"
+        },
+        "influence": {
+          "label": "Influence"
+        }
+      },
+      "reserve": {
+        "resource-label": {
+          "label": "Resource Label"
+        }
+      },
+      "tag": {
+        "meta-info": {
+          "label": "Tag Meta Info"
+        },
+        "filter-ignore": "Filter Ignore"
+      },
+      "talent": {
+        "terse-description": {
+          "label": "Terse Description"
+        }
+      },
+      "weapon-mod": {
+        "allowed-sizes": {
+          "label": "Allowed Sizes"
+        },
+        "allowed-types": {
+          "label": "Allowed Types"
+        }
       }
     },
     "chat-card": {
