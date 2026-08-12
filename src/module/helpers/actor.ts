@@ -50,7 +50,7 @@ export function stat_edit_card_max(
 ): string {
   let data_val = resolveHelperDotpath(options, data_path, 0);
   let max_val = resolveHelperDotpath(options, max_path, 0);
-  const localizedTitle = game.i18n.localize(`lancer.common-sheet.shortStats.${title}`);
+  const localizedTitle = game.i18n.localize(title);
   return `
     <div class="stat-card card clipped">
       <div class="lancer-header lancer-primary ">

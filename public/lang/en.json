@@ -56,28 +56,22 @@
           "label": "Passive"
         },
         "use": {
-          "label": "Use"
-        },
-        "uses": {
-          "label": "Uses"
+          "label": "Use",
+          "plural": "Uses"
         },
         "delete": {
           "label": "Delete"
         },
         "effect": {
-          "label": "Effect"
-        },
-        "effects": {
-          "label": "Effects"
+          "label": "Effect",
+          "plural": "Effects"
         },
         "description": {
           "label": "Description"
         },
         "tag": {
-          "label": "Tag"
-        },
-        "tags": {
-          "label": "Tags"
+          "label": "Tag",
+          "plural": "Tags"
         },
         "type": {
           "label": "Type"
@@ -87,6 +81,9 @@
         },
         "status": {
           "label": "Status"
+        },
+        "bonus": {
+          "label": "Bonus"
         }
       },
       "state": {
@@ -170,6 +167,83 @@
         },
         "damage": {
           "label": "Damage"
+        }
+      },
+      "tech-attack": {
+        "label": "Tech Attack",
+        "plural": "Tech Attacks"
+      },
+      "stat": {
+        "size": {
+          "short": "SIZE",
+          "label": "Size"
+        },
+        "max-hp": {
+          "short": "M.HP",
+          "label": "Max HP"
+        },
+        "hp": {
+          "short": "HP",
+          "label": "HP"
+        },
+        "structure": {
+          "short": "STRUCT",
+          "label": "Structure"
+        },
+        "armor": {
+          "short": "ARMR",
+          "label": "Armor"
+        },
+        "evasion": {
+          "short": "EVA",
+          "label": "Evasion"
+        },
+        "heat": {
+          "short": "HEAT",
+          "label": "Heat Cap"
+        },
+        "stress": {
+          "short": "STRESS",
+          "label": "Stress"
+        },
+        "e-defense": {
+          "short": "E.DEF",
+          "label": "E-Defense"
+        },
+        "sensor-range": {
+          "short": "SENS",
+          "label": "Sensor Range"
+        },
+        "save-target": {
+          "short": "SAVE",
+          "label": "Save Target"
+        },
+        "speed": {
+          "short": "SPEED",
+          "label": "Speed"
+        },
+        "hull": {
+          "short": "HUL",
+          "label": "Hull"
+        },
+        "agility": {
+          "short": "AGI",
+          "label": "Agility"
+        },
+        "systems": {
+          "short": "SYS",
+          "label": "System",
+          "plural": "Systems"
+        },
+        "engineering": {
+          "short": "ENG",
+          "label": "Engineering"
+        }
+      },
+      "item": {
+        "weapon": {
+          "label": "weapon",
+          "plural": "weapons"
         }
       }
     },
@@ -319,8 +393,9 @@
       "core-system": {
         "label": "CORE SYSTEM"
       },
-      "traits": {
-        "label": "TRAITS"
+      "trait": {
+        "label": "TRAIT",
+        "plural": "TRAITS"
       },
       "core": {
         "label": "CORE"
@@ -362,7 +437,7 @@
       "features": {
         "label": "FEATURES"
       },
-      "effects": {
+      "active-effects": {
         "label": "ACTIVE EFFECTS"
       },
       "recharge": {
@@ -476,6 +551,11 @@
         "hit": "HIT",
         "miss": "MISS",
         "roll-all-damage": "ROLL DAMAGE"
+      },
+      "damage": {
+        "bonus": {
+          "tooltip": "This row is bonus damage"
+        }
       },
       "exclamation": {
         "overkill": "OVERKILL!"

@@ -210,7 +210,7 @@ function allMechSystemsView(loadout_path: string, options: HelperOptions) {
   const system_views = loadout.systems.map((_sys, index) =>
     mechSystemViewHBS(`${loadout_path}.systems.${index}.value`, options)
   );
-  const i18n_title = game.i18n.localize("lancer.mech-sheet.mounted-systems.label");
+  const i18n_title = game.i18n.localize("lancer.mech-sheet.mounted-system.plural");
 
   // Archiving add button: <a class="gen-control fas fa-plus" data-action="append" data-path="${loadout_path}.SysMounts" data-action-value="(struct)sys_mount"></a>
 

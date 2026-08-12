@@ -232,7 +232,7 @@ export function limitedUsesIndicator(
   const nonInteractive = options?.nonInteractive ? "non-interactive" : "";
   const hexes = hex_array(uses.value, uses.max, path, `uses-hex`);
 
-  return `<div class="clipped card limited-card ${nonInteractive}"><span>${game.i18n.localize("lancer.common.descriptor.uses.label").toUpperCase()}</span> ${hexes.join("")}</div>`;
+  return `<div class="clipped card limited-card ${nonInteractive}"><span>${game.i18n.localize("lancer.common.descriptor.use.plural").toUpperCase()}</span> ${hexes.join("")}</div>`;
 }
 
 export function loadingIndicator(
@@ -267,7 +267,7 @@ export function reserveUsesIndicator(path: string, options: HelperOptions): stri
   let used = resolveHelperDotpath(options, path) as LancerRESERVE;
   const hexes = hex_array(used ? 0 : 1, 1, path, "uses-hex");
 
-  return `<div class="clipped card limited-card"><span>${game.i18n.localize("lancer.common.descriptor.uses.label").toUpperCase()}</span> ${hexes.join("")}</div>`;
+  return `<div class="clipped card limited-card"><span>${game.i18n.localize("lancer.common.descriptor.use.plural").toUpperCase()}</span> ${hexes.join("")}</div>`;
 }
 
 // Put this at the end of ref lists to have a place to drop things. Supports both native and non-native drops
