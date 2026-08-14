@@ -185,6 +185,10 @@ export function registerHandlebarsHelpers() {
   });
 
   Handlebars.registerHelper("upper-case", function (str: string) {
+    if (!str) {
+      console.error("ayo what", str);
+      return str;
+    }
     return str.toUpperCase();
   });
 

@@ -238,11 +238,12 @@ export function effectBox(title: string, text: string, options?: { add_classes?:
 export function spDisplay(sp: number | string) {
   const sp_num = parseInt(sp.toString());
   if (isNaN(sp_num)) return "";
+  const i18nTitle = game.i18n.localize("lancer.mech-sheet.system.points.label").toUpperCase();
   let icons = "";
   for (let i = 0; i < sp_num; i++) icons += `<i class="cci cci-system-point i--2"> </i>`;
   return `<div class="sp-wrapper">
             ${icons}
-            <span class="medium" style="padding: 5px;">${sp} ${game.i18n.localize("lancer.mech-sheet.system.points.label")}</span>
+            <span class="medium" style="padding: 5px;">${sp} ${i18nTitle}</span>
           </div>`;
 }
 
@@ -834,9 +835,9 @@ export function std_enum_select<T extends string>(path: string, enum_: { [key: s
         ${choices.join("")}
       </select>`;
   if (options.hash["label"]) {
-    const i18n_title = game.i18n.localize(options.hash["label"]);
+    const i18nTitle = game.i18n.localize(options.hash["label"]);
     return `<label class="flexrow flex-center no-wrap ${label_classes}">
-      ${i18n_title}
+      ${i18nTitle}
       ${select}
     </label>`;
   } else {
@@ -877,11 +878,11 @@ export function safe_html_helper(orig: string) {
 // These typically are the exact same so we made a helper for 'em
 export function large_textbox_card(title: string, text_path: string, options: HelperOptions) {
   let resolved = resolveHelperDotpath(options, text_path, "");
-  const i18n_title = game.i18n.localize(title).toUpperCase();
+  const i18nTitle = game.i18n.localize(title).toUpperCase();
   return `
   <div class="card full clipped">
     <div class="lancer-header lancer-primary">
-      <span>${i18n_title}</span>
+      <span>${i18nTitle}</span>
       ${popout_editor_button(text_path)}
     </div>
     <div class="desc-text">

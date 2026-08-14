@@ -19,7 +19,7 @@ import type { RangeData } from "../models/bits/range";
 import { ref_params } from "./refs";
 
 export function item_edit_arrayed_actions(path: string, title: string, options: HelperOptions): string {
-  const i18n_title = game.i18n.localize(title).toUpperCase();
+  const i18nTitle = game.i18n.localize(title);
   let doc = helper_root_doc(options);
   let dd = drilldownDocument(doc, path);
 
@@ -32,7 +32,7 @@ export function item_edit_arrayed_actions(path: string, title: string, options: 
   return `
     <div class="card clipped double edi">
       <span class="lancer-header lancer-primary submajor ">
-        ${i18n_title}
+        ${i18nTitle}
         <a class="gen-control fas fa-plus" data-action="append" data-path="${path}" data-action-value="(struct)action"></a>
       </span>
       <div class="editable-action-array">
@@ -49,7 +49,7 @@ export function item_edit_arrayed_actions(path: string, title: string, options: 
  * @returns         HTML for an editable damage area
  */
 export function item_edit_arrayed_damage(path: string, title: string, options: HelperOptions): string {
-  const i18n_title = game.i18n.localize(title).toUpperCase();
+  const i18nTitle = game.i18n.localize(title);
   let dam_arr = resolveHelperDotpath<ActionData[]>(options, path);
 
   let dam_detail = "";
@@ -63,7 +63,7 @@ export function item_edit_arrayed_damage(path: string, title: string, options: H
   return `
     <div class="card clipped double edi">
       <span class="lancer-header lancer-primary submajor ">
-        ${i18n_title}
+        ${i18nTitle}
         <a class="gen-control fas fa-plus" data-action="append" data-path="${path}" data-action-value="(struct)damage"></a>
       </span>
       ${dam_detail}
@@ -78,7 +78,7 @@ export function item_edit_arrayed_damage(path: string, title: string, options: H
  * @returns         HTML for an editable range area
  */
 export function item_edit_arrayed_range(path: string, title: string, options: HelperOptions): string {
-  let i18n_title = game.i18n.localize(title).toUpperCase();
+  let i18nTitle = game.i18n.localize(title);
   let range_arr = resolveHelperDotpath<RangeData[]>(options, path);
 
   let range_detail = "";
@@ -92,7 +92,7 @@ export function item_edit_arrayed_range(path: string, title: string, options: He
   return `
     <div class="card clipped double">
       <span class="lancer-header lancer-primary submajor ">
-        ${i18n_title}
+        ${i18nTitle}
         <a class="gen-control fas fa-plus" data-action="append" data-path="${path}" data-action-value="(struct)range"></a>
       </span>
       ${range_detail}
@@ -211,11 +211,11 @@ export function item_edit_checkboxes_object(title: string, path: string, options
     </div>`;
   }
 
-  const i18n_title = game.i18n.localize(title);
+  const i18nTitle = game.i18n.localize(title);
   return `
     <div class="card clipped item-edit-arrayed">
       <span class="lancer-header lancer-primary submajor ">
-        ${i18n_title}
+        ${i18nTitle}
       </span>
       ${selector_detail}
     </div>`;

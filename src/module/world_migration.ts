@@ -390,7 +390,7 @@ export async function migrateCompendiumStructure() {
       : (pack.folders.find(f => f.getFlag(game.system.id, "entrytype") === et) ??
         (await Folder.create(
           {
-            name: game.i18n.localize(`TYPES.${pack.metadata.type}.${et}`),
+            name: game.i18n.localize(`TYPES.${pack.metadata.type}.${et}.plural`),
             type: pack.metadata.type,
             [`flags.${game.system.id}.entrytype`]: et,
           },

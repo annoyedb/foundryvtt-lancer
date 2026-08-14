@@ -11,23 +11,23 @@
       >
     </h1>
     <div class="header-details origin_type">
-      <span class="medium">{{localize "lancer.npc-sheet.features.type"}}: </span>
+      <span class="medium">{{upper-case (localize "lancer.npc-sheet.features.type.label")}}: </span>
       <select class="header-field" name="system.type" data-type="String">
         {{#select system.type}}
           <option class="i--dark" value="Reaction">
-            {{upper-case (localize "lancer.common.activation.reaction.label")}}
+            {{{upper-case (localize "lancer.common.activation.reaction.label")}}}
           </option>
           <option class="i--dark" value="System">
-            {{upper-case (localize "lancer.common.item.system.label")}}
+            {{{upper-case (localize "TYPES.Item.mech_system.label")}}}
           </option>
           <option class="i--dark" value="Tech">
-            {{upper-case (localize "lancer.common.tech-attack.label")}}
+            {{{upper-case (localize "lancer.common.stat.tech.attack.label")}}}
           </option>
           <option class="i--dark" value="Trait">
-            {{upper-case (localize "lancer.common.item.trait.label")}}
+            {{{upper-case (localize "lancer.common.descriptor.trait.label")}}}
           </option>
           <option class="i--dark" value="Weapon">
-            {{upper-case (localize "lancer.common.item.weapon.label")}}
+            {{{upper-case (localize "TYPES.Item.mech_weapon.label")}}}
           </option>
         {{/select}}
       </select>
@@ -51,10 +51,10 @@
           <select name="system.origin.type" data-type="text">
             {{#select system.origin.type}}
               <option class="i--dark" value="Class">
-                {{upper-case (localize "lancer.npc-sheet.header.class.label")}}
+                {{upper-case (localize "lancer.npc-sheet.class.label")}}
               </option>
               <option class="i--dark" value="Template">
-                {{upper-case ("lancer.npc-sheet.header.templates.label")}}
+                {{upper-case (localize "lancer.npc-sheet.templates.label")}}
               </option>
             {{/select}}
           </select>
@@ -110,7 +110,7 @@
         <div class="flexcol">
           <div class="flexrow" style="align-items: center">
             <span class="medium" style="text-align: right; max-width: fit-content; padding-right: 1em">
-              {{{upper-case (localize "lancer.common.item.tech.label")}}}
+              {{{upper-case (localize "lancer.common.stat.tech.label")}}}
             </span>
             <select name="system.techType" data-type="String" style="align-self: center">
               {{#select system.techType}}
@@ -125,7 +125,7 @@
           </div>
           <div class="flexrow" style="align-items: center">
             <span class="medium" style="text-align: right; max-width: fit-content; padding-right: 1em">
-              {{{upper-case (localize "lancer.common.tech-attack.label")}}}?
+              {{{upper-case (localize "lancer.common.stat.tech.attack.label")}}}?
             </span>
             <input type="checkbox" name="system.tech_attack" {{checked system.tech_attack}}>
           </div>
@@ -183,8 +183,7 @@
           <div class="card clipped">
             <span class="lancer-header lancer-primary major">
               <i class="cci cci-npc-tier-{{inc tier_index}} i--4 i--dark"></i>
-              {{{localize "lancer.npc-sheet.tier.short"}}}
-              {{inc tier_index}}
+              {{{localize "lancer.common.stat.tier.short"}}}{{inc tier_index}}
               {{{upper-case (localize "lancer.common.attack.damage.label")}}}
               <a class="npc-damage-append" style="float: right">
                 +

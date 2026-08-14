@@ -189,12 +189,12 @@ function allWeaponMountView(loadout_path: string, options: HelperOptions) {
   const weapon_mounts = loadout.weapon_mounts.map((_wep, index) =>
     weaponMount(`${loadout_path}.weapon_mounts.${index}`, options)
   );
-  const i18n_title = game.i18n.localize("lancer.mech-sheet.mounted-weapons.label");
+  const i18nTitle = game.i18n.localize("lancer.mech-sheet.mounted-weapons.label").toUpperCase();
 
   return `
     <div class="lancer-header lancer-dark-gray loadout-category submajor">
       <i class="mdi mdi-unfold-less-horizontal collapse-trigger collapse-icon" data-collapse-id="weapons"></i>
-      <span>${i18n_title}</span>
+      <span>${i18nTitle}</span>
       <a class="gen-control fas fa-plus" data-action="append" data-path="${loadout_path}.weapon_mounts" data-action-value="(struct)wep_mount"></a>
       <a class="reset-all-weapon-mounts-button fas fa-redo" data-path="${loadout_path}.weapon_mounts"></a>
     </div>
@@ -210,14 +210,14 @@ function allMechSystemsView(loadout_path: string, options: HelperOptions) {
   const system_views = loadout.systems.map((_sys, index) =>
     mechSystemViewHBS(`${loadout_path}.systems.${index}.value`, options)
   );
-  const i18n_title = game.i18n.localize("lancer.mech-sheet.mounted-system.plural");
+  const i18nTitle = game.i18n.localize("lancer.mech-sheet.mounted-systems.label").toUpperCase();
 
   // Archiving add button: <a class="gen-control fas fa-plus" data-action="append" data-path="${loadout_path}.SysMounts" data-action-value="(struct)sys_mount"></a>
 
   return `
     <div class="lancer-header lancer-dark-gray loadout-category submajor">
       <i class="mdi mdi-unfold-less-horizontal collapse-trigger collapse-icon" data-collapse-id="systems"></i>
-      <span>${i18n_title}</span>
+      <span>${i18nTitle}</span>
       <span style="flex-grow: 0">
         <i class="cci cci-system-point i--4"></i>
         ${loadout.sp.value} / ${loadout.sp.max} SP USED
@@ -316,10 +316,11 @@ function buildCoreSysHTML(frame_path: string, core_energy: number, options: Help
   }
   const mfrBorder = manufacturerStyle(frame.system.manufacturer, true);
   const mfrStyle = manufacturerStyle(frame.system.manufacturer);
+  const i18nTitle = game.i18n.localize("lancer.mech-sheet.core.label").toUpperCase();
 
   return `<div class="core-wrapper ${mfrBorder} frame-coresys card clipped-top" style="padding: 0;">
     <div class="lancer-header ${mfrStyle} coresys-title">
-      <span>${core.name}</span><span>//</span><span>${game.i18n.localize("lancer.mech-sheet.core.label")}</span>
+      <span>${core.name}</span><span>//</span><span>${i18nTitle}</span>
       <i
         class="mdi mdi-unfold-less-horizontal collapse-trigger collapse-icon"
         data-collapse-id="${frame.id}_core" >

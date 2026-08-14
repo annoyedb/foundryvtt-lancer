@@ -1,30 +1,96 @@
 {
   "TYPES": {
     "Actor": {
-      "deployable": "Deployable",
-      "mech": "Mech",
-      "npc": "NPC",
-      "pilot": "Pilot"
+      "deployable": {
+        "label": "Deployable",
+        "plural": "Deployable"
+      },
+      "mech": {
+        "label": "Mech",
+        "plural": "Mechs"
+      },
+      "npc": {
+        "label": "NPC",
+        "plural": "NPCs"
+      },
+      "pilot": {
+        "label": "Pilot",
+        "plural": "Pilots"
+      }
     },
     "Item": {
-      "bond": "Bond",
-      "core_bonus": "Core Bonus",
-      "frame": "Frame",
-      "license": "License",
-      "mech_system": "Mech System",
-      "mech_weapon": "Mech Weapon",
-      "npc_class": "NPC Class",
-      "npc_feature": "NPC Feature",
-      "npc_template": "NPC Template",
-      "organization": "Organization",
-      "pilot_armor": "Pilot Armor",
-      "pilot_gear": "Pilot Gear",
-      "pilot_weapon": "Pilot Weapon",
-      "reserve": "Reserve",
-      "skill": "Skill",
-      "status": "Status/Condition",
-      "talent": "Talent",
-      "weapon_mod": "Weapon Mod"
+      "bond": {
+        "label": "Bond",
+        "plural": "Bonds"
+      },
+      "core_bonus": {
+        "label": "Core Bonus",
+        "plural": "Core Bonuses"
+      },
+      "frame": {
+        "label": "Frame",
+        "plural": "Frames"
+      },
+      "license": {
+        "label": "License",
+        "plural": "Licenses"
+      },
+      "mech_system": {
+        "label": "Mech System",
+        "plural": "Mech Systems"
+      },
+      "mech_weapon": {
+        "label": "Mech Weapon",
+        "plural": "Mech Weapons"
+      },
+      "npc_class": {
+        "label": "NPC Class",
+        "plural": "NPC Classes"
+      },
+      "npc_feature": {
+        "label": "NPC Feature",
+        "plural": "NPC Features"
+      },
+      "npc_template": {
+        "label": "NPC Template",
+        "plural": "NPC Templates"
+      },
+      "organization": {
+        "label": "Organization",
+        "plural": "Organizations"
+      },
+      "pilot_armor": {
+        "label": "Pilot Armor",
+        "plural": "Pilot Armor"
+      },
+      "pilot_gear": {
+        "label": "Pilot Gear",
+        "plural": "Pilot Gear"
+      },
+      "pilot_weapon": {
+        "label": "Pilot Weapon",
+        "plural": "Pilot Weapons"
+      },
+      "reserve": {
+        "label": "Reserve",
+        "plural": "Reserves"
+      },
+      "skill": {
+        "label": "Skill",
+        "plural": "Skills"
+      },
+      "status": {
+        "label": "Status/Condition",
+        "plural": "Statuses/Conditions"
+      },
+      "talent": {
+        "label": "Talent",
+        "plural": "Talents"
+      },
+      "weapon_mod": {
+        "label": "Weapon Mod",
+        "plural": "Weapon Mods"
+      }
     }
   },
   "lancer": {
@@ -37,13 +103,6 @@
     "LancerLicenseSheet": "Lancer System License Sheet",
     "LancerNPCClassSheet": "Lancer System NPC Class/Template Sheet",
     "LancerNPCFeatureSheet": "Lancer System NPC Feature Sheet",
-    "Actor": {
-      "FIELDS": {
-        "activations": {
-          "label": "Activations"
-        }
-      }
-    },
     "placeholder": {
       "name": "Name"
     },
@@ -106,7 +165,18 @@
           "plural": "Details"
         },
         "rank": {
-          "label": "Rank"
+          "label": "Rank",
+          "unlocked": {
+            "label": "Unlocked Rank"
+          }
+        },
+        "trait": {
+          "label": "Trait",
+          "plural": "Traits"
+        },
+        "manufacturer": {
+          "label": "Manufacturer",
+          "plural": "Manufacturers"
         }
       },
       "state": {
@@ -186,6 +256,7 @@
       },
       "attack": {
         "label": "Attack",
+        "plural": "Attacks",
         "bonus": {
           "label": "Attack Bonus"
         },
@@ -205,23 +276,22 @@
           }
         }
       },
-      "tech-attack": {
-        "short": "T.ATK",
-        "label": "Tech Attack",
-        "plural": "Tech Attacks"
-      },
       "stat": {
         "size": {
           "short": "SIZE",
           "label": "Size"
         },
-        "max-hp": {
-          "short": "M.HP",
-          "label": "Max HP"
-        },
         "hp": {
           "short": "HP",
-          "label": "HP"
+          "label": "HP",
+          "max": {
+            "short": "M.HP",
+            "label": "Max HP"
+          }
+        },
+        "overshield": {
+          "short": "O.SHLD",
+          "label": "Overshield"
         },
         "structure": {
           "short": "STRUCT",
@@ -239,6 +309,7 @@
           "short": "HEAT",
           "label": "Heat",
           "cap": {
+            "short": "M.HEAT",
             "label": "Heat Cap"
           }
         },
@@ -249,6 +320,15 @@
         "e-defense": {
           "short": "E.DEF",
           "label": "E-Defense"
+        },
+        "tech": {
+          "label": "Tech",
+          "plural": "Techs",
+          "attack": {
+            "short": "T.ATK",
+            "label": "Tech Attack",
+            "plural": "Tech Attacks"
+          }
         },
         "sensor": {
           "short": "SENS",
@@ -296,86 +376,75 @@
         "license-level": {
           "short": "LL",
           "label": "License Level"
-        }
-      },
-      "item": {
-        "weapon": {
-          "label": "Weapon",
-          "plural": "Weapons"
         },
-        "system": {
-          "label": "System",
-          "plural": "Systems"
+        "level": {
+          "short": "LEVEL",
+          "label": "Level"
         },
-        "trait": {
-          "label": "Trait",
-          "plural": "Traits"
+        "overcharge": {
+          "short": "O.CHRG",
+          "label": "Overcharge"
         },
-        "deployable": {
-          "label": "Deployable",
-          "plural": "Deployables"
+        "burn": {
+          "short": "BURN",
+          "label": "Burn"
         },
-        "tech": {
-          "label": "Tech",
-          "plural": "Techs"
+        "tier": {
+          "short": "T",
+          "label": "Tier"
         },
-        "organization": {
-          "label": "Organization",
-          "plural": "Organizations"
+        "cost": {
+          "short": "COST",
+          "label": "Cost"
+        },
+        "experience": {
+          "short": "XP",
+          "label": "Experience"
         }
       }
     },
     "common-sheet": {
       "tabs": {
-        "effects": "<EFFECTS//ACTIVE>"
+        "effects": {
+          "label": "<EFFECTS//ACTIVE>"
+        }
       },
       "header": {
-        "combatUtilities": "COMBAT UTILITIES",
+        "combat-utilities": {
+          "label": "Combat Utilities"
+        },
         "notes": {
-          "label": "NOTES"
+          "label": "Notes"
         },
         "talents": {
-          "label": "TALENTS"
+          "label": "Talents"
         }
       },
       "buttons": {
-        "basicAttack": "MELEE/RANGED",
-        "damage": "DAMAGE",
-        "fullRepair": "FULL REPAIR",
-        "overheat": "OVERHEAT",
-        "scan": "SCAN",
-        "stabilize": "STABILIZE",
-        "structure": "STRUCTURE",
-        "tech": "TECH"
-      },
-      "shortStats": {
-        "hull": "HUL",
-        "agi": "AGI",
-        "sys": "SYS",
-        "eng": "ENG",
-        "level": "LICENSE LEVEL",
-        "grit": "GRIT",
-        "tier": "TIER",
-        "activations": "ACTIV",
-        "hp": "HP",
-        "evasion": "EVA",
-        "armor": "ARM",
-        "structure": "STRUCT",
-        "heat": "HEAT",
-        "heatcap": "HEAT CAP",
-        "edef": "EDEF",
-        "stress": "STRESS",
-        "speed": "SPD",
-        "save": "SAVE",
-        "sensor_range": "SENS",
-        "tech_attack": "T ATK",
-        "overcharge": "OVERCHARGE",
-        "burn": "BURN",
-        "overshield": "O.SHLD",
-        "repairs": "REP",
-        "size": "SZ",
-        "cost": "COST",
-        "xp": "XP"
+        "basic-attack": {
+          "label": "Melee/Ranged"
+        },
+        "damage": {
+          "label": "Damage"
+        },
+        "full-repair": {
+          "label": "Full Repair"
+        },
+        "overheat": {
+          "label": "Overheat"
+        },
+        "scan": {
+          "label": "Scan"
+        },
+        "stabilize": {
+          "label": "Stabilize"
+        },
+        "structure": {
+          "label": "Structure"
+        },
+        "tech": {
+          "label": "Tech"
+        }
       },
       "synergies": {
         "label": "Synergies"
@@ -388,82 +457,82 @@
       }
     },
     "deployable-sheet": {
-      "header": {
-        "owner": "Owner"
-      },
       "tabs": {
         "status": "<STATUS>",
         "config": "<CONFIG>"
       },
-      "deployer": {
-        "label": "DEPLOYER"
+      "header": {
+        "owner": "Owner"
       },
-      "stats": {
-        "label": "BASE STATS"
+      "deployer": {
+        "label": "Deployer"
+      },
+      "base-stats": {
+        "label": "Base Stats"
       }
     },
     "mech-sheet": {
-      "header": {
-        "inactive-warning": "Warning: Inactive Mech - Pilot bonuses not tracked"
-      },
       "tabs": {
         "stats": "<MECH//STATS>",
         "loadout": "<MECH//LOADOUT>",
         "talents": "<PILOT//TALENTS>"
       },
+      "inactive-warning": {
+        "label": "Warning: Inactive Mech - Pilot bonuses not tracked"
+      },
       "available-weapon-mounts": {
-        "label": "AVAILABLE WEAPON MOUNTS"
+        "label": "Available Weapon Mounts"
       },
       "mounted-weapons": {
-        "label": "MOUNTED WEAPONS",
+        "label": "Mounted Weapons",
         "aux": {
-          "label": "AUX"
+          "label": "Aux"
         },
         "aux-aux": {
-          "label": "AUX/AUX"
+          "label": "Aux/Aux"
         },
         "main": {
-          "label": "MAIN"
+          "label": "Main"
         },
         "main-aux": {
-          "label": "MAIN/AUX"
+          "label": "Main/Aux"
         },
         "flex": {
-          "label": "FLEX"
+          "label": "Flex"
         },
         "heavy": {
-          "label": "HEAVY"
+          "label": "Heavy"
         },
         "superheavy": {
-          "label": "SUPERHEAVY"
+          "label": "Superheavy"
         },
         "superheavy-bracing": {
-          "label": "SUPERHEAVY BRACING"
+          "label": "Superheavy Bracing"
         },
         "integrated": {
-          "label": "INTEGRATED"
+          "label": "Integrated"
         },
         "unknown": {
-          "label": "UNKNOWN"
+          "label": "Unknown"
         }
       },
       "mounted-systems": {
-        "label": "MOUNTED SYSTEMS"
+        "label": "Mounted Systems"
       },
       "mounted-effect": {
-        "label": "MOUNTED EFFECT"
+        "label": "Mounted Effect"
       },
       "weapon-profiles": {
-        "label": "WEAPON PROFILES",
+        "label": "Weapon Profiles",
         "base-actions": {
-          "label": "BASE ACTIONS"
+          "label": "Base Actions"
         },
         "profile-actions": {
-          "label": "PROFILE ACTIONS"
+          "label": "Profile Actions"
         }
       },
       "weapon-mod": {
-        "label": "WEAPON MOD",
+        "label": "Weapon Mod",
         "none": {
           "label": "No Weapon Mod Installed"
         },
@@ -484,77 +553,64 @@
         }
       },
       "core-system": {
-        "label": "CORE SYSTEM"
+        "label": "Core System"
       },
       "core": {
-        "label": "CORE"
+        "label": "Core"
       },
       "macros": {
-        "label": "MACROS"
+        "label": "Macros"
       },
       "system": {
-        "used": {
-          "label": "SP USED"
-        },
         "points": {
-          "label": "SYSTEM POINTS"
+          "short": "M.SP",
+          "label": "System Points",
+          "used": {
+            "label": "SP Used"
+          }
         }
       },
       "loadout": {
-        "label": "LOADOUT"
+        "label": "Loadout"
       },
       "inventory": {
         "button": "View Inventory"
       }
     },
     "npc-sheet": {
-      "header": {
-        "class": "CLASS",
-        "templates": "TEMPLATES"
-      },
       "class": {
-        "label": "CLASS",
-        "none": "NO CLASS FOUND"
+        "label": "Class",
+        "none": "No Class Found"
       },
       "templates": {
-        "label": "TEMPLATES"
+        "label": "Templates"
       },
       "features": {
-        "label": "FEATURES",
+        "label": "Features",
         "base": {
-          "label": "BASE FEATURES"
+          "label": "Base Features"
         },
         "optional": {
-          "label": "OPTIONAL FEATURES"
+          "label": "Optional Features"
         },
         "type": {
-          "label": "FEATURE TYPE"
+          "label": "Feature Type"
         }
       },
       "source-name": {
         "label": "Source Name"
       },
       "active-effects": {
-        "label": "ACTIVE EFFECTS"
+        "label": "Active Effects"
       },
       "recharge": {
-        "label": "RECHARGE"
+        "label": "Recharge"
       },
       "tactics": {
-        "label": "TACTICS"
-      },
-      "tier": {
-        "short": "T",
-        "label": "Tier"
+        "label": "Tactics"
       }
     },
     "pilot-sheet": {
-      "header": {
-        "ll": "LL",
-        "cs": "CALLSIGN",
-        "name": "NAME",
-        "bg": "BACKGROUND"
-      },
       "tabs": {
         "cloud": "<RM-4://SYNC>",
         "dossier": "<PILOT//DOSSIER>",
@@ -565,19 +621,21 @@
       },
       "cloud-header": {
         "label": "RM-4://(OMNINET UPLINK ID)",
-        "raw-placeholder": "Paste Pilot Share Code"
+        "placeholder": "Paste Pilot Share Code"
       },
       "cloud-download": {
-        "label": "DOWNLOAD",
+        "label": "Download",
         "description": "Use this section to import a Comp/Con share code.",
-        "lastSync": "Last synced: {timestamp}"
+        "last-sync": {
+          "label": "Last synced: {timestamp}"
+        }
       },
       "cloud-upload": {
-        "label": "UPLOAD",
-        "wip": "FEATURE IN PROGRESS"
+        "label": "Upload",
+        "description": "FEATURE IN PROGRESS"
       },
       "json-import": {
-        "label": "FILE IMPORT",
+        "label": "File Import",
         "description": "Use this section to import a JSON file exported from Comp/Con.",
         "placeholder": "Select JSON file…",
         "browse": {
@@ -585,17 +643,27 @@
         }
       },
       "dossier": {
-        "cs": "CALLSIGN",
-        "name": "NAME",
-        "background": "BACKGROUND",
-        "history": "HISTORY"
+        "callsign": {
+          "label": "Callsign"
+        },
+        "name": {
+          "label": "Name"
+        },
+        "background": {
+          "label": "Background"
+        },
+        "history": {
+          "label": "History"
+        }
       },
       "buttons": {
-        "basic-attack": "BASIC ATTACK"
+        "basic-attack": {
+          "label": "Basic Attack"
+        }
       },
       "narrative": {
         "bond": {
-          "label": "BOND OF {bondName}",
+          "label": "Bond of {bondName}",
           "veteran-power": {
             "label": "Boon XP from another PC"
           },
@@ -606,35 +674,41 @@
             "label": "Refresh Powers"
           },
           "major-ideals": {
-            "label": "MAJOR IDEALS"
+            "label": "Major Ideals"
           },
           "minor-ideals": {
-            "label": "MINOR IDEALS"
+            "label": "Minor Ideals"
           },
           "questions": {
-            "label": "QUESTIONS"
+            "label": "Questions"
           },
           "powers": {
-            "label": "POWERS"
+            "label": "Powers"
+          },
+          "frequency": {
+            "label": "Frequency"
+          },
+          "veteran": {
+            "label": "Veteran"
+          },
+          "master": {
+            "label": "Master"
           }
         },
-        "burdens": "BURDENS",
-        "clocks": "CLOCKS"
-      },
-      "tactical": {
-        "armor": "ARMOR",
-        "weapons": "WEAPONS",
-        "gear": "GEAR",
-        "reserves": "RESERVES",
-        "licenses": "LICENSES",
-        "cores": "CORE BONUSES"
-      },
-      "unlocked-rank": {
-        "label": "UNLOCKED RANK"
+        "burdens": {
+          "label": "Burdens"
+        },
+        "clocks": {
+          "label": "Clocks"
+        }
       },
       "abilities": {
-        "skills": "SKILL TRIGGERS",
-        "talents": "TALENTS"
+        "skills": {
+          "label": "Skill Triggers"
+        },
+        "talents": {
+          "label": "Talents"
+        }
       }
     },
     "item-sheet": {

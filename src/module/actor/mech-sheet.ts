@@ -173,7 +173,7 @@ export class LancerMechSheet extends LancerActorSheet<EntryType.MECH> {
   // Allows user to change mount size via right click ctx
   _activateMountContextMenus(html: any) {
     let mount_options: any[] = [];
-    const i18n_mounts = {
+    const i18nMounts = {
       [MountType.Main]: "lancer.mech-sheet.mounted-weapons.main.label",
       [MountType.Aux]: "lancer.mech-sheet.mounted-weapons.aux.label",
       [MountType.AuxAux]: "lancer.mech-sheet.mounted-weapons.aux-aux.label",
@@ -188,7 +188,7 @@ export class LancerMechSheet extends LancerActorSheet<EntryType.MECH> {
     // Handle generic mount type
     for (let selection of Object.values(MountType)) {
       mount_options.push({
-        name: i18n_mounts[selection],
+        name: i18nMounts[selection],
         icon: "",
         callback: async (html: JQuery) => {
           let mountPath = html[0].dataset.path ?? "";

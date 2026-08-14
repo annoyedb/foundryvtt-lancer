@@ -1,5 +1,5 @@
 <div class="card clipped-bot" style="margin: 0px">
-  <div class="lancer-header lancer-primary">{{localize "lancer.common-sheet.buttons.scan"}} // 🞂 {{upper-case name}} 🞀</div>
+  <div class="lancer-header lancer-primary">{{upper-case (localize "lancer.common-sheet.buttons.scan.label")}} // 🞂 {{upper-case name}} 🞀</div>
   <div class="scan-result">
     <div class="scan-classes">
       TIER {{tier}}
@@ -33,7 +33,7 @@
         <div class="scan-stat-header"><i class="cci cci-structure"></i></div>
         {{stats.structure}}
       </div>
-      <div class="scan-stat-item" data-tooltip="lancer.common.stat.max-hp.label">
+      <div class="scan-stat-item" data-tooltip="lancer.common.stat.hp.max.label">
         <div class="scan-stat-header"><i class="mdi mdi-heart-outline"></i></div>
         {{stats.hp}}
       </div>
@@ -58,7 +58,7 @@
         <div class="scan-stat-header"><i class="cci cci-edef"></i></div>
         {{stats.edef}}
       </div>
-      <div class="scan-stat-item stat-size" data-tooltip="{{localize "lancer.common.stat.size.label"}} {{stats.size}}" style="grid-area: size">
+      <div class="scan-stat-item stat-size" data-tooltip="{{{localize "lancer.common.stat.size.label"}}} {{stats.size}}" style="grid-area: size">
         {{#if (eq stats.size 0.5)}}
           <i class="cci cci-size-half"></i>
         {{else}}
@@ -82,7 +82,7 @@
     {{#if weapons}}
       <details open class="clipped-top scan-feature-list lancer-weapon lancer-border-weapon">
         <summary class="lancer-header">
-          <i class="cci cci-weapon i--4"></i><span>{{lancer.common.item.weapon.plural}}</span><i class="mdi mdi-unfold-less-horizontal"></i>
+          <i class="cci cci-weapon i--4"></i><span>{{TYPES.Item.mech_weapon.plural}}</span><i class="mdi mdi-unfold-less-horizontal"></i>
         </summary>
         <ul>
           {{#each weapons as |weapon index|}}
@@ -94,7 +94,7 @@
     {{#if techAttacks}}
       <details open class="clipped-top scan-feature-list lancer-tech lancer-border-tech">
         <summary class="lancer-header">
-          <i class="cci cci-system i--4"></i><span>{{upper-case (localize "lancer.common.tech-attack.plural")}}</span><i class="mdi mdi-unfold-less-horizontal"></i>
+          <i class="cci cci-system i--4"></i><span>{{upper-case (localize "lancer.common.stat.tech.attack.plural")}}</span><i class="mdi mdi-unfold-less-horizontal"></i>
         </summary>
         <ul>
           {{#each techAttacks as |techAttack index|}}
@@ -118,7 +118,7 @@
     {{#if traits}}
       <details open class="clipped-top scan-feature-list lancer-trait lancer-border-trait">
         <summary class="lancer-header">
-          <i class="cci cci-trait i--4"></i><span>{{upper-case (localize "lancer.common.item.trait.plural")}}</span><i class="mdi mdi-unfold-less-horizontal"></i>
+          <i class="cci cci-trait i--4"></i><span>{{upper-case (localize "lancer.common.descriptor.trait.plural")}}</span><i class="mdi mdi-unfold-less-horizontal"></i>
         </summary>
         <ul>
           {{#each traits as |trait index|}}
