@@ -386,4 +386,7 @@ export function registerHandlebarsHelpers() {
   Handlebars.registerHelper("mini-profile", miniProfile);
   Handlebars.registerHelper("attack-target", attackTarget);
   Handlebars.registerHelper("damage-target", damageTarget);
+  Handlebars.registerHelper("decorate-card", function (value: string) {
+    return "// " + value + " //";
+  });
 }

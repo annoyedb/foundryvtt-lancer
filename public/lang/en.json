@@ -750,27 +750,54 @@
     },
     "chat-card": {
       "title": {
-        "attack": "// ATTACK //",
-        "damage": "// DAMAGE //",
-        "reliable": "// RELIABLE //",
-        "crit-damage": "// CRIT DAMAGE //",
-        "self-heat": "// SELF HEAT //",
-        "defense-hit": "// ATTACK VS {defense} //",
-        "effect": "// EFFECT //",
-        "on-attack": "// ON ATTACK //",
-        "on-hit": "// ON HIT //",
-        "on-crit": "// ON CRIT //",
-        "charge-roll": "// CHARGE ROLL //",
-        "recharged": "// RECHARGED //",
-        "structure": "// STRUCTURE DAMAGE //",
-        "overheating": "// OVERHEATING //",
-        "cascade": "// CASCADE //",
-        "check": "// CHECK :: {check} //",
-        "system": "// SYSTEM :: {title} //",
-        "mod": "// MOD :: {title} //",
-        "trait": "// TRAIT :: {title} //",
-        "tech": "// TECH :: {title} //",
-        "reaction": "// REACTION :: {title} //"
+        "reliable": {
+          "label": "Reliable"
+        },
+        "critical-damage": {
+          "label": "Critical Damage"
+        },
+        "self-heat": {
+          "label": "Self Heat"
+        },
+        "defense-hit": {
+          "label": "Attack VS {defense}"
+        },
+        "recharging": {
+          "label": "Recharging"
+        },
+        "recharged": {
+          "label": "Recharged"
+        },
+        "structure-damage": {
+          "label": "Structure Damage"
+        },
+        "overheating": {
+          "label": "Overheating"
+        },
+        "cascade": {
+          "label": "Cascade"
+        },
+        "check": {
+          "label": "Check :: {check}"
+        },
+        "system": {
+          "label": "System :: {title}"
+        },
+        "mod": {
+          "label": "Mod :: {title}"
+        },
+        "trait": {
+          "label": "Trait :: {title}"
+        },
+        "tech": {
+          "label": "Tech :: {title}"
+        },
+        "reaction": {
+          "label": "Reaction :: {title}"
+        },
+        "talent": {
+          "label": "Talent :: {title} {lvl}"
+        }
       },
       "label": {
         "trigger": "TRIGGER",

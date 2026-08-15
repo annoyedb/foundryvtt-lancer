@@ -3,7 +3,7 @@
     <i class="cci cci-structure i--4"></i>
     {{#if reroll_data}}<span class="spacer"></span>{{/if}}
     <div class="flexcol">
-      <span>{{localize "lancer.chat-card.title.structure"}}</span>
+      <span>{{decorate-card (upper-case (localize "lancer.chat-card.title.structure-damage.label"))}}</span>
       <span style="align-self: center;">
         {{localize "lancer.chat-card.remaining" total=val max=max}}
       </span>
