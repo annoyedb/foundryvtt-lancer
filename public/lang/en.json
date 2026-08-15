@@ -799,15 +799,19 @@
           "label": "Talent :: {title} {lvl}"
         }
       },
-      "label": {
-        "trigger": "TRIGGER",
-        "effect": "EFFECT"
-      },
       "attack": {
-        "crit": "CRIT",
-        "hit": "HIT",
-        "miss": "MISS",
-        "roll-all-damage": "ROLL DAMAGE"
+        "crit": {
+          "label": "Crit"
+        },
+        "hit": {
+          "label": "Hit"
+        },
+        "miss": {
+          "label": "Miss"
+        },
+        "roll-damage": {
+          "label": "Roll Damage"
+        }
       },
       "damage": {
         "bonus": {
