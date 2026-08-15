@@ -1,27 +1,38 @@
 <script lang="ts">
   import { createEventDispatcher } from "svelte";
-  import { parseContentPack, type ContentSummary, generateLcpSummary, generateMultiLcpSummary } from "../../util/lcps";
+  import { parseContentPack, type ContentSummary, generateLCPSummary, generateMultiLCPSummary } from "../../util/lcps";
   import type { IContentPack, IContentPackManifest } from "../../util/unpacking/packed-types";
 
-  const dispatch = createEventDispatcher();
+  interface Props {
+    onImport: (p: IContentPack[] | null, s: ContentSummary | null) => void;
 
-  export let disabled: boolean = false;
+    disabled: boolean;
+  }
+
+  let {
+    onImport,
+
+    disabled = false,
+  }: Props = $props();
+
   export const deselect = () => {
     selectedFiles = null;
     filenames = null;
     console.log("Deselecting file");
-    dispatch("lcpLoaded", null);
+    onImport(null, null);
   };
 
-  let selectedFiles: FileList | null = null;
-  let filenames: string | null = null;
-  let filesData: {
-    name: string;
-    data: ArrayBuffer | null;
-    loaded: boolean;
-    cp: IContentPack | null;
-  }[] = [];
-  let contentSummary: ContentSummary | null = null;
+  let selectedFiles = $state<FileList | null>(null);
+  let filenames = $state<string | null>(null);
+  let filesData = $state<
+    {
+      name: string;
+      data: ArrayBuffer | null;
+      loaded: boolean;
+      cp: IContentPack | null;
+    }[]
+  >([]);
+  let contentSummary = $state<ContentSummary | null>(null);
 
   function filesSelected(event: any) {
     const files: FileList = event.target?.files;
@@ -68,10 +79,7 @@
       }
       try {
         fd.cp = await parseContentPack(fd.data);
-        dispatch("lcpLoaded", {
-          contentPacks: [fd.cp],
-          contentSummary: generateLcpSummary(fd.cp),
-        });
+        onImport([fd.cp], generateLCPSummary(fd.cp));
         return;
       } catch (err: any) {
         ui.notifications.error(`Could not load ${fd.name}: ${err.message || err}`, { permanent: true });
@@ -107,13 +115,13 @@
     );
     const contentPacks = filesData.map(fd => fd.cp!).filter(cp => Boolean(cp));
     if (contentPacks.length) {
-      contentSummary = generateMultiLcpSummary(aggregateManifest, contentPacks);
-      dispatch("lcpLoaded", { contentPacks, contentSummary });
+      contentSummary = generateMultiLCPSummary(aggregateManifest, contentPacks);
+      onImport(contentPacks, contentSummary);
     }
   }
 </script>
 
-<div style={$$restProps.style}>
+<div>
   <div class="lancer-header lancer-primary major">Import From File</div>
   <div class="file-select-container">
     <label class="lancer-file-input">
@@ -127,7 +135,7 @@
         accept=".lcp"
         {disabled}
         bind:files={selectedFiles}
-        on:change={filesSelected}
+        onchange={filesSelected}
       >
 
       <span class="lancer-file-input-display">
@@ -135,7 +143,11 @@
         <span class="lancer-file-input__filenames">{filenames || "Choose file..."}</span>
       </span>
     </label>
-    <button class="lancer-button deselect-file" {disabled} on:click={deselect}>
+    <button
+      class="lancer-button deselect-file"
+      onclick={deselect}
+      {disabled}
+    >
       <i class="fas fa-broom"></i> Unselect File
     </button>
   </div>

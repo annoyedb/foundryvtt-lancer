@@ -1,11 +1,9 @@
-<svelte:options accessors={true} />
-
 <script lang="ts">
   import { fade } from "svelte/transition";
   import { LANCER } from "../../config";
   import Spinner from "../components/Spinner.svelte";
-  import LcpDetails from "./LCPDetails.svelte";
-  import LcpSelector from "./LCPSelector.svelte";
+  import LCPDetails from "./LCPDetails.svelte";
+  import LCPSelector from "./LCPSelector.svelte";
   import { type ContentSummary, getOfficialData, type LCPData, mergeOfficialDataAndLcpIndex } from "../../util/lcps";
   import LCPTable from "./LCPTable.svelte";
   import type { IContentPack, IContentPackManifest } from "../../util/unpacking/packed-types";
@@ -13,27 +11,35 @@
   import { LCPIndex } from "./lcp-manager";
   const lp = LANCER.log_prefix;
 
-  // injectedContentSummary is only here to facilitate tours
-  export let injectedContentSummary: ContentSummary | null = null;
-  export let loading: boolean = true;
-  let lcpData: LCPData[] = [];
-  let contentPacks: IContentPack[] = [];
-  let fileContentSummary: ContentSummary | null = null;
-  let hoveredContentSummary: ContentSummary | null = null;
-  let aggregateContentSummary: ContentSummary | null = null;
-  let importingLcp: IContentPack | null = null;
-  let importing: boolean = false;
-  let importingMany: boolean = false;
-  let clearing: boolean = false;
-  let barWidth: number = 0;
-  let secondBarWidth: number = 0;
-  let deselectTable: () => void;
-  let deselectFiles: () => void;
+  interface Props {
+    loading?: boolean;
+  }
 
-  $: busy = importing || importingMany || clearing;
-  $: contentSummary = injectedContentSummary ?? hoveredContentSummary ?? fileContentSummary ?? aggregateContentSummary;
-  $: showImportButton = hoveredContentSummary !== null && !contentSummary?.aggregate;
-  $: coreVersion = lcpData.find(lcp => lcp.id === "core")?.currentVersion;
+  let { loading = $bindable(true) }: Props = $props();
+
+  let lcpData = $state<LCPData[]>([]);
+  let contentPacks = $state<IContentPack[]>([]);
+  let fileContentSummary = $state<ContentSummary | null>(null);
+  let hoveredContentSummary = $state<ContentSummary | null>(null);
+  let aggregateContentSummary = $state<ContentSummary | null>(null);
+  let importingLcp = $state<IContentPack | null>(null);
+  let importing = $state(false);
+  let importingMany = $state(false);
+  let clearing = $state(false);
+  let barWidth = $state(0);
+  let secondBarWidth = $state(0);
+  let injectedContentSummary = $state<ContentSummary | null>(null); // injectedContentSummary is only here to facilitate tours
+
+  let busy = $derived(importing || importingMany || clearing);
+  let contentSummary: ContentSummary | null = $derived(
+    injectedContentSummary ?? hoveredContentSummary ?? fileContentSummary ?? aggregateContentSummary
+  );
+  let showImportButton = $derived(hoveredContentSummary !== null && !contentSummary?.aggregate);
+  let coreVersion = $derived(lcpData.find(lcp => lcp.id === "core")?.currentVersion);
+
+  export function injectContentPack(content: ContentSummary | null) {
+    injectedContentSummary = contentSummary;
+  }
 
   async function init() {
     loading = true;
@@ -42,33 +48,31 @@
     lcpData = mergeOfficialDataAndLcpIndex(officialData, index);
     loading = false;
   }
-  init();
 
-  function lcpLoaded(
-    event: CustomEvent<{
-      contentPacks: IContentPack[];
-      contentSummary: ContentSummary;
-    }>
-  ) {
-    if (!event.detail) {
-      contentPacks = [];
+  const initPromise = init(); // Keep the promise to facilitate tours
+  export function ready() {
+    return initPromise;
+  }
+
+  function lcpLoaded(packs: IContentPack[] | null, summary: ContentSummary | null) {
+    if (!packs || !summary) {
+      packs = [];
       fileContentSummary = null;
       return;
     }
-    fileContentSummary = event.detail.contentSummary;
-    contentPacks = event.detail.contentPacks;
-    deselectTable();
+
+    fileContentSummary = summary;
+    contentPacks = packs;
   }
 
-  function lcpHovered(event: CustomEvent<ContentSummary>) {
-    hoveredContentSummary = event.detail;
+  function lcpHovered(summary: ContentSummary | null) {
+    hoveredContentSummary = summary;
   }
 
-  function updateAggregateSummary(event: CustomEvent<ContentSummary>) {
-    aggregateContentSummary = event.detail;
+  function updateAggregateSummary(summary: ContentSummary | null) {
+    aggregateContentSummary = summary;
     contentPacks = [];
     fileContentSummary = null;
-    deselectFiles();
   }
 
   async function updateLcpIndex(manifest: IContentPackManifest) {
@@ -91,7 +95,7 @@
 
   function _canImportLcp(): boolean {
     if (!game.user?.isGM) {
-      ui.notifications!.warn(`Only GM can modify the Compendiums.`);
+      ui.notifications!.warn(`Only a user with the Gamemaster role can import LCPs.`);
       return false;
     }
     if (!coreVersion) {
@@ -166,7 +170,6 @@
     const officialData = await getOfficialData();
     const index = new LCPIndex(game.settings.get(game.system.id, LANCER.setting_lcps).index);
     lcpData = mergeOfficialDataAndLcpIndex(officialData, index);
-    deselectFiles();
     clearing = false;
   }
 </script>
@@ -178,24 +181,22 @@
     <div class="flexrow lcp-manager__main-content" style="flex: 1 1">
       <LCPTable
         {lcpData}
-        bind:disabled={busy}
-        bind:deselect={deselectTable}
-        on:lcpHovered={lcpHovered}
-        on:aggregateSummary={updateAggregateSummary}
-        on:installManyLcps={event => importManyLcps(event.detail)}
-        on:clearCompendiums={clearCompendiums}
+        disabled={busy}
+        onRowHovered={lcpHovered}
+        onAggregateSummary={updateAggregateSummary}
+        onImportMany={importManyLcps}
+        onClearCompendiums={clearCompendiums}
       />
       <div class="lcp-manager__detail-column">
-        <LcpSelector
-          bind:disabled={busy}
-          bind:deselect={deselectFiles}
-          on:lcpLoaded={lcpLoaded}
+        <LCPSelector
+          disabled={busy}
+          onImport={lcpLoaded}
         />
-        <LcpDetails
-          bind:disabled={busy}
-          {contentSummary}
-          {showImportButton}
-          on:importLcp={() => importManyLcps()}
+        <LCPDetails
+          disabled={busy}
+          showImportButton={showImportButton}
+          contentSummary={contentSummary}
+          onImportMany={importManyLcps}
         />
       </div>
     </div>
