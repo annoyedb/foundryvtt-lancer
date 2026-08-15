@@ -103,7 +103,7 @@
     Available and Installed Content
   </div>
   <!-- LCP table. Official content is listed first, manually installed content at the end. -->
-  <div id="lcp-table">
+  <div class="lcp-table__table">
     <div class="lcp-table__rows">
       <div class="row header">
         <div>
@@ -199,6 +199,7 @@
 
     <button
       type="button"
+      id="clear-button"
       class="lancer-button lcp-clear-all"
       title="Clear Compendium Data"
       tabindex="-1"
@@ -214,31 +215,44 @@
 <style lang="scss">
   @layer lancer {
     @layer applications {
-      .lcp-table {
-        max-height: 100%;
-        height: 100%;
-        & * {
-          flex-grow: 0;
-        }
-      }
       button {
-        margin: 10px;
-        width: auto;
+        border-radius: 2px;
       }
 
-      #lcp-table {
-        display: grid;
-        max-height: calc(100% - 8em);
+      .lcp-table {
         flex-grow: 1;
-        overflow-y: scroll;
+        flex-shrink: 1;
+        flex-basis: auto;
+      }
+
+      .lcp-table__table {
+        flex-grow: 1;
+        flex-shrink: 1;
+        flex-basis: 0;
+
+        overflow: hidden scroll;
+        min-height: 10rem;
+        min-width: 20rem;
+
+        input.content-checkbox:disabled {
+          --checkbox-disabled-color: var(--darken-5);
+          --checkbox-background-color: var(--darken-5) !important; // Sorry, I don't want to touch the global styles
+          --checkbox-checked-color: var(--darken-5) !important; // Sorry, I don't want to touch the global styles
+          background-color: transparent;
+          cursor: default;
+        }
+
         .lcp-table__rows {
-          height: fit-content;
+          display: grid;
+          grid-template-columns: 2em minmax(0, 2fr) minmax(0, 1fr) 1.5em minmax(0, 1fr) 1em minmax(0, 1fr);
         }
 
         .row {
           display: grid;
           position: relative;
-          grid-template-columns: 2.5em 2fr 2fr 2.5em 1fr 3em 1fr;
+          grid-column: 1 / -1;
+          grid-template-columns: subgrid;
+          align-items: center;
           cursor: pointer;
 
           &:not(.header):nth-of-type(odd) {
@@ -247,35 +261,35 @@
           &:not(.header):hover {
             background-color: var(--lighten-1);
           }
+
+          & > * {
+            padding: 5px 10px;
+          }
+
+          & > *:first-child {
+            padding: 5px;
+          }
         }
 
         .header {
+          min-width: fit-content;
+          overflow-wrap: break-word;
+
           font-weight: bold;
           border-bottom: 2px solid var(--secondary-color);
-          align-content: center;
-        }
-
-        // .content-checkbox {
-        // }
-
-        .content-label {
-          margin: 5px 10px;
-        }
-
-        .curr-version {
-          margin: 5px 10px;
-        }
-
-        .avail-version {
-          margin: 5px 10px;
+          background-color: var(--darken-2);
         }
 
         .content-icon {
-          margin: 5px 10px;
+          justify-self: center;
         }
       }
+
       .lcp-table__buttons {
         flex-grow: 0;
+        flex-shrink: 0;
+        flex-basis: auto;
+
         .lcp-bulk-import,
         .lcp-clear-all {
           width: 100%;

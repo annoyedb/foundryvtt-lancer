@@ -122,7 +122,7 @@
 </script>
 
 <div>
-  <div class="lancer-header lancer-primary major">Import From File</div>
+  <div class="lancer-header lancer-primary major clipped-top">Import From File</div>
   <div class="file-select-container">
     <label class="lancer-file-input">
       <input
@@ -161,9 +161,33 @@
         flex-direction: row;
         justify-content: center;
         align-items: center;
+        min-height: 3rem;
+
+        button,
+        input,
+        .lancer-file-input,
+        .lancer-file-input-display,
+        .lancer-file-input__button {
+          border-radius: 2px;
+          margin-left: unset;
+        }
+
+        .lancer-file-input__button {
+          flex-grow: 0;
+          flex-shrink: 0;
+          flex-basis: auto;
+
+          min-width: fit-content;
+        }
+
+        .lancer-file-input__filenames {
+          flex-grow: 1;
+          flex-shrink: 1;
+          flex-basis: 0;
+        }
       }
+
       .deselect-file {
-        margin: 0.25rem;
         flex: 1 1;
         height: 2.5rem;
       }

@@ -28,7 +28,7 @@
   let clearing = $state(false);
   let barWidth = $state(0);
   let secondBarWidth = $state(0);
-  let injectedContentSummary = $state<ContentSummary | null>(null); // injectedContentSummary is only here to facilitate tours
+  let injectedContentSummary = $state<ContentSummary | null>(null); // Is only here to facilitate tours
 
   let busy = $derived(importing || importingMany || clearing);
   let contentSummary: ContentSummary | null = $derived(
@@ -38,6 +38,7 @@
   let coreVersion = $derived(lcpData.find(lcp => lcp.id === "core")?.currentVersion);
 
   export function injectContentPack(content: ContentSummary | null) {
+    // Is only here to facilitate tours
     injectedContentSummary = contentSummary;
   }
 
@@ -49,8 +50,9 @@
     loading = false;
   }
 
-  const initPromise = init(); // Keep the promise to facilitate tours
+  const initPromise = init();
   export function ready() {
+    // Is only here to facilitate tours
     return initPromise;
   }
 
@@ -133,7 +135,7 @@
     if (cp.manifest.name === "Lancer Core Book Data" && cp.manifest.author === "Massif Press") {
       await game.settings.set(game.system.id, LANCER.setting_core_data, cp.manifest.version);
     }
-    updateLcpIndex(manifest);
+    await updateLcpIndex(manifest);
   }
 
   async function importManyLcps(lcps: IContentPack[] | null = null) {
@@ -179,19 +181,21 @@
     <Spinner><span class="monospace">Loading data, please wait…</span></Spinner>
   {:else}
     <div class="flexrow lcp-manager__main-content" style="flex: 1 1">
-      <LCPTable
-        {lcpData}
-        disabled={busy}
-        onRowHovered={lcpHovered}
-        onAggregateSummary={updateAggregateSummary}
-        onImportMany={importManyLcps}
-        onClearCompendiums={clearCompendiums}
-      />
-      <div class="lcp-manager__detail-column">
+      <div class="lcp-manager__import-column">
+        <LCPTable
+          {lcpData}
+          disabled={busy}
+          onRowHovered={lcpHovered}
+          onAggregateSummary={updateAggregateSummary}
+          onImportMany={importManyLcps}
+          onClearCompendiums={clearCompendiums}
+        />
         <LCPSelector
           disabled={busy}
           onImport={lcpLoaded}
         />
+      </div>
+      <div class="lcp-manager__detail-column">
         <LCPDetails
           disabled={busy}
           showImportButton={showImportButton}
@@ -230,7 +234,18 @@
 <style lang="scss">
   @layer lancer {
     @layer applications {
+      @container lcp-manager (max-width: 40rem) {
+        .lcp-manager__import-column {
+          max-height: 60%;
+        }
+
+        .lcp-manager__detail-column {
+          max-height: 40%;
+        }
+      }
+
       .lcp-manager {
+        container: lcp-manager / inline-size;
         position: relative;
         height: 100%;
         display: flex;
@@ -239,12 +254,36 @@
         .lcp-manager__main-content {
           align-items: normal;
           max-height: calc(100% - 50px);
-        }
 
-        .lcp-manager__detail-column {
-          padding-left: 10px;
-          padding-right: 10px;
-          max-height: 100%;
+          .lcp-manager__import-column,
+          .lcp-manager__detail-column {
+            height: 100%;
+            overflow: hidden;
+            overflow-y: auto;
+            min-height: 0;
+          }
+
+          .lcp-manager__import-column {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            flex-shrink: 0;
+            flex-basis: 15rem;
+
+            height: 100%;
+            min-width: 25rem;
+            padding-left: 5px;
+            padding-right: 5px;
+          }
+
+          .lcp-manager__detail-column {
+            flex-grow: 1;
+            flex-shrink: 1;
+            flex-basis: 15rem;
+
+            padding-left: 5px;
+            padding-right: 5px;
+          }
         }
 
         .lcp-manager__progress-area {
@@ -254,6 +293,7 @@
           bottom: 0;
           background-color: var(--background-color);
         }
+
         .lcp-manager__progress {
           width: 100%;
           height: 100%;

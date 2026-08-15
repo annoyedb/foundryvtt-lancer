@@ -90,12 +90,12 @@ export class LCPManager extends HandlebarsApplicationMixin(ApplicationV2) {
     window: {
       title: "LANCER Compendium Manager",
       icon: "cci cci-content-manager i--3",
-      resizable: false,
+      resizable: true,
     },
     classes: ["lancer", "lcp-manager"],
     position: {
-      width: 1200,
-      height: 800,
+      width: 1000,
+      height: 600,
     },
   };
 
