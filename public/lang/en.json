@@ -458,8 +458,12 @@
     },
     "deployable-sheet": {
       "tabs": {
-        "status": "<STATUS>",
-        "config": "<CONFIG>"
+        "status": {
+          "label": "<STATUS>"
+        },
+        "config": {
+          "label": "<CONFIG>"
+        }
       },
       "header": {
         "owner": "Owner"
@@ -473,9 +477,15 @@
     },
     "mech-sheet": {
       "tabs": {
-        "stats": "<MECH//STATS>",
-        "loadout": "<MECH//LOADOUT>",
-        "talents": "<PILOT//TALENTS>"
+        "stats": {
+          "label": "<MECH//STATS>"
+        },
+        "loadout": {
+          "label": "<MECH//LOADOUT>"
+        },
+        "talents": {
+          "label": "<PILOT//TALENTS>"
+        }
       },
       "inactive-warning": {
         "label": "Warning: Inactive Mech - Pilot bonuses not tracked"
@@ -612,12 +622,24 @@
     },
     "pilot-sheet": {
       "tabs": {
-        "cloud": "<RM-4://SYNC>",
-        "dossier": "<PILOT//DOSSIER>",
-        "narrative": "<PILOT//NARRATIVE>",
-        "tactical": "<PILOT//TACTICAL>",
-        "loadout": "<EQUIP//LOADOUT>",
-        "mech": "<MECH//ACTIVE>"
+        "cloud": {
+          "label": "<RM-4://SYNC>"
+        },
+        "dossier": {
+          "label": "<PILOT//DOSSIER>"
+        },
+        "narrative": {
+          "label": "<PILOT//NARRATIVE>"
+        },
+        "tactical": {
+          "label": "<PILOT//TACTICAL>"
+        },
+        "loadout": {
+          "label": "<EQUIP//LOADOUT>"
+        },
+        "mech": {
+          "label": "<MECH//ACTIVE>"
+        }
       },
       "cloud-header": {
         "label": "RM-4://(OMNINET UPLINK ID)",
@@ -629,10 +651,6 @@
         "last-sync": {
           "label": "Last synced: {timestamp}"
         }
-      },
-      "cloud-upload": {
-        "label": "Upload",
-        "description": "FEATURE IN PROGRESS"
       },
       "json-import": {
         "label": "File Import",
