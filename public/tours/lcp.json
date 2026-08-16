@@ -21,7 +21,7 @@
     },
     {
       "id": "lcpTable",
-      "selector": ".lcp-manager .lcp-table #lcp-table",
+      "selector": ".lcp-manager .lcp-table .lcp-table__table",
       "title": "lancer.tour.lcp.lcpTable.title",
       "content": "lancer.tour.lcp.lcpTable.content",
       "inApp": true
