@@ -851,6 +851,73 @@
         "label": "{total} / {max} Remaining"
       }
     },
+    "lcp-manager": {
+      "header": {
+        "no-lcp-selected": {
+          "label": "No LCP Selected"
+        },
+        "import-from-file": {
+          "label": "Import From File"
+        },
+        "available-content": {
+          "label": "Available Content"
+        },
+        "selected-official": {
+          "label": "Selected Official Sources"
+        }
+      },
+      "warning": {
+        "privileges": "Only a user with the Gamemaster role can import LCPs.",
+        "core-version": "Please update the Core data before importing LCPs."
+      },
+      "error": {
+        "select": "You must select an LCP file before importing.",
+        "lcp-load-failed": "Failed to load LCP"
+      },
+      "clear-compendium": {
+        "title": "Clear Compendiums",
+        "content": {
+          "0": "Are you sure you want to delete all actors and items from the Lancer compendiums?",
+          "1": "This action cannot be undone!"
+        }
+      },
+      "loading": {
+        "label": "Loading data, please wait…"
+      },
+      "import-lcp": {
+        "label": "Import LCP"
+      },
+      "clear": {
+        "label": "Clear"
+      },
+      "browse": {
+        "label": "Browse",
+        "hint": "Choose file..."
+      },
+      "contents": {
+        "label": "Contents"
+      },
+      "table": {
+        "title": {
+          "label": "Title"
+        },
+        "author": {
+          "label": "Author"
+        },
+        "current": {
+          "label": "Current"
+        },
+        "available": {
+          "label": "Available"
+        }
+      },
+      "import-selected": {
+        "label": "Import/Update Selected"
+      },
+      "clear-compendium-data": {
+        "label": "Clear Compendium Data"
+      }
+    },
     "floatingDamageNumbers": {
       "name": "Floating Damage Numbers",
       "hint": "Enable floating damage numbers for changes to stats, including applying damage rolls. This setting is separate for each client."

@@ -74,7 +74,7 @@
     if (filesData.length === 1) {
       const fd = filesData[0];
       if (!fd.data) {
-        ui.notifications.error(`Failed to load LCP ${fd.name}`);
+        ui.notifications.error(`${game.i18n.localize("lancer.lcp-manager.error.lcp-load-failed")} ${fd.name}`);
         return;
       }
       try {
@@ -82,7 +82,10 @@
         onImport([fd.cp], generateLCPSummary(fd.cp));
         return;
       } catch (err: any) {
-        ui.notifications.error(`Could not load ${fd.name}: ${err.message || err}`, { permanent: true });
+        ui.notifications.error(
+          `${game.i18n.localize("lancer.lcp-manager.error.lcp-load-failed")} ${fd.name}: ${err.message || err}`,
+          { permanent: true }
+        );
         return;
       }
     }
@@ -98,7 +101,7 @@
     await Promise.all(
       filesData.map(async fd => {
         if (!fd.data) {
-          ui.notifications.error(`Failed to load LCP ${fd.name}`);
+          ui.notifications.error(`${game.i18n.localize("lancer.lcp-manager.error.lcp-load-failed")} '${fd.name}'`);
           return;
         }
 
@@ -109,7 +112,10 @@
             : `<em>${fd.cp.manifest.author}</em>`;
           aggregateManifest.description += `<b>${fd.cp.manifest.name}</b> v${fd.cp.manifest.version} by ${author}<br />`;
         } catch (err: any) {
-          ui.notifications.error(`Could not load ${fd.name}: ${err.message || err}`, { permanent: true });
+          ui.notifications.error(
+            `${game.i18n.localize("lancer.lcp-manager.error.lcp-load-failed")} ${fd.name}: ${err.message || err}`,
+            { permanent: true }
+          );
         }
       })
     );
@@ -122,14 +128,16 @@
 </script>
 
 <div>
-  <div class="lancer-header lancer-primary major clipped-top">Import From File</div>
+  <div class="lancer-header lancer-primary major clipped-top">
+    {game.i18n.localize("lancer.lcp-manager.header.import-from-file.label")}
+  </div>
   <div class="file-select-container">
     <label class="lancer-file-input">
       <input
         id="lcp-file"
         type="file"
         multiple
-        aria-label="Select LCP file"
+        aria-label={game.i18n.localize("lancer.lcp-manager.browse.label")}
         name="lcp-up"
         class="lcp-up"
         accept=".lcp"
@@ -137,10 +145,11 @@
         bind:files={selectedFiles}
         onchange={filesSelected}
       >
-
       <span class="lancer-file-input-display">
-        <div class="lancer-file-input__button">Browse</div>
-        <span class="lancer-file-input__filenames">{filenames || "Choose file..."}</span>
+        <div class="lancer-file-input__button">{game.i18n.localize("lancer.lcp-manager.browse.label")}</div>
+        <span class="lancer-file-input__filenames">{
+          filenames || game.i18n.localize("lancer.lcp-manager.browse.hint")
+        }</span>
       </span>
     </label>
     <button
@@ -148,7 +157,7 @@
       onclick={deselect}
       {disabled}
     >
-      <i class="fas fa-broom"></i> Unselect File
+      <i class="fas fa-broom"></i> {game.i18n.localize("lancer.lcp-manager.clear.label")}
     </button>
   </div>
 </div>

@@ -19,7 +19,7 @@
   let title = $derived(
     contentSummary
       ? `${contentSummary.name}${contentSummary.version ? ` v${contentSummary.version}` : ""}`
-      : "No LCP Selected"
+      : game.i18n.localize("lancer.lcp-manager.header.no-lcp-selected.label")
   );
 
   let imageExpanded = $state(false);
@@ -36,68 +36,90 @@
 {#snippet lcpDescription(contentSummary: ContentSummary)}
   <div class="lcp-description minor clipped">
     <div class="">
-      <span>Contents:</span>
+      <span>{game.i18n.localize("lancer.lcp-manager.contents.label")}:</span>
       <ul>
         {#if contentSummary.skills}
           <li>
-            <span class="lcp-manifest-badge">{contentSummary.skills}</span> pilot skills
+            <span class="lcp-manifest-badge">{contentSummary.skills}</span> {
+              game.i18n.localize("TYPES.Item.skill.plural").toLowerCase()
+            }
           </li>
         {/if}
         {#if contentSummary.talents}
           <li>
-            <span class="lcp-manifest-badge">{contentSummary.talents}</span> talents
+            <span class="lcp-manifest-badge">{contentSummary.talents}</span> {
+              game.i18n.localize("TYPES.Item.talent.plural").toLowerCase()
+            }
           </li>
         {/if}
         {#if contentSummary.bonds}
           <li>
-            <span class="lcp-manifest-badge">{contentSummary.bonds}</span> bonds
+            <span class="lcp-manifest-badge">{contentSummary.bonds}</span> {
+              game.i18n.localize("TYPES.Item.bond.plural").toLowerCase()
+            }
           </li>
         {/if}
         {#if contentSummary.reserves}
           <li>
-            <span class="lcp-manifest-badge">{contentSummary.reserves}</span> reserves
+            <span class="lcp-manifest-badge">{contentSummary.reserves}</span> {
+              game.i18n.localize("TYPES.Item.reserve.plural").toLowerCase()
+            }
           </li>
         {/if}
         {#if contentSummary.gear}
           <li>
-            <span class="lcp-manifest-badge">{contentSummary.gear}</span>
-            pilot gear
+            <span class="lcp-manifest-badge">{contentSummary.gear}</span> {
+              game.i18n.localize("TYPES.Item.pilot_gear.plural").toLowerCase()
+            }
           </li>
         {/if}
         {#if contentSummary.frames}
           <li>
-            <span class="lcp-manifest-badge">{contentSummary.frames}</span> frames
+            <span class="lcp-manifest-badge">{contentSummary.frames}</span> {
+              game.i18n.localize("TYPES.Item.frame.plural").toLowerCase()
+            }
           </li>
         {/if}
         {#if contentSummary.systems}
           <li>
-            <span class="lcp-manifest-badge">{contentSummary.systems}</span> mech systems
+            <span class="lcp-manifest-badge">{contentSummary.systems}</span> {
+              game.i18n.localize("TYPES.Item.mech_system.plural").toLowerCase()
+            }
           </li>
         {/if}
         {#if contentSummary.weapons}
           <li>
-            <span class="lcp-manifest-badge">{contentSummary.weapons}</span> mech weapons
+            <span class="lcp-manifest-badge">{contentSummary.weapons}</span> {
+              game.i18n.localize("TYPES.Item.mech_weapon.plural").toLowerCase()
+            }
           </li>
         {/if}
         {#if contentSummary.mods}
           <li>
-            <span class="lcp-manifest-badge">{contentSummary.mods}</span>
-            weapon mods
+            <span class="lcp-manifest-badge">{contentSummary.mods}</span> {
+              game.i18n.localize("TYPES.Item.weapon_mod.plural").toLowerCase()
+            }
           </li>
         {/if}
         {#if contentSummary.npc_classes}
           <li>
-            <span class="lcp-manifest-badge">{contentSummary.npc_classes}</span> NPC classes
+            <span class="lcp-manifest-badge">{contentSummary.npc_classes}</span> {
+              game.i18n.localize("TYPES.Item.npc_class.plural").toLowerCase()
+            }
           </li>
         {/if}
         {#if contentSummary.npc_templates}
           <li>
-            <span class="lcp-manifest-badge">{contentSummary.npc_templates}</span> NPC templates
+            <span class="lcp-manifest-badge">{contentSummary.npc_templates}</span> {
+              game.i18n.localize("TYPES.Item.npc_template.plural").toLowerCase()
+            }
           </li>
         {/if}
         {#if contentSummary.npc_features}
           <li>
-            <span class="lcp-manifest-badge">{contentSummary.npc_features}</span> NPC features
+            <span class="lcp-manifest-badge">{contentSummary.npc_features}</span> {
+              game.i18n.localize("TYPES.Item.npc_feature.plural").toLowerCase()
+            }
           </li>
         {/if}
       </ul>
@@ -164,13 +186,13 @@
             transition:fade|global
             type="button"
             class="lcp-import"
-            title="Import LCP"
+            title={game.i18n.localize("lancer.lcp-manager.import-lcp.label")}
             tabindex="-1"
             {disabled}
             onclick={() => onImportMany(null)}
           >
             <i class="cci cci-content-manager i--4"></i>
-            Import LCP
+            {game.i18n.localize("lancer.lcp-manager.import-lcp.label")}
           </button>
         {/if}
       {/if}

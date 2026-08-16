@@ -97,11 +97,11 @@
 
   function _canImportLcp(): boolean {
     if (!game.user?.isGM) {
-      ui.notifications!.warn(`Only a user with the Gamemaster role can import LCPs.`);
+      ui.notifications!.warn(game.i18n.localize("lancer.lcp-manager.warning.privileges"));
       return false;
     }
     if (!coreVersion) {
-      ui.notifications!.warn(`Please update the Core data before importing LCPs.`);
+      ui.notifications!.warn(game.i18n.localize("lancer.lcp-manager.warning.core-version"));
       return false;
     }
     return true;
@@ -109,7 +109,7 @@
 
   async function importLcp(cp: IContentPack | null = null) {
     if (!cp) {
-      ui.notifications.error(`You must select an LCP file before importing.`);
+      ui.notifications.error(game.i18n.localize("lancer.lcp-manager.error.select"));
       return;
     }
     if (!_canImportLcp()) return;
@@ -117,7 +117,6 @@
     const manifest = cp.manifest;
     if (!cp || !manifest) return;
 
-    const notificationLabel = `Importing ${cp.manifest.name} v${cp.manifest.version}`;
     importing = true;
     barWidth = 0;
     importingLcp = cp;
@@ -160,11 +159,12 @@
     // Confirmation prompt
     const answer = await foundry.applications.api.DialogV2.confirm({
       window: {
-        title: "Clear Compendiums",
+        title: "lancer.lcp-manager.clear-compendium.title",
         icon: "fas fa-triangle-exclamation",
       },
-      content: `<p>Are you sure you want to delete all actors and items from the Lancer compendiums?</p>
-        <p><i class="fas fa-triangle-exclamation i--4"></i> This action cannot be undone!</p>`,
+      content: `
+        <p>${game.i18n.localize("lancer.lcp-manager.clear-compendium.content.0")}</p>\n
+        <p style="text-align: center"><i class=\"fas fa-triangle-exclamation i--4\"></i> ${game.i18n.localize("lancer.lcp-manager.clear-compendium.content.1")}</p>`,
     });
     if (!answer) return;
     clearing = true;
@@ -178,7 +178,7 @@
 
 <div class="lcp-manager">
   {#if loading}
-    <Spinner><span class="monospace">Loading data, please wait…</span></Spinner>
+    <Spinner><span class="monospace">{game.i18n.localize("lancer.lcp-manager.loading.label")}</span></Spinner>
   {:else}
     <div class="flexrow lcp-manager__main-content" style="flex: 1 1">
       <div class="lcp-manager__import-column">
