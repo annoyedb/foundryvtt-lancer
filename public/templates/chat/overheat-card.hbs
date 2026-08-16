@@ -5,7 +5,7 @@
     <div class="flexcol">
       <span>{{decorate-card (upper-case (localize "lancer.chat-card.title.overheating.label"))}}</span>
       <span style="align-self: center;">
-        {{localize "lancer.chat-card.remaining" total=val max=max}}
+        {{upper-case (localize "lancer.chat-card.remaining.label" total=val max=max)}}
       </span>
     </div>
     {{! TODO: reroll button }}

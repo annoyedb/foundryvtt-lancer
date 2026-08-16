@@ -818,14 +818,20 @@
           "tooltip": "This row is bonus damage"
         }
       },
-      "exclamation": {
-        "overkill": "OVERKILL!"
+      "overkill": {
+        "label": "Overkill"
       },
       "overcharge": {
-        "charged": "{target} + :: CHARGED",
-        "uncharged": "{target} + :: UNCHARGED"
+        "charged": {
+          "label": "{target} + :: Charged"
+        },
+        "uncharged": {
+          "label": "{target} + :: Uncharged"
+        }
       },
-      "remaining": "{total} / {max} REMAINING"
+      "remaining": {
+        "label": "{total} / {max} Remaining"
+      }
     },
     "floatingDamageNumbers": {
       "name": "Floating Damage Numbers",

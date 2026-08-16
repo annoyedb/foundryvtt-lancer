@@ -17,11 +17,11 @@
           </span>
           {{#if charge.charged}}
             <span class="card clipped lancer-charge-chip charged">
-              {{localize "lancer.chat-card.overcharge.charged" target=charge.target}}
+              {{upper-case (localize "lancer.chat-card.overcharge.charged.label" target=charge.target)}}
             </span>
           {{else}}
             <span class="card clipped lancer-charge-chip">
-              {{localize "lancer.chat-card.overcharge.uncharged" target=charge.target}}
+              {{upper-case (localize "lancer.chat-card.overcharge.uncharged.label" target=charge.target)}}
             </span>
           {{/if}}
         </div>
