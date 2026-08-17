@@ -74,7 +74,7 @@
     if (filesData.length === 1) {
       const fd = filesData[0];
       if (!fd.data) {
-        ui.notifications.error(`${game.i18n.localize("lancer.lcp-manager.error.lcp-load-failed")} ${fd.name}`);
+        ui.notifications.error(`${game.i18n.localize("lancer.lcpManager.error.lcpLoadFailed.label")} ${fd.name}`);
         return;
       }
       try {
@@ -83,7 +83,7 @@
         return;
       } catch (err: any) {
         ui.notifications.error(
-          `${game.i18n.localize("lancer.lcp-manager.error.lcp-load-failed")} ${fd.name}: ${err.message || err}`,
+          `${game.i18n.localize("lancer.lcpManager.error.lcpLoadFailed.label")} ${fd.name}: ${err.message || err}`,
           { permanent: true }
         );
         return;
@@ -101,7 +101,7 @@
     await Promise.all(
       filesData.map(async fd => {
         if (!fd.data) {
-          ui.notifications.error(`${game.i18n.localize("lancer.lcp-manager.error.lcp-load-failed")} '${fd.name}'`);
+          ui.notifications.error(`${game.i18n.localize("lancer.lcpManager.error.lcpLoadFailed.label")} '${fd.name}'`);
           return;
         }
 
@@ -113,7 +113,7 @@
           aggregateManifest.description += `<b>${fd.cp.manifest.name}</b> v${fd.cp.manifest.version} by ${author}<br />`;
         } catch (err: any) {
           ui.notifications.error(
-            `${game.i18n.localize("lancer.lcp-manager.error.lcp-load-failed")} ${fd.name}: ${err.message || err}`,
+            `${game.i18n.localize("lancer.lcpManager.error.lcpLoadFailed.label")} ${fd.name}: ${err.message || err}`,
             { permanent: true }
           );
         }
@@ -129,7 +129,7 @@
 
 <div>
   <div class="lancer-header lancer-primary major clipped-top">
-    {game.i18n.localize("lancer.lcp-manager.header.import-from-file.label")}
+    {game.i18n.localize("lancer.lcpManager.header.importFromFile.label")}
   </div>
   <div class="file-select-container">
     <label class="lancer-file-input">
@@ -137,7 +137,7 @@
         id="lcp-file"
         type="file"
         multiple
-        aria-label={game.i18n.localize("lancer.lcp-manager.browse.label")}
+        aria-label={game.i18n.localize("lancer.lcpManager.browse.label")}
         name="lcp-up"
         class="lcp-up"
         accept=".lcp"
@@ -146,9 +146,9 @@
         onchange={filesSelected}
       >
       <span class="lancer-file-input-display">
-        <div class="lancer-file-input__button">{game.i18n.localize("lancer.lcp-manager.browse.label")}</div>
+        <div class="lancer-file-input__button">{game.i18n.localize("lancer.lcpManager.browse.label")}</div>
         <span class="lancer-file-input__filenames">{
-          filenames || game.i18n.localize("lancer.lcp-manager.browse.hint")
+          filenames || game.i18n.localize("lancer.lcpManager.browse.hint")
         }</span>
       </span>
     </label>
@@ -157,7 +157,7 @@
       onclick={deselect}
       {disabled}
     >
-      <i class="fas fa-broom"></i> {game.i18n.localize("lancer.lcp-manager.clear.label")}
+      <i class="fas fa-broom"></i> {game.i18n.localize("lancer.lcpManager.clear.label")}
     </button>
   </div>
 </div>

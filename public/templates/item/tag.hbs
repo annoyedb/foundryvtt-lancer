@@ -20,10 +20,10 @@
   <section class="sheet-body">
     {{{textarea-card (upper-case (localize "lancer.common.descriptor.description.label")) "system.description"}}}
     <div class="card">
-      <span class="lancer-header lancer-primary">{{{upper-case (localize "lancer.item-sheet.tag.meta-info.label")}}}</span>
+      <span class="lancer-header lancer-primary">{{{upper-case (localize "lancer.itemSheet.tag.metaInfo.label")}}}</span>
       {{{std-text-input "system.lid" label="LID:"}}} <!-- Don't localize -->
       {{{std-checkbox "system.hidden" label=(concat (upper-case (localize "lancer.common.descriptor.hidden.label")) ":") label_classes="self-left"}}}
-      {{{std-checkbox "system.filterIgnore" label=(concat (upper-case (localize "lancer.item-sheet.tag.filter-ignore.label")) ":") label_classes="self-left"}}}
+      {{{std-checkbox "system.filterIgnore" label=(concat (upper-case (localize "lancer.itemSheet.tag.filterIgnore.label")) ":") label_classes="self-left"}}}
     </div>
   </section>
 </form>

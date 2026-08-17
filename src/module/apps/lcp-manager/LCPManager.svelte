@@ -97,11 +97,11 @@
 
   function _canImportLcp(): boolean {
     if (!game.user?.isGM) {
-      ui.notifications!.warn(game.i18n.localize("lancer.lcp-manager.warning.privileges"));
+      ui.notifications!.warn(game.i18n.localize("lancer.lcpManager.warning.privileges.label"));
       return false;
     }
     if (!coreVersion) {
-      ui.notifications!.warn(game.i18n.localize("lancer.lcp-manager.warning.core-version"));
+      ui.notifications!.warn(game.i18n.localize("lancer.lcpManager.warning.coreVersion.label"));
       return false;
     }
     return true;
@@ -109,7 +109,7 @@
 
   async function importLcp(cp: IContentPack | null = null) {
     if (!cp) {
-      ui.notifications.error(game.i18n.localize("lancer.lcp-manager.error.select"));
+      ui.notifications.error(game.i18n.localize("lancer.lcpManager.error.select.label"));
       return;
     }
     if (!_canImportLcp()) return;
@@ -159,12 +159,12 @@
     // Confirmation prompt
     const answer = await foundry.applications.api.DialogV2.confirm({
       window: {
-        title: "lancer.lcp-manager.clear-compendium.title",
+        title: "lancer.lcpManager.clearCompendium.title",
         icon: "fas fa-triangle-exclamation",
       },
       content: `
-        <p>${game.i18n.localize("lancer.lcp-manager.clear-compendium.content.0")}</p>\n
-        <p style="text-align: center"><i class=\"fas fa-triangle-exclamation i--4\"></i> ${game.i18n.localize("lancer.lcp-manager.clear-compendium.content.1")}</p>`,
+        <p>${game.i18n.localize("lancer.lcpManager.clearCompendium.content.0")}</p>\n
+        <p style="text-align: center"><i class=\"fas fa-triangle-exclamation i--4\"></i> ${game.i18n.localize("lancer.lcpManager.clearCompendium.content.1")}</p>`,
     });
     if (!answer) return;
     clearing = true;
@@ -178,7 +178,7 @@
 
 <div class="lcp-manager">
   {#if loading}
-    <Spinner><span class="monospace">{game.i18n.localize("lancer.lcp-manager.loading.label")}</span></Spinner>
+    <Spinner><span class="monospace">{game.i18n.localize("lancer.lcpManager.loading.label")}</span></Spinner>
   {:else}
     <div class="flexrow lcp-manager__main-content" style="flex: 1 1">
       <div class="lcp-manager__import-column">

@@ -14,7 +14,7 @@
     <div class="header-details monospace">
       {{localize "TYPES.Actor.deployable.label"}}
       {{#if owner}}
-        </br>{{localize "lancer.deployable-sheet.header.owner"}} ::
+        </br>{{localize "lancer.deployableSheet.header.owner"}} ::
         {{system.owner.value.name}}
       {{/if}}
     </div>
@@ -22,9 +22,9 @@
 
   {{! Sheet Tab Navigation }}
   <nav class="lancer-tabs" data-group="primary">
-    <a class="item lancer-tab medium" data-tab="status">{{localize "lancer.deployable-sheet.tabs.status.label"}}</a>
-    <a class="item lancer-tab medium" data-tab="config">{{localize "lancer.deployable-sheet.tabs.config.label"}}</a>
-    <a class="item lancer-tab medium" data-tab="effects">{{localize "lancer.common-sheet.tabs.effects.label"}}</a>
+    <a class="item lancer-tab medium" data-tab="status">{{localize "lancer.deployableSheet.tabs.status.label"}}</a>
+    <a class="item lancer-tab medium" data-tab="config">{{localize "lancer.deployableSheet.tabs.config.label"}}</a>
+    <a class="item lancer-tab medium" data-tab="effects">{{localize "lancer.commonSheet.tabs.effects.label"}}</a>
     <!--<a class="item lancer-tab medium" data-tab="mech">&lt;FRAME//LOADOUT&gt;</a>-->
   </nav>
 
@@ -44,21 +44,21 @@
         {{/if}}
         {{{stat-view-card (upper-case (localize "lancer.common.stat.armor.label")) "mdi mdi-shield-outline" "system.armor"}}}
         {{{stat-view-card (upper-case (localize "lancer.common.stat.evasion.label")) "cci cci-evasion" "system.evasion"}}}
-        {{{stat-view-card (upper-case (localize "lancer.common.stat.e-defense.label")) "cci cci-edef" "system.edef"}}}
+        {{{stat-view-card (upper-case (localize "lancer.common.stat.eDefense.label")) "cci cci-edef" "system.edef"}}}
         {{{stat-view-card (upper-case (localize "lancer.common.stat.speed.label")) "mdi mdi-arrow-right-bold-hexagon-outline" "system.speed"}}}
         {{{stat-view-card (upper-case (localize "lancer.common.stat.save.label")) "cci cci-save" "system.save"}}}
 
         <div class="card clipped full lancer-flow-button-grid">
-          <span class="lancer-header lancer-primary submajor">{{{upper-case (localize "lancer.common-sheet.header.combat-utilities.label")}}}</span>
+          <span class="lancer-header lancer-primary submajor">{{{upper-case (localize "lancer.commonSheet.header.combatUtilities.label")}}}</span>
           <div class="lancer-flow-button-grid">
-            {{{flow-button (upper-case (localize "lancer.common-sheet.buttons.basic-attack.label")) "BasicAttack"}}}
-            {{{flow-button (upper-case (localize "lancer.common-sheet.buttons.damage.label")) "Damage"}}}
+            {{{flow-button (upper-case (localize "lancer.commonSheet.buttons.basicAttack.label")) "BasicAttack"}}}
+            {{{flow-button (upper-case (localize "lancer.commonSheet.buttons.damage.label")) "Damage"}}}
           </div>
         </div>
 
         <div class="card clipped full">
           <div class="lancer-header lancer-primary major">
-            {{upper-case (localize "lancer.deployable-sheet.deployer.label")}}
+            {{upper-case (localize "lancer.deployableSheet.deployer.label")}}
           </div>
           {{{deployer-slot "system.owner.value"}}}
         </div>
@@ -71,7 +71,7 @@
     <div class="tab manage flexcol" data-group="primary" data-tab="config">
       {{! Frame Stats }}
       <div class="card clipped" style="text-align: left">
-        <span class="lancer-header lancer-primary major" style="text-align: center">{{upper-case (localize "lancer.deployable-sheet.base-stats.label")}}</span>
+        <span class="lancer-header lancer-primary major" style="text-align: center">{{upper-case (localize "lancer.deployableSheet.baseStats.label")}}</span>
         <div class="card clipped wraprow quadruple">
           <div class="wraprow quadruple">
             <div class="card clipped stat-container">
@@ -84,7 +84,7 @@
             </div>
             {{{clicker-stat-card (upper-case (localize "lancer.common.stat.armor.label")) "mdi mdi-shield-outline" "system.stats.armor" false}}}
             {{{clicker-stat-card (upper-case (localize "lancer.common.stat.evasion.label")) "cci cci-evasion" "system.stats.evasion" false}}}
-            {{{clicker-stat-card (upper-case (localize "lancer.common.stat.e-defense.label")) "cci cci-edef" "system.stats.edef" false}}}
+            {{{clicker-stat-card (upper-case (localize "lancer.common.stat.eDefense.label")) "cci cci-edef" "system.stats.edef" false}}}
             {{{clicker-stat-card (upper-case (localize "lancer.common.stat.heat.cap.label")) "cci cci-heatcap" "system.stats.heatcap" false}}}
             {{{clicker-stat-card (upper-case (localize "lancer.common.stat.speed.label")) "mdi mdi-arrow-right-bold-hexagon-outline" "system.stats.speed" false}}}
             {{{clicker-stat-card (upper-case (localize "lancer.common.stat.size.label")) "cci cci-hexagon" "system.stats.size" false}}}

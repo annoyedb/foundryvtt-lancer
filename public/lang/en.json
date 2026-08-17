@@ -196,19 +196,19 @@
         "passive": {
           "label": "Passive"
         },
-        "quick-action": {
+        "quickAction": {
           "label": "Quick Action"
         },
-        "quick-tech": {
+        "quickTech": {
           "label": "Quick Tech"
         },
         "invade": {
           "label": "Invade"
         },
-        "full-action": {
+        "fullAction": {
           "label": "Full Action"
         },
-        "full-tech": {
+        "fullTech": {
           "label": "Full Tech"
         },
         "reaction": {
@@ -220,13 +220,13 @@
         "init": {
           "label": "Init"
         },
-        "on-hit": {
+        "onHit": {
           "label": "On Hit"
         },
-        "on-attack": {
+        "onAttack": {
           "label": "On Attack"
         },
-        "on-crit": {
+        "onCrit": {
           "label": "On Crit"
         },
         "protocol": {
@@ -317,7 +317,7 @@
           "short": "STRESS",
           "label": "Stress"
         },
-        "e-defense": {
+        "eDefense": {
           "short": "E.DEF",
           "label": "E-Defense"
         },
@@ -373,7 +373,7 @@
           "short": "GRIT",
           "label": "Grit"
         },
-        "license-level": {
+        "licenseLevel": {
           "short": "LL",
           "label": "License Level"
         },
@@ -403,14 +403,14 @@
         }
       }
     },
-    "common-sheet": {
+    "commonSheet": {
       "tabs": {
         "effects": {
           "label": "<EFFECTS//ACTIVE>"
         }
       },
       "header": {
-        "combat-utilities": {
+        "combatUtilities": {
           "label": "Combat Utilities"
         },
         "notes": {
@@ -421,13 +421,13 @@
         }
       },
       "buttons": {
-        "basic-attack": {
+        "basicAttack": {
           "label": "Melee/Ranged"
         },
         "damage": {
           "label": "Damage"
         },
-        "full-repair": {
+        "fullRepair": {
           "label": "Full Repair"
         },
         "overheat": {
@@ -449,14 +449,14 @@
       "synergies": {
         "label": "Synergies"
       },
-      "integrated-gear": {
+      "integratedGear": {
         "label": "Integrated Gear"
       },
-      "integrated-items": {
+      "integratedItems": {
         "label": "Integrated Items"
       }
     },
-    "deployable-sheet": {
+    "deployableSheet": {
       "tabs": {
         "status": {
           "label": "<STATUS>"
@@ -471,11 +471,11 @@
       "deployer": {
         "label": "Deployer"
       },
-      "base-stats": {
+      "baseStats": {
         "label": "Base Stats"
       }
     },
-    "mech-sheet": {
+    "mechSheet": {
       "tabs": {
         "stats": {
           "label": "<MECH//STATS>"
@@ -487,24 +487,24 @@
           "label": "<PILOT//TALENTS>"
         }
       },
-      "inactive-warning": {
+      "inactiveWarning": {
         "label": "Warning: Inactive Mech - Pilot bonuses not tracked"
       },
-      "available-weapon-mounts": {
+      "availableWeaponMounts": {
         "label": "Available Weapon Mounts"
       },
-      "mounted-weapons": {
+      "mountedWeapons": {
         "label": "Mounted Weapons",
         "aux": {
           "label": "Aux"
         },
-        "aux-aux": {
+        "auxAux": {
           "label": "Aux/Aux"
         },
         "main": {
           "label": "Main"
         },
-        "main-aux": {
+        "mainAux": {
           "label": "Main/Aux"
         },
         "flex": {
@@ -516,7 +516,7 @@
         "superheavy": {
           "label": "Superheavy"
         },
-        "superheavy-bracing": {
+        "superheavyBracing": {
           "label": "Superheavy Bracing"
         },
         "integrated": {
@@ -526,43 +526,43 @@
           "label": "Unknown"
         }
       },
-      "mounted-systems": {
+      "mountedSystems": {
         "label": "Mounted Systems"
       },
-      "mounted-effect": {
+      "mountedEffect": {
         "label": "Mounted Effect"
       },
-      "weapon-profiles": {
+      "weaponProfiles": {
         "label": "Weapon Profiles",
-        "base-actions": {
+        "baseActions": {
           "label": "Base Actions"
         },
-        "profile-actions": {
+        "profileActions": {
           "label": "Profile Actions"
         }
       },
-      "weapon-mod": {
+      "weaponMod": {
         "label": "Weapon Mod",
         "none": {
           "label": "No Weapon Mod Installed"
         },
-        "added-range": {
+        "addedRange": {
           "label": "Added Range"
         },
-        "added-damage": {
+        "addedDamage": {
           "label": "Added Damage"
         },
-        "added-tags": {
+        "addedTags": {
           "label": "Added Tags"
         },
-        "added-actions": {
+        "addedActions": {
           "label": "Added Actions"
         },
-        "added-deployables": {
+        "addedDeployables": {
           "label": "Added Deployables"
         }
       },
-      "core-system": {
+      "coreSystem": {
         "label": "Core System"
       },
       "core": {
@@ -587,7 +587,7 @@
         "button": "View Inventory"
       }
     },
-    "npc-sheet": {
+    "npcSheet": {
       "class": {
         "label": "Class",
         "none": "No Class Found"
@@ -607,10 +607,10 @@
           "label": "Feature Type"
         }
       },
-      "source-name": {
+      "sourceName": {
         "label": "Source Name"
       },
-      "active-effects": {
+      "activeEffects": {
         "label": "Active Effects"
       },
       "recharge": {
@@ -620,7 +620,7 @@
         "label": "Tactics"
       }
     },
-    "pilot-sheet": {
+    "pilotSheet": {
       "tabs": {
         "cloud": {
           "label": "<RM-4://SYNC>"
@@ -641,18 +641,18 @@
           "label": "<MECH//ACTIVE>"
         }
       },
-      "cloud-header": {
+      "cloudHeader": {
         "label": "RM-4://(OMNINET UPLINK ID)",
         "placeholder": "Paste Pilot Share Code"
       },
-      "cloud-download": {
+      "cloudDownload": {
         "label": "Download",
         "description": "Use this section to import a Comp/Con share code.",
-        "last-sync": {
+        "lastSync": {
           "label": "Last synced: {timestamp}"
         }
       },
-      "json-import": {
+      "jsonImport": {
         "label": "File Import",
         "description": "Use this section to import a JSON file exported from Comp/Con.",
         "placeholder": "Select JSON file…",
@@ -675,26 +675,26 @@
         }
       },
       "buttons": {
-        "basic-attack": {
+        "basicAttack": {
           "label": "Basic Attack"
         }
       },
       "narrative": {
         "bond": {
           "label": "Bond of {bondName}",
-          "veteran-power": {
+          "veteranPower": {
             "label": "Boon XP from another PC"
           },
-          "tally-xp": {
+          "tallyXp": {
             "label": "Tally XP"
           },
           "refresh": {
             "label": "Refresh Powers"
           },
-          "major-ideals": {
+          "majorIdeals": {
             "label": "Major Ideals"
           },
-          "minor-ideals": {
+          "minorIdeals": {
             "label": "Minor Ideals"
           },
           "questions": {
@@ -729,7 +729,7 @@
         }
       }
     },
-    "item-sheet": {
+    "itemSheet": {
       "organization": {
         "purpose": {
           "label": "Purpose"
@@ -742,42 +742,44 @@
         }
       },
       "reserve": {
-        "resource-label": {
+        "resourceLabel": {
           "label": "Resource Label"
         }
       },
       "tag": {
-        "meta-info": {
+        "metaInfo": {
           "label": "Tag Meta Info"
         },
-        "filter-ignore": "Filter Ignore"
+        "filterIgnore": {
+          "label": "Filter Ignore"
+        }
       },
       "talent": {
-        "terse-description": {
+        "terseDescription": {
           "label": "Terse Description"
         }
       },
-      "weapon-mod": {
-        "allowed-sizes": {
+      "weaponMod": {
+        "allowedSizes": {
           "label": "Allowed Sizes"
         },
-        "allowed-types": {
+        "allowedTypes": {
           "label": "Allowed Types"
         }
       }
     },
-    "chat-card": {
+    "chatCard": {
       "title": {
         "reliable": {
           "label": "Reliable"
         },
-        "critical-damage": {
+        "criticalDamage": {
           "label": "Critical Damage"
         },
-        "self-heat": {
+        "selfHeat": {
           "label": "Self Heat"
         },
-        "defense-hit": {
+        "defenseHit": {
           "label": "Attack VS {defense}"
         },
         "recharging": {
@@ -786,7 +788,7 @@
         "recharged": {
           "label": "Recharged"
         },
-        "structure-damage": {
+        "structureDamage": {
           "label": "Structure Damage"
         },
         "overheating": {
@@ -827,7 +829,7 @@
         "miss": {
           "label": "Miss"
         },
-        "roll-damage": {
+        "rollDamage": {
           "label": "Roll Damage"
         }
       },
@@ -851,30 +853,38 @@
         "label": "{total} / {max} Remaining"
       }
     },
-    "lcp-manager": {
+    "lcpManager": {
       "header": {
-        "no-lcp-selected": {
+        "noLcpSelected": {
           "label": "No LCP Selected"
         },
-        "import-from-file": {
+        "importFromFile": {
           "label": "Import From File"
         },
-        "available-content": {
+        "availableContent": {
           "label": "Available Content"
         },
-        "selected-official": {
+        "selectedOfficial": {
           "label": "Selected Official Sources"
         }
       },
       "warning": {
-        "privileges": "Only a user with the Gamemaster role can import LCPs.",
-        "core-version": "Please update the Core data before importing LCPs."
+        "privileges": {
+          "label": "Only a user with the Gamemaster role can import LCPs."
+        },
+        "coreVersion": {
+          "label": "Please update the Core data before importing LCPs."
+        }
       },
       "error": {
-        "select": "You must select an LCP file before importing.",
-        "lcp-load-failed": "Failed to load LCP"
+        "select": {
+          "label": "You must select an LCP file before importing."
+        },
+        "lcpLoadFailed": {
+          "label": "Failed to load LCP"
+        }
       },
-      "clear-compendium": {
+      "clearCompendium": {
         "title": "Clear Compendiums",
         "content": {
           "0": "Are you sure you want to delete all actors and items from the Lancer compendiums?",
@@ -884,7 +894,7 @@
       "loading": {
         "label": "Loading data, please wait…"
       },
-      "import-lcp": {
+      "importLcp": {
         "label": "Import LCP"
       },
       "clear": {
@@ -911,10 +921,10 @@
           "label": "Available"
         }
       },
-      "import-selected": {
+      "importSelected": {
         "label": "Import/Update Selected"
       },
-      "clear-compendium-data": {
+      "clearCompendiumData": {
         "label": "Clear Compendium Data"
       }
     },

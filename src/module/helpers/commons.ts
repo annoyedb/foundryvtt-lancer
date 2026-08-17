@@ -238,7 +238,7 @@ export function effectBox(title: string, text: string, options?: { add_classes?:
 export function spDisplay(sp: number | string) {
   const sp_num = parseInt(sp.toString());
   if (isNaN(sp_num)) return "";
-  const i18nTitle = game.i18n.localize("lancer.mech-sheet.system.points.label").toUpperCase();
+  const i18nTitle = game.i18n.localize("lancer.mechSheet.system.points.label").toUpperCase();
   let icons = "";
   for (let i = 0; i < sp_num; i++) icons += `<i class="cci cci-system-point i--2"> </i>`;
   return `<div class="sp-wrapper">

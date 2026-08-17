@@ -174,15 +174,15 @@ export class LancerMechSheet extends LancerActorSheet<EntryType.MECH> {
   _activateMountContextMenus(html: any) {
     let mount_options: any[] = [];
     const i18nMounts = {
-      [MountType.Main]: "lancer.mech-sheet.mounted-weapons.main.label",
-      [MountType.Aux]: "lancer.mech-sheet.mounted-weapons.aux.label",
-      [MountType.AuxAux]: "lancer.mech-sheet.mounted-weapons.aux-aux.label",
-      [MountType.MainAux]: "lancer.mech-sheet.mounted-weapons.main-aux.label",
-      [MountType.Flex]: "lancer.mech-sheet.mounted-weapons.flex.label",
-      [MountType.Heavy]: "lancer.mech-sheet.mounted-weapons.heavy.label",
-      [MountType.Superheavy]: "lancer.mech-sheet.mounted-weapons.superheavy.label",
-      [MountType.Integrated]: "lancer.mech-sheet.mounted-weapons.integrated.label",
-      [MountType.Unknown]: "lancer.mech-sheet.mounted-weapons.unknown.label",
+      [MountType.Main]: "lancer.mechSheet.mountedWeapons.main.label",
+      [MountType.Aux]: "lancer.mechSheet.mountedWeapons.aux.label",
+      [MountType.AuxAux]: "lancer.mechSheet.mountedWeapons.auxAux.label",
+      [MountType.MainAux]: "lancer.mechSheet.mountedWeapons.mainAux.label",
+      [MountType.Flex]: "lancer.mechSheet.mountedWeapons.flex.label",
+      [MountType.Heavy]: "lancer.mechSheet.mountedWeapons.heavy.label",
+      [MountType.Superheavy]: "lancer.mechSheet.mountedWeapons.superheavy.label",
+      [MountType.Integrated]: "lancer.mechSheet.mountedWeapons.integrated.label",
+      [MountType.Unknown]: "lancer.mechSheet.mountedWeapons.unknown.label",
     };
 
     // Handle generic mount type
@@ -231,7 +231,7 @@ export class LancerMechSheet extends LancerActorSheet<EntryType.MECH> {
 
     // Add a bracing option
     mount_options.push({
-      name: game.i18n.localize("lancer.mech-sheet.mounted-weapons.superheavy-bracing.label"),
+      name: game.i18n.localize("lancer.mechSheet.mountedWeapons.superheavyBracing.label"),
       icon: "",
       callback: async (html: JQuery) => {
         let cd = await this.getData();

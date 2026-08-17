@@ -46,7 +46,7 @@
 
   const aggregateManifest = {
     author: "Massif Press",
-    name: game.i18n.localize("lancer.lcp-manager.header.selected-official.label"),
+    name: game.i18n.localize("lancer.lcpManager.header.selectedOfficial.label"),
     version: "",
     item_prefix: "",
     description: "",
@@ -100,7 +100,7 @@
 
 <div class="lcp-table flexcol">
   <div class="lancer-header clipped-top lancer-primary major">
-    {game.i18n.localize("lancer.lcp-manager.header.available-content.label")}
+    {game.i18n.localize("lancer.lcpManager.header.availableContent.label")}
   </div>
   <!-- LCP table. Official content is listed first, manually installed content at the end. -->
   <div class="lcp-table__table">
@@ -117,12 +117,12 @@
             onchange={aggregateSummary}
           >
         </div>
-        <span>{game.i18n.localize("lancer.lcp-manager.table.title.label")}</span>
-        <span>{game.i18n.localize("lancer.lcp-manager.table.author.label")}</span>
+        <span>{game.i18n.localize("lancer.lcpManager.table.title.label")}</span>
+        <span>{game.i18n.localize("lancer.lcpManager.table.author.label")}</span>
         <span></span>
-        <span>{game.i18n.localize("lancer.lcp-manager.table.current.label")}</span>
+        <span>{game.i18n.localize("lancer.lcpManager.table.current.label")}</span>
         <span></span>
-        <span>{game.i18n.localize("lancer.lcp-manager.table.available.label")}</span>
+        <span>{game.i18n.localize("lancer.lcpManager.table.available.label")}</span>
       </div>
       {#each lcpData as pack}
         <!-- svelte-ignore a11y_click_events_have_key_events -->
@@ -188,26 +188,26 @@
     <button
       type="button"
       class="lancer-button lcp-bulk-import"
-      title={game.i18n.localize("lancer.lcp-manager.import-selected.label")}
+      title={game.i18n.localize("lancer.lcpManager.importSelected.label")}
       tabindex="-1"
       disabled={disabled || !lcpData.some(p => selectedRows.get(p.id))}
       onclick={dispatchLCPsToInstall}
     >
       <i class="cci cci-content-manager i--4"></i>
-      {game.i18n.localize("lancer.lcp-manager.import-selected.label")}
+      {game.i18n.localize("lancer.lcpManager.importSelected.label")}
     </button>
 
     <button
       type="button"
       id="clear-button"
       class="lancer-button lcp-clear-all"
-      title={game.i18n.localize("lancer.lcp-manager.clear-compendium-data.label")}
+      title={game.i18n.localize("lancer.lcpManager.clearCompendiumData.label")}
       tabindex="-1"
       disabled={disabled || !lcpData.some(p => p.currentVersion !== "--")}
       onclick={onClearCompendiums}
     >
       <i class="fas fa-trash i--2"></i>
-      {game.i18n.localize("lancer.lcp-manager.clear-compendium-data.label")}
+      {game.i18n.localize("lancer.lcpManager.clearCompendiumData.label")}
     </button>
   </div>
 </div>

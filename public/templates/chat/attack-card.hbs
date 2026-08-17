@@ -24,7 +24,7 @@
   {{/if}}
   {{#if hit_results.length}}
     <div class="lancer-mini-header collapse-trigger" data-collapse-id="{{_uuid}}-hits">
-      {{decorate-card (upper-case (localize "lancer.chat-card.title.defense-hit.label" defense=defense))}}
+      {{decorate-card (upper-case (localize "lancer.chatCard.title.defenseHit.label" defense=defense))}}
     </div>
     <div class="collapse" data-collapse-id="{{_uuid}}-hits">
       {{#each hit_results as |hit key|}}
@@ -35,7 +35,7 @@
   {{#if self_heat_result}}
     <div class="card clipped">
       <div class="lancer-mini-header collapse-trigger" data-collapse-id="{{_uuid}}-self-heat">
-        {{decorate-card (upper-case (localize "lancer.chat-card.title.self-heat.label"))}}
+        {{decorate-card (upper-case (localize "lancer.chatCard.title.selfHeat.label"))}}
       </div>
       <div class="collapse" data-collapse-id="{{_uuid}}-self-heat">
         {{{lancer-dice-roll self_heat_result.roll self_heat_result.tt "cci cci-heat i--4 damage--heat"}}}
@@ -53,7 +53,7 @@
   {{#if on_attack}}
     <div class="card clipped">
       <div class="lancer-mini-header collapse-trigger" data-collapse-id="{{_uuid}}-effect">
-        {{decorate-card (upper-case (localize "lancer.common.activation.on-attack.label"))}}
+        {{decorate-card (upper-case (localize "lancer.common.activation.onAttack.label"))}}
       </div>
       <span class="effect-text collapse" data-collapse-id="{{_uuid}}-effect">{{{on_attack}}}</span>
     </div>
@@ -61,7 +61,7 @@
   {{#if on_hit}}
     <div class="card clipped">
       <div class="lancer-mini-header collapse-trigger" data-collapse-id="{{_uuid}}-effect">
-        {{decorate-card (upper-case (localize "lancer.common.activation.on-hit.label"))}}
+        {{decorate-card (upper-case (localize "lancer.common.activation.onHit.label"))}}
       </div>
       <span class="effect-text collapse" data-collapse-id="{{_uuid}}-effect">{{{on_hit}}}</span>
     </div>
@@ -69,7 +69,7 @@
   {{#if on_crit}}
     <div class="card clipped">
       <div class="lancer-mini-header collapse-trigger" data-collapse-id="{{_uuid}}-effect">
-        {{decorate-card (upper-case (localize "lancer.common.activation.on-crit.label"))}}
+        {{decorate-card (upper-case (localize "lancer.common.activation.onCrit.label"))}}
       </div>
       <span class="effect-text collapse" data-collapse-id="{{_uuid}}-effect">{{{on_crit}}}</span>
     </div>
@@ -77,6 +77,6 @@
   {{{tag-list "tags"}}}
   <button
     class="lancer-button lancer-damage-flow lancer-secondary"
-    label="{{upper-case (localize "lancer.chat-card.attack.roll-damage.label")}}"
-  ><i class="mdi mdi-dice-multiple i--3 i--light"></i>&nbsp;{{upper-case (localize "lancer.chat-card.attack.roll-damage.label")}}</button>
+    label="{{upper-case (localize "lancer.chatCard.attack.rollDamage.label")}}"
+  ><i class="mdi mdi-dice-multiple i--3 i--light"></i>&nbsp;{{upper-case (localize "lancer.chatCard.attack.rollDamage.label")}}</button>
 </div>

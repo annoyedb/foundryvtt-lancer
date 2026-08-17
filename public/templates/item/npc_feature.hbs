@@ -11,7 +11,7 @@
       >
     </h1>
     <div class="header-details origin_type">
-      <span class="medium">{{upper-case (localize "lancer.npc-sheet.features.type.label")}}: </span>
+      <span class="medium">{{upper-case (localize "lancer.npcSheet.features.type.label")}}: </span>
       <select class="header-field" name="system.type" data-type="String">
         {{#select system.type}}
           <option class="i--dark" value="Reaction">
@@ -44,17 +44,17 @@
             name="system.origin.name"
             type="text"
             value="{{system.origin.name}}"
-            placeholder="{{localize "lancer.npc-sheet.source-name.label"}}"
+            placeholder="{{localize "lancer.npcSheet.sourceName.label"}}"
           >
         </div>
         <div class="origin-type flexrow">
           <select name="system.origin.type" data-type="text">
             {{#select system.origin.type}}
               <option class="i--dark" value="Class">
-                {{upper-case (localize "lancer.npc-sheet.class.label")}}
+                {{upper-case (localize "lancer.npcSheet.class.label")}}
               </option>
               <option class="i--dark" value="Template">
-                {{upper-case (localize "lancer.npc-sheet.templates.label")}}
+                {{upper-case (localize "lancer.npcSheet.templates.label")}}
               </option>
             {{/select}}
           </select>
@@ -62,9 +62,9 @@
         <div class="origin_base flexrow" style="align-items: center">
           <span class="medium" style="text-align: right">
             {{#if system.origin.base}}
-              {{upper-case (localize "lancer.npc-sheet.features.base.label")}}
+              {{upper-case (localize "lancer.npcSheet.features.base.label")}}
             {{else}}
-              {{upper-case (localize "lancer.npc-sheet.features.optional.label")}}
+              {{upper-case (localize "lancer.npcSheet.features.optional.label")}}
             {{/if}}
           </span>
           <input type="checkbox" name="system.origin.base" {{checked system.origin.base}}>
@@ -115,10 +115,10 @@
             <select name="system.techType" data-type="String" style="align-self: center">
               {{#select system.techType}}
                 <option value="Quick">
-                  {{{upper-case (localize "lancer.common.activation.quick-tech.label")}}}
+                  {{{upper-case (localize "lancer.common.activation.quickTech.label")}}}
                 </option>
                 <option value="Full">
-                  {{{upper-case (localize "lancer.common.activation.full-tech.label")}}}
+                  {{{upper-case (localize "lancer.common.activation.fullTech.label")}}}
                 </option>
               {{/select}}
             </select>
@@ -195,7 +195,7 @@
           </div>
         {{/each}}
         {{! Effects }}
-        {{{textarea-card (upper-case (localize "lancer.common.activation.on-hit.label")) "system.on_hit"}}}
+        {{{textarea-card (upper-case (localize "lancer.common.activation.onHit.label")) "system.on_hit"}}}
         {{{textarea-card (upper-case (localize "lancer.common.descriptor.effect.label")) "system.effect"}}}
       </div>
     {{/if}}

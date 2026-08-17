@@ -19,7 +19,7 @@
   let title = $derived(
     contentSummary
       ? `${contentSummary.name}${contentSummary.version ? ` v${contentSummary.version}` : ""}`
-      : game.i18n.localize("lancer.lcp-manager.header.no-lcp-selected.label")
+      : game.i18n.localize("lancer.lcpManager.header.noLcpSelected.label")
   );
 
   let imageExpanded = $state(false);
@@ -36,7 +36,7 @@
 {#snippet lcpDescription(contentSummary: ContentSummary)}
   <div class="lcp-description minor clipped">
     <div class="">
-      <span>{game.i18n.localize("lancer.lcp-manager.contents.label")}:</span>
+      <span>{game.i18n.localize("lancer.lcpManager.contents.label")}:</span>
       <ul>
         {#if contentSummary.skills}
           <li>
@@ -186,13 +186,13 @@
             transition:fade|global
             type="button"
             class="lcp-import"
-            title={game.i18n.localize("lancer.lcp-manager.import-lcp.label")}
+            title={game.i18n.localize("lancer.lcpManager.importLcp.label")}
             tabindex="-1"
             {disabled}
             onclick={() => onImportMany(null)}
           >
             <i class="cci cci-content-manager i--4"></i>
-            {game.i18n.localize("lancer.lcp-manager.import-lcp.label")}
+            {game.i18n.localize("lancer.lcpManager.importLcp.label")}
           </button>
         {/if}
       {/if}

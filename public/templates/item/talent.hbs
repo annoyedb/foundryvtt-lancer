@@ -21,7 +21,7 @@
   {{! Sheet Body }}
   <div class="flexcol">
     {{{textarea-card (upper-case (localize "lancer.common.descriptor.hidden.label")) "system.description"}}}
-    {{{textarea-card (upper-case (localize "lancer.item-sheet.talent.terse-description.label")) "system.terse"}}}
+    {{{textarea-card (upper-case (localize "lancer.itemSheet.talent.terseDescription.label")) "system.terse"}}}
     <a
       class="gen-control fas fa-plus"
       data-action="append"
@@ -57,7 +57,7 @@
         {{{item-edit-arrayed-bonuses (concat "system.ranks." index ".bonuses")}}}
         {{{counter-array rank.counters (concat "system.ranks." index ".counters") true}}}
         <div class="integrated-wrapper card clipped flexcol">
-          <div class="lancer-header lancer-primary" style="font-weight: bold">{{{upper-case (localize "lancer.common-sheet.integrated-gear.label")}}}</div>
+          <div class="lancer-header lancer-primary" style="font-weight: bold">{{{upper-case (localize "lancer.commonSheet.integratedGear.label")}}}</div>
           <ul>
             {{#each rank.integrated as |integrated integ_index|}}
               <li>
@@ -69,7 +69,7 @@
           </ul>
         </div>
         {{{item-edit-arrayed-deployables (concat "system.ranks." index ".deployables") (upper-case (localize "TYPES.Actor.deployable.plural"))}}}
-        {{{item-edit-arrayed-synergies (concat "system.ranks." index ".synergies") (upper-case (localize "lancer.common-sheet.synergies.label"))}}}
+        {{{item-edit-arrayed-synergies (concat "system.ranks." index ".synergies") (upper-case (localize "lancer.commonSheet.synergies.label"))}}}
       </div>
     {{/each}}
   </div>

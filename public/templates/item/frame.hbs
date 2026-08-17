@@ -25,13 +25,13 @@
       {{{clicker-stat-card (upper-case (localize "lancer.common.stat.armor.short"))       "mdi mdi-shield-outline"    "system.stats.armor" false}}}
       {{{clicker-stat-card (upper-case (localize "lancer.common.stat.repair.short"))     "cci cci-repair"            "system.stats.repcap" false}}}
       {{{clicker-stat-card (upper-case (localize "lancer.common.stat.evasion.short"))     "cci cci-evasion"           "system.stats.evasion" false}}}
-      {{{clicker-stat-card (upper-case (localize "lancer.common.stat.e-defense.short"))   "cci cci-edef"              "system.stats.edef" false}}}
+      {{{clicker-stat-card (upper-case (localize "lancer.common.stat.eDefense.short"))   "cci cci-edef"              "system.stats.edef" false}}}
       {{{clicker-stat-card (upper-case (localize "lancer.common.stat.heat.cap.short"))    "cci cci-heatcap"           "system.stats.heatcap" false}}}
       {{{clicker-stat-card (upper-case (localize "lancer.common.stat.speed.short"))       "mdi mdi-arrow-right-bold-hexagon-outline" "system.stats.speed" false}}}
       {{{clicker-stat-card (upper-case (localize "lancer.common.stat.tech.attack.short")) "cci cci-tech-full"         "system.stats.tech_attack" false}}}
       {{{clicker-stat-card (upper-case (localize "lancer.common.stat.sensor.short"))      "cci cci-sensor"            "system.stats.sensor_range" false}}}
       {{{clicker-stat-card (upper-case (localize "lancer.common.stat.save.short"))        "cci cci-save"              "system.stats.save" false}}}
-      {{{clicker-stat-card (upper-case (localize "lancer.mech-sheet.system.points.short"))"cci cci-system"            "system.stats.sp" false}}}
+      {{{clicker-stat-card (upper-case (localize "lancer.mechSheet.system.points.short"))"cci cci-system"            "system.stats.sp" false}}}
       {{{clicker-stat-card (upper-case (localize "lancer.common.stat.size.short"))        "cci cci-hexagon"           "system.stats.size" false}}}
     </div>
   </div>
@@ -39,7 +39,7 @@
   {{!-- Mounts --}}
   <div class="flexcol">
     <div>
-      <span class="minor" style="float: left">{{upper-case (localize "lancer.mech-sheet.available-weapon-mounts.label")}}</span>
+      <span class="minor" style="float: left">{{upper-case (localize "lancer.mechSheet.availableWeaponMounts.label")}}</span>
       <a
         class="gen-control"
         data-action="append"
@@ -53,13 +53,13 @@
         <div class="flexrow mount arrayed-item">
           <select class="mount-selector" name="system.mounts.{{key}}" data-type="String" index="{{key}}">
             {{#select mount}}
-              <option value="Aux/Aux">{{upper-case (localize "lancer.mech-sheet.mounted-weapons.aux-aux.label")}}</option>
-              <option value="Main">{{upper-case (localize "lancer.mech-sheet.mounted-weapons.main.label")}}</option>
-              <option value="Main/Aux">{{upper-case (localize "lancer.mech-sheet.mounted-weapons.main-aux.label")}}</option>
-              <option value="Flex">{{upper-case (localize "lancer.mech-sheet.mounted-weapons.flex.label")}}</option>
-              <option value="Heavy">{{upper-case (localize "lancer.mech-sheet.mounted-weapons.heavy.label")}}</option>
-              <option value="Integrated">{{upper-case (localize "lancer.mech-sheet.mounted-weapons.integrated.label")}}</option>
-              <option value="Superheavy">{{upper-case (localize "lancer.mech-sheet.mounted-weapons.superheavy.label")}}</option>
+              <option value="Aux/Aux">{{upper-case (localize "lancer.mechSheet.mountedWeapons.auxAux.label")}}</option>
+              <option value="Main">{{upper-case (localize "lancer.mechSheet.mountedWeapons.main.label")}}</option>
+              <option value="Main/Aux">{{upper-case (localize "lancer.mechSheet.mountedWeapons.mainAux.label")}}</option>
+              <option value="Flex">{{upper-case (localize "lancer.mechSheet.mountedWeapons.flex.label")}}</option>
+              <option value="Heavy">{{upper-case (localize "lancer.mechSheet.mountedWeapons.heavy.label")}}</option>
+              <option value="Integrated">{{upper-case (localize "lancer.mechSheet.mountedWeapons.integrated.label")}}</option>
+              <option value="Superheavy">{{upper-case (localize "lancer.mechSheet.mountedWeapons.superheavy.label")}}</option>
               <option value="delete">{{upper-case (localize "lancer.common.descriptor.delete.label")}}</option>
             {{/select}}
           </select>
@@ -113,14 +113,14 @@
         value="{{system.core_system.name}}"
         data-dtype="String"
       >
-      <div class="medium faded" style="justify-self: right">// {{upper-case (localize "lancer.mech-sheet.core-system.label")}}</div>
+      <div class="medium faded" style="justify-self: right">// {{upper-case (localize "lancer.mechSheet.coreSystem.label")}}</div>
       {{{popout-editor-button "system.core_system.description"}}}
     </div>
     <div class="desc-text">{{{safe-html system.core_system.description}}}</div>
 
     {{!-- Integrated --}}
     <div class="integrated-wrapper card clipped flexcol">
-      <div class="lancer-header lancer-primary">{{upper-case (localize "lancer.common-sheet.integrated-gear.label")}}</div>
+      <div class="lancer-header lancer-primary">{{upper-case (localize "lancer.commonSheet.integratedGear.label")}}</div>
       <ul>
         {{#each system.core_system.integrated as |integrated index|}}
           <li>

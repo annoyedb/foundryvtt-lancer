@@ -25,7 +25,7 @@
 
   {{!-- Description --}}
   {{{textarea-card (upper-case (localize "lancer.common.descriptor.description.label")) "system.flavor"}}}
-  {{{textarea-card (upper-case (localize "lancer.npc-sheet.tactics.label")) "system.tactics"}}}
+  {{{textarea-card (upper-case (localize "lancer.npcSheet.tactics.label")) "system.tactics"}}}
 
   {{!-- Frame Stats --}}
   <div class="card clipped wraprow quadruple">
@@ -39,7 +39,7 @@
       {{{npc-clicker-statblock-card (upper-case (localize "lancer.common.stat.structure.label")) "system.base_stats" "structure"}}}
       {{{npc-clicker-statblock-card (upper-case (localize "lancer.common.stat.stress.label")) "system.base_stats" "stress"}}}
       {{{npc-clicker-statblock-card (upper-case (localize "lancer.common.stat.evasion.label")) "system.base_stats" "evasion"}}}
-      {{{npc-clicker-statblock-card (upper-case (localize "lancer.common.stat.e-defense.label")) "system.base_stats" "edef"}}}
+      {{{npc-clicker-statblock-card (upper-case (localize "lancer.common.stat.eDefense.label")) "system.base_stats" "edef"}}}
       {{{npc-clicker-statblock-card (upper-case (localize "lancer.common.stat.heat.cap.label")) "system.base_stats" "heatcap"}}}
       {{{npc-clicker-statblock-card (upper-case (localize "lancer.common.stat.speed.label")) "system.base_stats" "speed"}}}
       {{{npc-clicker-statblock-card (upper-case (localize "lancer.common.activation.plural")) "system.base_stats" "activations"}}}
@@ -51,7 +51,7 @@
 
   <div class="flexcol card clipped-top lancer-border-primary" style="margin: 10px">
     <div class="lancer-header lancer-primary major">
-      <span class="major">{{upper-case (localize "lancer.npc-sheet.features.base.label")}}</span>
+      <span class="major">{{upper-case (localize "lancer.npcSheet.features.base.label")}}</span>
     </div>
 
     {{{lid-item-list "system.base_features" base_features "npc_feature"}}}
@@ -59,7 +59,7 @@
 
   <div class="flexcol card clipped-top lancer-border-primary" style="margin: 10px">
     <div class="lancer-header lancer-primary major">
-      <span class="major">{{upper-case (localize "lancer.npc-sheet.features.optional.label")}}</span>
+      <span class="major">{{upper-case (localize "lancer.npcSheet.features.optional.label")}}</span>
     </div>
 
     {{{lid-item-list "system.optional_features" optional_features "npc_feature"}}}
