@@ -271,7 +271,7 @@ Hooks.once("init", () => {
       getCostFunction: () => (cost, _f, _t, dist) => Math.max(cost, dist * 2),
     },
     teleport: {
-      label: "lancer.movement.actions.teleport",
+      label: "lancer.movement.actions.teleport.label",
       icon: "fa-solid fa-person-rays",
       order: 7,
       teleport: true,
@@ -282,18 +282,18 @@ Hooks.once("init", () => {
       canSelect: token => token.inCombat,
     },
     blink: {
-      label: "lancer.movement.actions.blink",
+      label: "lancer.movement.actions.blink.label",
       order: 8,
     },
     ignore: {
-      label: "lancer.movement.actions.ignore",
+      label: "lancer.movement.actions.ignore.label",
       icon: "fa-solid fa-person-walking-dashed-line-arrow-right",
       order: 9,
       // @ts-expect-error
       deriveTerrainDifficulty: d => Math.min(d.walk, 1),
     },
     forced: {
-      label: "lancer.movement.actions.forced",
+      label: "lancer.movement.actions.forced.label",
       icon: "fa-solid fa-people-pulling",
       img: "icons/svg/hazard.svg",
       order: 10,

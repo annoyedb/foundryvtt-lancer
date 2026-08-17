@@ -193,9 +193,6 @@
         "none": {
           "label": "None"
         },
-        "passive": {
-          "label": "Passive"
-        },
         "quickAction": {
           "label": "Quick Action"
         },
@@ -610,9 +607,6 @@
       "sourceName": {
         "label": "Source Name"
       },
-      "activeEffects": {
-        "label": "Active Effects"
-      },
       "recharge": {
         "label": "Recharge"
       },
@@ -853,6 +847,23 @@
         "label": "{total} / {max} Remaining"
       }
     },
+    "activeEffects": {
+      "label": "Active Effects",
+      "categories": {
+        "passive": {
+          "label": "Passive"
+        },
+        "passthrough": {
+          "label": "Passthrough"
+        },
+        "disabled": {
+          "label": "Disabled"
+        },
+        "inherited": {
+          "label": "Inherited"
+        }
+      }
+    },
     "lcpManager": {
       "header": {
         "noLcpSelected": {
@@ -928,69 +939,151 @@
         "label": "Clear Compendium Data"
       }
     },
-    "floatingDamageNumbers": {
-      "name": "Floating Damage Numbers",
-      "hint": "Enable floating damage numbers for changes to stats, including applying damage rolls. This setting is separate for each client."
-    },
-    "simpleFonts": {
-      "name": "Use Simple/Plain Fonts",
-      "hint": "Replace stylized sci-fi header fonts with Helvetica for legibility. This setting is separate for each client."
-    },
-    "uiTheme": {
-      "name": "UI Theme",
-      "hint": "Colour scheme for the UI, echoing Comp/Con's themes.",
-      "gms": "GMS Red (default)",
-      "gmsDark": "GMS Dark",
-      "msmc": "MSMC Solarized",
-      "horus": "HORUS Terminal",
-      "ha": "Harrison Armory Ras Shamra",
-      "ssc": "SSC Constellar Congress",
-      "ipsn": "IPS-N Carina",
-      "gal": "FORECAST/GALSIM"
-    },
-    "pauseIcon": {
-      "name": "Pause Icon",
-      "hint": "The icon graphic to use on the Foundry pause overlay.",
-      "gms": "Union/GMS (default)",
-      "horus": "HORUS",
-      "ha": "Harrison Armory",
-      "ssc": "SSC",
-      "ips-n": "IPS-N",
-      "albatross": "Albatross",
-      "aun": "Aun Ascendancy",
-      "barony": "Karrakin Trade Baronies",
-      "horizon": "Horizon Collective",
-      "ra": "RA",
-      "sparri": "Sparri",
-      "voladores": "Voladores"
-    },
-    "scanOutput": {
-      "name": "Scan Output Location",
-      "hint": "Where should scan results be recorded?",
-      "both": "Chat & Journal",
-      "chat": "Chat only",
-      "journal": "Journal only"
-    },
-    "statusIconsConfig": {
-      "menu-name": "Status Icons",
-      "menu-label": "Status Icon Configuration",
-      "menu-hint": "Configure the status icons that appear on the token HUD",
-      "defaultConditionsStatus": "Default Conditions & Status",
-      "defaultConditionsStatus-desc": "Enable the default icon set for conditions & status",
-      "cancerConditionsStatus": "Cancermantis' Conditions & Status",
-      "cancerConditionsStatus-desc": "Enable Cancermantis' icon set for conditions & status",
-      "cancerNPCTemplates": "Cancermantis' NPC Templates",
-      "cancerNPCTemplates-desc": "Enable Cancermantis' icon set for NPC templates",
-      "hayleyConditionsStatus": "Hayley's Condition & Status",
-      "hayleyConditionsStatus-desc": "Enable Hayley's icon set for conditions & status",
-      "hayleyPC": "Hayley's PC Systems",
-      "hayleyPC-desc": "Enable Hayley's icon set for PC system effects",
-      "hayleyNPC": "Hayley's NPC Systems",
-      "hayleyNPC-desc": "Enable Hayley's icon set for NPC system effects",
-      "hayleyUtility": "Hayley's Utility",
-      "hayleyUtility-desc": "Enable Hayley's icon set for utility indicators",
-      "tommyConditionsStatus": "Tommy's Condition & Status",
-      "tommyConditionsStatus-desc": "Enable Tommy's icon set for conditions & status"
+    "setting": {
+      "floatingDamageNumbers": {
+        "name": "Floating Damage Numbers",
+        "hint": "Enable floating damage numbers for changes to stats, including applying damage rolls. This setting is separate for each client."
+      },
+      "simpleFonts": {
+        "name": "Use Simple/Plain Fonts",
+        "hint": "Replace stylized sci-fi header fonts with Helvetica for legibility. This setting is separate for each client."
+      },
+      "uiTheme": {
+        "name": "UI Theme",
+        "hint": "Colour scheme for the UI, echoing Comp/Con's themes.",
+        "gms": "GMS Red (default)",
+        "gmsDark": "GMS Dark",
+        "msmc": "MSMC Solarized",
+        "horus": "HORUS Terminal",
+        "ha": "Harrison Armory Ras Shamra",
+        "ssc": "SSC Constellar Congress",
+        "ipsn": "IPS-N Carina",
+        "gal": "FORECAST/GALSIM"
+      },
+      "pauseIcon": {
+        "name": "Pause Icon",
+        "hint": "The icon graphic to use on the Foundry pause overlay.",
+        "gms": "Union/GMS (default)",
+        "horus": "HORUS",
+        "ha": "Harrison Armory",
+        "ssc": "SSC",
+        "ips-n": "IPS-N",
+        "albatross": "Albatross",
+        "aun": "Aun Ascendancy",
+        "barony": "Karrakin Trade Baronies",
+        "horizon": "Horizon Collective",
+        "ra": "RA",
+        "sparri": "Sparri",
+        "voladores": "Voladores"
+      },
+      "scanOutput": {
+        "name": "Scan Output Location",
+        "hint": "Where should scan results be recorded?",
+        "both": "Chat & Journal",
+        "chat": "Chat only",
+        "journal": "Journal only"
+      },
+      "statusIconsConfig": {
+        "menu": {
+          "name": "Status Icons",
+          "label": "Status Icon Configuration",
+          "hint": "Configure the status icons that appear on the token HUD"
+        },
+        "defaultConditionsStatus": {
+          "label": "Default Conditions & Status",
+          "hint": "Enable the default icon set for conditions & status"
+        },
+        "cancerConditionsStatus": {
+          "label": "Cancermantis' Conditions & Status",
+          "hint": "Enable Cancermantis' icon set for conditions & status"
+        },
+        "cancerNPCTemplates": {
+          "label": "Cancermantis' NPC Templates",
+          "hint": "Enable Cancermantis' icon set for NPC templates"
+        },
+        "hayleyConditionsStatus": {
+          "label": "Hayley's Condition & Status",
+          "hint": "Enable Hayley's icon set for conditions & status"
+        },
+        "hayleyPC": {
+          "label": "Hayley's PC Systems",
+          "hint": "Enable Hayley's icon set for PC system effects"
+        },
+        "hayleyNPC": {
+          "label": "Hayley's NPC Systems",
+          "hint": "Enable Hayley's icon set for NPC system effects"
+        },
+        "hayleyUtility": {
+          "label": "Hayley's Utility",
+          "hint": "Enable Hayley's icon set for utility indicators"
+        },
+        "tommyConditionsStatus": {
+          "label": "Tommy's Condition & Status",
+          "hint": "Enable Tommy's icon set for conditions & status"
+        }
+      },
+      "automation": {
+        "menu": {
+          "name": "Automation",
+          "label": "System Automation Settings",
+          "hint": "Set up what system automation options are enabled, or turn them all off"
+        },
+        "attacks": {
+          "label": "Attack roll evaluation",
+          "hint": "Toggle for whether or not you want the system to auto-calculate hits and other attack related automation."
+        },
+        "damage": {
+          "label": "Damage application",
+          "hint": "Toggle for whether or not you want the system to apply rolled damage to targets."
+        },
+        "structure": {
+          "label": "Structure/Stress",
+          "hint": "Automatically prompt for a structure or stress roll when a mech reaches 0 hp or exceeds its heat cap."
+        },
+        "overchargeHeat": {
+          "label": "Apply Overcharge Heat",
+          "hint": "Automatically apply heat when rolling overcharge"
+        },
+        "attackSelfHeat": {
+          "label": "Self Heat from Attacks",
+          "hint": "When a weapon has the Overkill or Heat (self) tags, automatically apply any heat."
+        },
+        "removeTemplates": {
+          "label": "Autoremove Templates",
+          "hint": "When the turn changes, should measured templates from attacks be cleared?"
+        },
+        "limitedLoading": {
+          "label": "Manage Limited/Loading",
+          "hint": "When items are used, should their limited and loading status be automatically managed and tracked?"
+        },
+        "npcRecharge": {
+          "label": "NPC Recharge",
+          "hint": "Automatically roll to recharge NPC systems at the start of their turn."
+        },
+        "tokenSize": {
+          "label": "Manage Token Sizes",
+          "hint": "Automatically force tokens sizes to match the associated actor's size stat."
+        }
+      },
+      "actionTracker": {
+        "menu": {
+          "name": "Action Tracker",
+          "label": "Action Tracker Settings",
+          "hint": "Configure options related to action tracker HUD and automations."
+        },
+        "showHotbar": {
+          "label": "Show Hotbar",
+          "hint": "Toggles the display of the floating hotbar during combat."
+        },
+        "allowPlayers": {
+          "label": "Allow Players",
+          "hint": "Allows players to modify their own actions."
+        },
+        "printMessages": {
+          "label": "Print Messages",
+          "hint": "Prints chat messages for start and end of a token's turn."
+        }
+      }
     },
     "statusIconsNames": {
       "abjure": "Abjure",
@@ -1092,42 +1185,6 @@
       "walk_of_kings": "Walk of Kings",
       "warp_sensors": "Warp Sensors"
     },
-    "automation": {
-      "menu-name": "Automation",
-      "menu-label": "System Automation Settings",
-      "menu-hint": "Set up what system automation options are enabled, or turn them all off",
-      "master-switch": "Enabled",
-      "master-switch-desc": "Turn this off to do everything manually",
-      "attacks": "Attack roll evaluation",
-      "attacks-desc": "Toggle for whether or not you want the system to auto-calculate hits and other attack related automation.",
-      "damage": "Damage application",
-      "damage-desc": "Toggle for whether or not you want the system to apply rolled damage to targets.",
-      "structure": "Structure/Stress",
-      "structure-desc": "Automatically prompt for a structure or stress roll when a mech reaches 0 hp or exceeds its heat cap.",
-      "overcharge_heat": "Apply Overcharge Heat",
-      "overcharge_heat-desc": "Automatically apply heat when rolling overcharge",
-      "attack_self_heat": "Self Heat from Attacks",
-      "attack_self_heat-desc": "When a weapon has the Overkill or Heat (self) tags, automatically apply any heat.",
-      "remove_templates": "Autoremove Templates",
-      "remove_templates-desc": "When the turn changes, should measured templates from attacks be cleared?",
-      "limited_loading": "Manage Limited/Loading",
-      "limited_loading-desc": "When items are used, should their limited and loading status be automatically managed and tracked?",
-      "npc_recharge": "NPC Recharge",
-      "npc_recharge-desc": "Automatically roll to recharge NPC systems at the start of their turn.",
-      "token_size": "Manage Token Sizes",
-      "token_size-desc": "Automatically force tokens sizes to match the associated actor's size stat."
-    },
-    "actionTracker": {
-      "menu-name": "Action Tracker",
-      "menu-label": "Action Tracker Settings",
-      "menu-hint": "Configure options related to action tracker HUD and automations.",
-      "showHotbar": "Show Hotbar",
-      "showHotbar-desc": "Toggles the display of the floating hotbar during combat.",
-      "allowPlayers": "Allow Players",
-      "allowPlayers-desc": "Allows players to modify their own actions.",
-      "printMessages": "Print Messages",
-      "printMessages-desc": "Prints chat messages for start and end of a token's turn."
-    },
     "initiative": {
       "sorttracker": "Sort the tracker",
       "sorttracker-desc": "Moves the unit currently taking their turn to the top of the tracker and moves units that have taken their turn to the end of the tracker.",
@@ -1142,14 +1199,6 @@
       "121": "1-2-1: Diagonal moves alternate cost from 1 to 2",
       "222": "2-2-2: Manhattan distance. Diagonals cost 2",
       "euc": "Euclidean: Euclidian distance rounded"
-    },
-    "effect": {
-      "categories": {
-        "passive": "Passive",
-        "passthrough": "Passthrough",
-        "disabled": "Disabled",
-        "inherited": "Inherited"
-      }
     },
     "tables": {
       "structure": {
@@ -1221,17 +1270,25 @@
       "status-items": "Status/Condition"
     },
     "tokenConfig": {
-      "manual_token_size": {
+      "manualTokenSize": {
         "label": "Manual Token Sizing",
         "hint": "Bypass system automation for determining token size"
       }
     },
     "movement": {
       "actions": {
-        "blink": "Teleport (Move)",
-        "forced": "Forced Move",
-        "ignore": "Ignore Terrain",
-        "teleport": "Teleport (Ability)"
+        "blink": {
+          "label": "Teleport (Move)"
+        },
+        "forced": {
+          "label": "Forced Move"
+        },
+        "ignore": {
+          "label": "Ignore Terrain"
+        },
+        "teleport": {
+          "label": "Teleport (Ability)"
+        }
       }
     }
   },
