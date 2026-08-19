@@ -28,6 +28,8 @@ import type {
   ActionTrackerOptions,
   AutomationOptions,
   CombatTrackerAppearance,
+  LLPLocalizationMap,
+  LocalizationOptions,
   StatusIconConfigOptions,
 } from "./module/settings";
 import type { TerrainHeightToolsAPI } from "./types/terrain-height-tools";
@@ -144,6 +146,8 @@ declare module "fvtt-types/configuration" {
     "lancer.autoOKillHeat": boolean;
     "lancer.automationOptions": typeof AutomationOptions;
     "lancer.automationSwitch": boolean;
+    "lancer.localizationLLPMap": LLPLocalizationMap;
+    "lancer.localizationOptions": typeof LocalizationOptions;
     "lancer.scanOutputs": string;
     "lancer.combat-tracker-appearance": typeof CombatTrackerAppearance;
     "lancer.combat-tracker-sort": boolean;

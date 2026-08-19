@@ -1109,6 +1109,24 @@
           "label": "Print Messages",
           "hint": "Prints chat messages for start and end of a token's turn."
         }
+      },
+      "localization": {
+        "menu": {
+          "name": "Localization",
+          "label": "Localization Settings",
+          "hint": "Configure localization options for imported LCPs"
+        },
+        "cache": {
+          "header": "Cached LLP Data",
+          "empty": "No LLP translation data is cached.",
+          "delete": "Delete cached data for this LCP"
+        },
+        "clearCache": {
+          "label": "Clear Cache",
+          "title": "Clear Localization Cache",
+          "confirm": "This will delete all cached LLP translation data for every language. Imported LCPs will need to be localized again. Continue?",
+          "done": "Localization cache cleared."
+        }
       }
     },
     "statusIconsNames": {
