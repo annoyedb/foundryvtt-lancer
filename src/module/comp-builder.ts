@@ -1,4 +1,4 @@
-import { LANCER } from "./config";
+import { friendlyEntryTypeName, LANCER } from "./config";
 const lp = LANCER.log_prefix;
 import { LCPIndex } from "./apps/lcp-manager/lcp-manager";
 import { get_pack, get_pack_id } from "./util/doc";
@@ -164,7 +164,7 @@ export async function importCP(
         : (pack.folders.find(f => f.getFlag(game.system.id, "entrytype") === et) ??
           (await Folder.create(
             {
-              name: game.i18n.localize(`TYPES.${pack.metadata.type}.${et}.plural`),
+              name: game.i18n.localize(friendlyEntryTypeName(et, 99)), // 99 is arbitrary to force plural locale string
               type: pack.metadata.type,
               [`flags.${game.system.id}.entrytype`]: et,
             },

@@ -3,7 +3,7 @@
 import { LancerActor } from "./actor/lancer-actor";
 import { LCPManager } from "./apps/lcp-manager/lcp-manager";
 import { clearCompendiumData, importCP } from "./comp-builder";
-import { LANCER } from "./config";
+import { friendlyEntryTypeName, LANCER } from "./config";
 import { EntryType } from "./enums";
 import { LancerItem } from "./item/lancer-item";
 import { LancerTokenDocument } from "./token";
@@ -390,7 +390,7 @@ export async function migrateCompendiumStructure() {
       : (pack.folders.find(f => f.getFlag(game.system.id, "entrytype") === et) ??
         (await Folder.create(
           {
-            name: game.i18n.localize(`TYPES.${pack.metadata.type}.${et}.plural`),
+            name: game.i18n.localize(friendlyEntryTypeName(et, 99)), // 99 is arbitrary to force plural locale string
             type: pack.metadata.type,
             [`flags.${game.system.id}.entrytype`]: et,
           },
