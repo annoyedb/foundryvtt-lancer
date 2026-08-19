@@ -41,84 +41,84 @@
         {#if contentSummary.skills}
           <li>
             <span class="lcp-manifest-badge">{contentSummary.skills}</span> {
-              game.i18n.localize("TYPES.Item.skill.plural").toLowerCase()
+              game.i18n.localize("lancer.common.item.skill.plural").toLowerCase()
             }
           </li>
         {/if}
         {#if contentSummary.talents}
           <li>
             <span class="lcp-manifest-badge">{contentSummary.talents}</span> {
-              game.i18n.localize("TYPES.Item.talent.plural").toLowerCase()
+              game.i18n.localize("lancer.common.item.talent.plural").toLowerCase()
             }
           </li>
         {/if}
         {#if contentSummary.bonds}
           <li>
             <span class="lcp-manifest-badge">{contentSummary.bonds}</span> {
-              game.i18n.localize("TYPES.Item.bond.plural").toLowerCase()
+              game.i18n.localize("lancer.common.item.bond.plural").toLowerCase()
             }
           </li>
         {/if}
         {#if contentSummary.reserves}
           <li>
             <span class="lcp-manifest-badge">{contentSummary.reserves}</span> {
-              game.i18n.localize("TYPES.Item.reserve.plural").toLowerCase()
+              game.i18n.localize("lancer.common.item.reserve.plural").toLowerCase()
             }
           </li>
         {/if}
         {#if contentSummary.gear}
           <li>
             <span class="lcp-manifest-badge">{contentSummary.gear}</span> {
-              game.i18n.localize("TYPES.Item.pilot_gear.plural").toLowerCase()
+              game.i18n.localize("lancer.common.item.pilotGear.plural").toLowerCase()
             }
           </li>
         {/if}
         {#if contentSummary.frames}
           <li>
             <span class="lcp-manifest-badge">{contentSummary.frames}</span> {
-              game.i18n.localize("TYPES.Item.frame.plural").toLowerCase()
+              game.i18n.localize("lancer.common.item.frame.plural").toLowerCase()
             }
           </li>
         {/if}
         {#if contentSummary.systems}
           <li>
             <span class="lcp-manifest-badge">{contentSummary.systems}</span> {
-              game.i18n.localize("TYPES.Item.mech_system.plural").toLowerCase()
+              game.i18n.localize("lancer.common.item.mechSystem.plural").toLowerCase()
             }
           </li>
         {/if}
         {#if contentSummary.weapons}
           <li>
             <span class="lcp-manifest-badge">{contentSummary.weapons}</span> {
-              game.i18n.localize("TYPES.Item.mech_weapon.plural").toLowerCase()
+              game.i18n.localize("lancer.common.item.mechWeapon.plural").toLowerCase()
             }
           </li>
         {/if}
         {#if contentSummary.mods}
           <li>
             <span class="lcp-manifest-badge">{contentSummary.mods}</span> {
-              game.i18n.localize("TYPES.Item.weapon_mod.plural").toLowerCase()
+              game.i18n.localize("lancer.common.item.weaponMod.plural").toLowerCase()
             }
           </li>
         {/if}
         {#if contentSummary.npc_classes}
           <li>
             <span class="lcp-manifest-badge">{contentSummary.npc_classes}</span> {
-              game.i18n.localize("TYPES.Item.npc_class.plural").toLowerCase()
+              game.i18n.localize("lancer.common.item.npcClass.plural").toLowerCase()
             }
           </li>
         {/if}
         {#if contentSummary.npc_templates}
           <li>
             <span class="lcp-manifest-badge">{contentSummary.npc_templates}</span> {
-              game.i18n.localize("TYPES.Item.npc_template.plural").toLowerCase()
+              game.i18n.localize("lancer.common.item.npcTemplate.plural").toLowerCase()
             }
           </li>
         {/if}
         {#if contentSummary.npc_features}
           <li>
             <span class="lcp-manifest-badge">{contentSummary.npc_features}</span> {
-              game.i18n.localize("TYPES.Item.npc_feature.plural").toLowerCase()
+              game.i18n.localize("lancer.common.item.npcFeature.plural").toLowerCase()
             }
           </li>
         {/if}

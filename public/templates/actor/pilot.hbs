@@ -251,7 +251,7 @@
       <div class="flexrow">
         {{!-- Armor --}}
         <div class="card clipped">
-          <h2 class="lancer-header lancer-primary major">{{upper-case (localize "TYPES.Item.pilot_armor.plural")}}</h2>
+          <h2 class="lancer-header lancer-primary major">{{upper-case (localize "lancer.common.item.pilotArmor.plural")}}</h2>
           {{#each system.loadout.armor as |armor key|}}
             {{{pilot-armor-slot (concat "system.loadout.armor." key ".value")}}}
           {{/each}}
@@ -259,7 +259,7 @@
 
         {{!-- Weapons --}}
         <div class="card clipped">
-          <h2 class="lancer-header lancer-primary major">{{upper-case (localize "TYPES.Item.pilot_weapon.plural")}}</h2>
+          <h2 class="lancer-header lancer-primary major">{{upper-case (localize "lancer.common.item.pilotWeapon.plural")}}</h2>
           {{#each system.loadout.weapons as |weapon key|}}
             {{{pilot-weapon-slot (concat "system.loadout.weapons." key ".value")}}}
           {{/each}}
@@ -271,7 +271,7 @@
         {{!-- Gear --}}
         <div class="card clipped">
           <h2 class="lancer-header lancer-primary major clipped-top">
-            {{upper-case (localize "TYPES.Item.pilot_gear.plural")}}
+            {{upper-case (localize "lancer.common.item.pilotGear.plural")}}
           </h2>
           {{#each system.loadout.gear as |gear key|}}
             {{{pilot-gear-slot (concat "system.loadout.gear." key ".value")}}}
@@ -284,7 +284,7 @@
         {{!-- Reserves --}}
         <div class="card clipped">
           <h2 class="lancer-header lancer-primary major clipped-top">
-            {{upper-case (localize "TYPES.Item.reserve.plural")}}
+            {{upper-case (localize "lancer.common.item.reserve.plural")}}
           </h2>
           {{#each itemTypes.reserve as |reserve index|}}
             {{{reserve-slot (concat "itemTypes.reserve." index)}}}
@@ -320,7 +320,7 @@
         {{!-- Licenses --}}
         <div class="card clipped">
           <h2 class="lancer-header lancer-primary major clipped-top">
-            {{upper-case (localize "TYPES.Item.license.plural")}}
+            {{upper-case (localize "lancer.common.item.license.plural")}}
           </h2>
           {{#each itemTypes.license as |license index|}}
             {{{ref-license (concat "itemTypes.license." index)}}}
@@ -330,7 +330,7 @@
         {{!-- Core Bonuses --}}
         <div class="card clipped">
           <h2 class="lancer-header lancer-primary major clipped-top">
-            {{upper-case (localize "TYPES.Item.core_bonus.plural")}}
+            {{upper-case (localize "lancer.common.item.coreBonus.plural")}}
           </h2>
           {{#each itemTypes.core_bonus as |core_bonus index|}}
             {{{item-preview (concat "itemTypes.core_bonus." index) "delete"}}}

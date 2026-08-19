@@ -1,96 +1,30 @@
 {
   "TYPES": {
     "Actor": {
-      "deployable": {
-        "label": "Deployable",
-        "plural": "Deployable"
-      },
-      "mech": {
-        "label": "Mech",
-        "plural": "Mechs"
-      },
-      "npc": {
-        "label": "NPC",
-        "plural": "NPCs"
-      },
-      "pilot": {
-        "label": "Pilot",
-        "plural": "Pilots"
-      }
+      "deployable": "Deployable",
+      "mech": "Mech",
+      "npc": "NPC",
+      "pilot": "Pilot"
     },
     "Item": {
-      "bond": {
-        "label": "Bond",
-        "plural": "Bonds"
-      },
-      "core_bonus": {
-        "label": "Core Bonus",
-        "plural": "Core Bonuses"
-      },
-      "frame": {
-        "label": "Frame",
-        "plural": "Frames"
-      },
-      "license": {
-        "label": "License",
-        "plural": "Licenses"
-      },
-      "mech_system": {
-        "label": "Mech System",
-        "plural": "Mech Systems"
-      },
-      "mech_weapon": {
-        "label": "Mech Weapon",
-        "plural": "Mech Weapons"
-      },
-      "npc_class": {
-        "label": "NPC Class",
-        "plural": "NPC Classes"
-      },
-      "npc_feature": {
-        "label": "NPC Feature",
-        "plural": "NPC Features"
-      },
-      "npc_template": {
-        "label": "NPC Template",
-        "plural": "NPC Templates"
-      },
-      "organization": {
-        "label": "Organization",
-        "plural": "Organizations"
-      },
-      "pilot_armor": {
-        "label": "Pilot Armor",
-        "plural": "Pilot Armor"
-      },
-      "pilot_gear": {
-        "label": "Pilot Gear",
-        "plural": "Pilot Gear"
-      },
-      "pilot_weapon": {
-        "label": "Pilot Weapon",
-        "plural": "Pilot Weapons"
-      },
-      "reserve": {
-        "label": "Reserve",
-        "plural": "Reserves"
-      },
-      "skill": {
-        "label": "Skill",
-        "plural": "Skills"
-      },
-      "status": {
-        "label": "Status/Condition",
-        "plural": "Statuses/Conditions"
-      },
-      "talent": {
-        "label": "Talent",
-        "plural": "Talents"
-      },
-      "weapon_mod": {
-        "label": "Weapon Mod",
-        "plural": "Weapon Mods"
-      }
+      "bond": "Bond",
+      "core_bonus": "Core Bonus",
+      "frame": "Frame",
+      "license": "License",
+      "mech_system": "Mech System",
+      "mech_weapon": "Mech Weapon",
+      "npc_class": "NPC Class",
+      "npc_feature": "NPC Feature",
+      "npc_template": "NPC Template",
+      "organization": "Organization",
+      "pilot_armor": "Pilot Armor",
+      "pilot_gear": "Pilot Gear",
+      "pilot_weapon": "Pilot Weapon",
+      "reserve": "Reserve",
+      "skill": "Skill",
+      "status": "Status/Condition",
+      "talent": "Talent",
+      "weapon_mod": "Weapon Mod"
     }
   },
   "lancer": {
@@ -397,6 +331,98 @@
         "experience": {
           "short": "XP",
           "label": "Experience"
+        }
+      },
+      "item": {
+        "bond": {
+          "label": "Bond",
+          "plural": "Bonds"
+        },
+        "coreBonus": {
+          "label": "Core Bonus",
+          "plural": "Core Bonuses"
+        },
+        "frame": {
+          "label": "Frame",
+          "plural": "Frames"
+        },
+        "license": {
+          "label": "License",
+          "plural": "Licenses"
+        },
+        "mechSystem": {
+          "label": "Mech System",
+          "plural": "Mech Systems"
+        },
+        "mechWeapon": {
+          "label": "Mech Weapon",
+          "plural": "Mech Weapons"
+        },
+        "npcClass": {
+          "label": "NPC Class",
+          "plural": "NPC Classes"
+        },
+        "npcFeature": {
+          "label": "NPC Feature",
+          "plural": "NPC Features"
+        },
+        "npcTemplate": {
+          "label": "NPC Template",
+          "plural": "NPC Templates"
+        },
+        "organization": {
+          "label": "Organization",
+          "plural": "Organizations"
+        },
+        "pilotArmor": {
+          "label": "Pilot Armor",
+          "plural": "Pilot Armor"
+        },
+        "pilotGear": {
+          "label": "Pilot Gear",
+          "plural": "Pilot Gear"
+        },
+        "pilotWeapon": {
+          "label": "Pilot Weapon",
+          "plural": "Pilot Weapons"
+        },
+        "reserve": {
+          "label": "Reserve",
+          "plural": "Reserves"
+        },
+        "skill": {
+          "label": "Skill",
+          "plural": "Skills"
+        },
+        "status": {
+          "label": "Status/Condition",
+          "plural": "Statuses/Conditions"
+        },
+        "talent": {
+          "label": "Talent",
+          "plural": "Talents"
+        },
+        "weaponMod": {
+          "label": "Weapon Mod",
+          "plural": "Weapon Mods"
+        }
+      },
+      "actor": {
+        "deployable": {
+          "label": "Deployable",
+          "plural": "Deployable"
+        },
+        "mech": {
+          "label": "Mech",
+          "plural": "Mechs"
+        },
+        "npc": {
+          "label": "NPC",
+          "plural": "NPCs"
+        },
+        "pilot": {
+          "label": "Pilot",
+          "plural": "Pilots"
         }
       }
     },
