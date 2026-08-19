@@ -1,5 +1,5 @@
 import type { DeepPartial } from "fvtt-types/utils";
-import { LANCER, friendly_entrytype_name } from "../config";
+import { LANCER, friendlyEntryTypeName } from "../config";
 import { EntryType, NpcFeatureType } from "../enums";
 import type { SourceData } from "../source-template";
 import { Flow, type FlowState, type Step } from "./flow";
@@ -94,7 +94,7 @@ export async function checkItemLimited(
   // @ts-expect-error Yes, state.data.action might not exist, that's why we're checking
   if (state.data.action) state.data.cost = state.data.action.cost ?? 1;
   if (state.item.isLimited() && state.item.system.uses.value < state.data.cost) {
-    let iType = friendly_entrytype_name(state.item.type as EntryType);
+    let iType = friendlyEntryTypeName(state.item.type as EntryType);
     ui.notifications!.warn(`${iType} ${state.item.name} has no remaining uses!`);
     return false;
   }

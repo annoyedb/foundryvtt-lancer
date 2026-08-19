@@ -64,62 +64,37 @@ export const LANCER = {
 } as const;
 
 // Convenience for mapping item/actor types to full names
-const FRIENDLY_DOCUMENT_NAMES_SINGULAR = {
-  [EntryType.CORE_BONUS]: game.i18n.localize("lancer.common.item.coreBonus.label"),
-  [EntryType.DEPLOYABLE]: game.i18n.localize("lancer.common.actor.deployable.label"),
-  [EntryType.FRAME]: game.i18n.localize("lancer.common.item.frame.label"),
-  [EntryType.LICENSE]: game.i18n.localize("lancer.common.item.license.label"),
-  [EntryType.MECH]: game.i18n.localize("lancer.common.actor.mech.label"),
-  [EntryType.MECH_SYSTEM]: game.i18n.localize("lancer.common.item.mechSystem.label"),
-  [EntryType.MECH_WEAPON]: game.i18n.localize("lancer.common.item.mechWeapon.label"),
-  [EntryType.NPC]: game.i18n.localize("lancer.common.actor.npc.label"),
-  [EntryType.NPC_CLASS]: game.i18n.localize("lancer.common.item.npcClass.label"),
-  [EntryType.NPC_FEATURE]: game.i18n.localize("lancer.common.item.npcFeature.label"),
-  [EntryType.NPC_TEMPLATE]: game.i18n.localize("lancer.common.item.npcTemplate.label"),
-  [EntryType.ORGANIZATION]: game.i18n.localize("lancer.common.item.organization.label"),
-  [EntryType.PILOT]: game.i18n.localize("lancer.common.actor.pilot.label"),
-  [EntryType.PILOT_ARMOR]: game.i18n.localize("lancer.common.item.pilotArmor.label"),
-  [EntryType.PILOT_GEAR]: game.i18n.localize("lancer.common.item.pilotGear.label"),
-  [EntryType.PILOT_WEAPON]: game.i18n.localize("lancer.common.item.pilotWeapon.label"),
-  [EntryType.RESERVE]: game.i18n.localize("lancer.common.item.reserve.label"),
-  [EntryType.SKILL]: game.i18n.localize("lancer.common.item.skill.label"),
-  [EntryType.STATUS]: game.i18n.localize("lancer.common.item.status.label"),
-  [EntryType.TALENT]: game.i18n.localize("lancer.common.item.talent.label"),
-  [EntryType.BOND]: game.i18n.localize("lancer.common.item.bond.label"),
-  [EntryType.WEAPON_MOD]: game.i18n.localize("lancer.common.item.weaponMod.label"),
-};
-const FRIENDLY_DOCUMENT_NAMES_PLURAL = {
-  [EntryType.CORE_BONUS]: game.i18n.localize("lancer.common.item.coreBonus.plural"),
-  [EntryType.DEPLOYABLE]: game.i18n.localize("lancer.common.actor.deployable.plural"),
-  [EntryType.FRAME]: game.i18n.localize("lancer.common.item.frame.plural"),
-  [EntryType.LICENSE]: game.i18n.localize("lancer.common.item.license.plural"),
-  [EntryType.MECH]: game.i18n.localize("lancer.common.actor.mech.plural"),
-  [EntryType.MECH_SYSTEM]: game.i18n.localize("lancer.common.item.mechSystem.plural"),
-  [EntryType.MECH_WEAPON]: game.i18n.localize("lancer.common.item.mechWeapon.plural"),
-  [EntryType.NPC]: game.i18n.localize("lancer.common.actor.npc.plural"),
-  [EntryType.NPC_CLASS]: game.i18n.localize("lancer.common.item.npcClass.plural"),
-  [EntryType.NPC_FEATURE]: game.i18n.localize("lancer.common.item.npcFeature.plural"),
-  [EntryType.NPC_TEMPLATE]: game.i18n.localize("lancer.common.item.npcTemplate.plural"),
-  [EntryType.ORGANIZATION]: game.i18n.localize("lancer.common.item.organization.plural"),
-  [EntryType.PILOT]: game.i18n.localize("lancer.common.actor.pilot.plural"),
-  [EntryType.PILOT_ARMOR]: game.i18n.localize("lancer.common.item.pilotArmor.plural"),
-  [EntryType.PILOT_GEAR]: game.i18n.localize("lancer.common.item.pilotGear.plural"),
-  [EntryType.PILOT_WEAPON]: game.i18n.localize("lancer.common.item.pilotWeapon.plural"),
-  [EntryType.RESERVE]: game.i18n.localize("lancer.common.item.reserve.plural"),
-  [EntryType.SKILL]: game.i18n.localize("lancer.common.item.skill.plural"),
-  [EntryType.STATUS]: game.i18n.localize("lancer.common.item.status.plural"),
-  [EntryType.TALENT]: game.i18n.localize("lancer.common.item.talent.plural"),
-  [EntryType.BOND]: game.i18n.localize("lancer.common.item.bond.plural"),
-  [EntryType.WEAPON_MOD]: game.i18n.localize("lancer.common.item.weaponMod.plural"),
+const FRIENDLY_DOCUMENT_NAME_KEYS: Partial<Record<LancerItemType | LancerActorType, string>> = {
+  [EntryType.CORE_BONUS]: "lancer.common.item.coreBonus",
+  [EntryType.DEPLOYABLE]: "lancer.common.actor.deployable",
+  [EntryType.FRAME]: "lancer.common.item.frame",
+  [EntryType.LICENSE]: "lancer.common.item.license",
+  [EntryType.MECH]: "lancer.common.actor.mech",
+  [EntryType.MECH_SYSTEM]: "lancer.common.item.mechSystem",
+  [EntryType.MECH_WEAPON]: "lancer.common.item.mechWeapon",
+  [EntryType.NPC]: "lancer.common.actor.npc",
+  [EntryType.NPC_CLASS]: "lancer.common.item.npcClass",
+  [EntryType.NPC_FEATURE]: "lancer.common.item.npcFeature",
+  [EntryType.NPC_TEMPLATE]: "lancer.common.item.npcTemplate",
+  [EntryType.ORGANIZATION]: "lancer.common.item.organization",
+  [EntryType.PILOT]: "lancer.common.actor.pilot",
+  [EntryType.PILOT_ARMOR]: "lancer.common.item.pilotArmor",
+  [EntryType.PILOT_GEAR]: "lancer.common.item.pilotGear",
+  [EntryType.PILOT_WEAPON]: "lancer.common.item.pilotWeapon",
+  [EntryType.RESERVE]: "lancer.common.item.reserve",
+  [EntryType.SKILL]: "lancer.common.item.skill",
+  [EntryType.STATUS]: "lancer.common.item.status",
+  [EntryType.TALENT]: "lancer.common.item.talent",
+  [EntryType.BOND]: "lancer.common.item.bond",
+  [EntryType.WEAPON_MOD]: "lancer.common.item.weaponMod",
 };
 
 // Quick for single/plural
-export function friendly_entrytype_name(type: LancerItemType | LancerActorType, count?: number): string {
-  if ((count ?? 1) > 1) {
-    return FRIENDLY_DOCUMENT_NAMES_PLURAL[type] ?? `Unknown <${type}>s`;
-  } else {
-    return FRIENDLY_DOCUMENT_NAMES_SINGULAR[type] ?? `Unknown <${type}>`;
-  }
+export function friendlyEntryTypeName(type: LancerItemType | LancerActorType, count?: number): string {
+  const plural = (count ?? 1) > 1;
+  const key = FRIENDLY_DOCUMENT_NAME_KEYS[type];
+  if (!key) return plural ? `Unknown <${type}>s` : `Unknown <${type}>`;
+  return game.i18n.localize(`${key}.${plural ? "plural" : "label"}`);
 }
 
 // TODO: const MACRO_ICONS
