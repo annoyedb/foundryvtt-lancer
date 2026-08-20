@@ -1176,10 +1176,22 @@ export function buildDeployableHTML(
     </div>`;
 
   let standardActions = [
-    { label: "ACTIVATE", action: dep.system.activation },
-    { label: "DEACTIVATE", action: dep.system.deactivation },
-    { label: "RECALL", action: dep.system.recall },
-    { label: "REDEPLOY", action: dep.system.redeploy },
+    {
+      label: game.i18n.localize("lancer.deployableSheet.action.activate.label").toUpperCase(),
+      action: dep.system.activation,
+    },
+    {
+      label: game.i18n.localize("lancer.deployableSheet.action.deactivate.label").toUpperCase(),
+      action: dep.system.deactivation,
+    },
+    {
+      label: game.i18n.localize("lancer.deployableSheet.action.recall.label").toUpperCase(),
+      action: dep.system.recall,
+    },
+    {
+      label: game.i18n.localize("lancer.deployableSheet.action.redeploy.label").toUpperCase(),
+      action: dep.system.redeploy,
+    },
   ].filter(a => !!a.action);
   standardActions.forEach(a => {
     chips.push(
@@ -1584,7 +1596,7 @@ function _handleContextMenus(
 
   // Toggle destroyed status, for items that support it
   let repairItem: ContextMenu.Entry<JQuery> = {
-    name: "Mark Repaired",
+    name: game.i18n.localize("lancer.commonSheet.context.markRepaired.label"),
     icon: `<i class="fas fa-fw fa-wrench"></i>`,
     callback: html => {
       const uuid = html.closest(".set")[0].dataset.uuid;
@@ -1616,7 +1628,7 @@ function _handleContextMenus(
 
   // Toggle destroyed status, for items that support it
   let destroyItem: ContextMenu.Entry<JQuery> = {
-    name: "Mark Destroyed",
+    name: game.i18n.localize("lancer.commonSheet.context.markDestroyed.label"),
     icon: `<i class="cci cci-eclipse"></i>`,
     callback: html => {
       const uuid = html.closest(".set")[0].dataset.uuid;
@@ -1648,7 +1660,7 @@ function _handleContextMenus(
 
   // Fully delete a document
   let deleteDocument: ContextMenu.Entry<JQuery> = {
-    name: "Delete Document",
+    name: game.i18n.localize("lancer.commonSheet.context.deleteDocument.label"),
     icon: '<i class="fas fa-fw fa-trash"></i>',
     callback: async (html: JQuery) => {
       const uuid = html.closest(".set")[0].dataset.uuid;
@@ -1669,7 +1681,7 @@ function _handleContextMenus(
   // Sets a reference to null
   // Logic elsewhere will clean up the array item (if any) if said array item would be problematic left blank
   let clearReference: ContextMenu.Entry<JQuery> = {
-    name: "Unlink",
+    name: game.i18n.localize("lancer.commonSheet.context.unlink.label"),
     icon: '<i class="fas fa-times"></i>',
     callback: async (html: JQuery) => {
       // Set as null
@@ -1695,7 +1707,7 @@ function _handleContextMenus(
 
   // Remove an array item (e.x. a counter, tag, or weapon profile)
   let arrayRemove: ContextMenu.Entry<JQuery> = {
-    name: "Remove",
+    name: game.i18n.localize("lancer.commonSheet.context.remove.label"),
     icon: '<i class="fas fa-fw fa-trash"></i>',
     callback: html => {
       // Find the counter
@@ -1724,7 +1736,7 @@ function _handleContextMenus(
 
   // Summon counter editor dialogue
   let editCounter: ContextMenu.Entry<JQuery> = {
-    name: "Edit",
+    name: game.i18n.localize("lancer.commonSheet.context.edit.label"),
     icon: `<i class="fas fa-edit"></i>`,
     callback: html => {
       CounterEditForm.edit(doc, path(html)!);
@@ -1736,7 +1748,7 @@ function _handleContextMenus(
 
   // Summon a tag editor dialog
   let editTag: ContextMenu.Entry<JQuery> = {
-    name: "Edit",
+    name: game.i18n.localize("lancer.commonSheet.context.edit.label"),
     icon: '<i class="fas fa-edit"></i>',
     callback: html => {
       TagEditForm.edit(doc, path(html)!);
@@ -1756,7 +1768,7 @@ function _handleContextMenus(
 
   // If the "renameSubpath" appears in the dataset, allow simple-prompt to change the name
   let rename: ContextMenu.Entry<JQuery> = {
-    name: "Rename",
+    name: game.i18n.localize("lancer.commonSheet.context.rename.label"),
     icon: '<i class="fas fa-fw fa-edit"></i>',
     callback: async html => {
       let full_path = path(html)! + html[0].dataset.renameSubpath;

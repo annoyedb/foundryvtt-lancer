@@ -658,10 +658,15 @@ export class LancerItem<out SubType extends Item.SubType = Item.SubType> extends
     path = path ?? "system.core_system";
     console.log("Core system activation flow on path", path);
     const actionName = this.system.core_system.active_actions[0]?.name ?? this.system.core_system.active_name;
+    const i18nTitle = game.i18n
+      .format("lancer.chatCard.title.coreActivation.label", {
+        title: actionName ? actionName?.toString() : game.i18n.localize("lancer.common.activation.unknown.label"),
+      })
+      .toUpperCase();
     // Construct a fake "action" for the frame's core system
     const action: ActionData = {
       lid: this.system.lid + "_core_system",
-      name: `CORE ACTIVATION :: ${actionName}`,
+      name: i18nTitle,
       activation: this.system.core_system.activation,
       detail: this.system.core_system.active_effect,
       // The rest doesn't matter, give it some defaults

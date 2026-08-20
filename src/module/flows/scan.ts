@@ -88,7 +88,7 @@ async function initScanData(state: FlowState<LancerFlowState.ScanData>): Promise
     .map(item => {
       if (item.system.origin?.name === "EXOTIC") {
         return {
-          name: "UNKNOWN EXOTIC WEAPON",
+          name: game.i18n.localize("lancer.setting.scanOutput.exotic.weapon.label"),
           weapon_type: item.system.weapon_type || "Unknown",
         };
       }
@@ -120,7 +120,7 @@ async function initScanData(state: FlowState<LancerFlowState.ScanData>): Promise
       if (!item.is_npc_feature()) return null;
       if (item.system.origin?.name === "EXOTIC") {
         return {
-          name: "UNKNOWN EXOTIC TECH ATTACK",
+          name: game.i18n.localize("lancer.setting.scanOutput.exotic.techAttack.label"),
           type: NpcFeatureType.Tech,
           effect: "",
           range: { type: RangeType.Range, val: state.data?.target?.actor?.system.sensor_range || 0 },
@@ -153,7 +153,7 @@ async function initScanData(state: FlowState<LancerFlowState.ScanData>): Promise
       if (!item.is_npc_feature()) return null;
       if (item.system.origin?.name === "EXOTIC") {
         return {
-          name: "UNKNOWN EXOTIC SYSTEM",
+          name: game.i18n.localize("lancer.setting.scanOutput.exotic.system.label"),
           type: item.system.type || NpcFeatureType.Trait,
           effect: "",
         };
@@ -177,7 +177,7 @@ async function initScanData(state: FlowState<LancerFlowState.ScanData>): Promise
       if (!item.is_npc_feature()) return null;
       if (item.system.origin?.name === "EXOTIC") {
         return {
-          name: "UNKNOWN EXOTIC TRAIT",
+          name: game.i18n.localize("lancer.setting.scanOutput.exotic.trait.label"),
           type: item.system.type || NpcFeatureType.Trait,
           effect: "",
         };

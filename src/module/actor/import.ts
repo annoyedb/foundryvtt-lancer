@@ -522,7 +522,7 @@ export async function importCCv3(
         pilot.createEmbeddedDocuments("Item", [
           {
             type: EntryType.SKILL,
-            name: item.id ?? "Custom Skill",
+            name: item.id ?? game.i18n.localize("lancer.common.item.skill.custom.label"),
             system: <any>{
               rank: item.rank,
               description: item.custom_desc || item.custom_detail || "",
