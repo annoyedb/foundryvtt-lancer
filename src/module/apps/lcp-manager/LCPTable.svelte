@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { type ContentSummary, generateLCPSummary, generateMultiLCPSummary, type LCPData } from "../../util/lcps";
+  import { type ContentSummary, generateLCPSummary, type LCPData } from "../../util/lcps";
   import { SvelteMap, SvelteSet } from "svelte/reactivity";
   import type { IContentPack } from "../../util/unpacking/packed-types";
 
@@ -8,14 +8,19 @@
     lcpData: LCPData[];
 
     onRowHovered: (s: ContentSummary | null) => void;
-    onAggregateSummary: (s: ContentSummary | null) => void;
-    onImportMany: (p: IContentPack[] | null) => void;
-    onClearCompendiums: () => void;
+    onSelectionChanged: (packs: IContentPack[]) => void;
 
     disabled: boolean;
   }
 
-  let { lcpData, onRowHovered, onAggregateSummary, onImportMany, onClearCompendiums, disabled = false }: Props = $props();
+  let {
+    lcpData,
+
+    onRowHovered,
+    onSelectionChanged,
+
+    disabled = false,
+  }: Props = $props();
 
   let selectableRows = new SvelteSet<string>();
   let selectedRows = new SvelteMap<string, boolean>();
@@ -28,7 +33,7 @@
         if (Boolean(pack.availableVersion)) selectableRows.add(pack.id);
       }
     }
-    aggregateSummary();
+    dispatchSelection();
   });
 
   function toggleSelectAllOfficial() {
@@ -41,34 +46,12 @@
 
   function toggleRow(packId: string) {
     selectedRows.set(packId, !selectedRows.get(packId));
-    aggregateSummary();
+    dispatchSelection();
   }
 
-  const aggregateManifest = {
-    author: "Massif Press",
-    name: game.i18n.localize("lancer.lcpManager.header.selectedOfficial.label"),
-    version: "",
-    item_prefix: "",
-    description: "",
-    website: "https://massif-press.itch.io/",
-  };
-  function generateAggregateSummary() {
+  function dispatchSelection() {
     const selected = lcpData.filter(p => selectedRows.get(p.id) === true);
-    if (!selected.length) return null;
-    if (selected.length === 1) {
-      const summary = generateLCPSummary(selected[0].cp);
-      summary.aggregate = true;
-      return summary;
-    }
-    return generateMultiLCPSummary(
-      aggregateManifest,
-      selected.filter(p => Boolean(p.cp)).map(p => p.cp!)
-    );
-  }
-
-  function aggregateSummary() {
-    const summary = generateAggregateSummary();
-    onAggregateSummary(summary);
+    onSelectionChanged(selected.flatMap(p => (p.cp ? [p.cp] : [])));
   }
 
   let hoveredRow: string | null = null;
@@ -91,11 +74,6 @@
       }
     }, 50);
   }
-
-  function dispatchLCPsToInstall() {
-    const selected = lcpData.filter(p => selectedRows.get(p.id));
-    onImportMany(selected.flatMap(p => (p.cp ? [p.cp] : [])));
-  }
 </script>
 
 <div class="lcp-table flexcol">
@@ -114,7 +92,7 @@
             {disabled}
             bind:checked={allRowsSelected}
             onclick={toggleSelectAllOfficial}
-            onchange={aggregateSummary}
+            onchange={dispatchSelection}
           >
         </div>
         <span>{game.i18n.localize("lancer.lcpManager.table.title.label")}</span>
@@ -141,7 +119,7 @@
               type="checkbox"
               {disabled}
               bind:checked={() => selectedRows.get(pack.id) ?? false, v => selectedRows.set(pack.id, v)}
-              onchange={aggregateSummary}
+              onchange={dispatchSelection}
               onclick={e => e.stopPropagation()}
             >
           {:else}
@@ -183,42 +161,11 @@
       {/each}
     </div>
   </div>
-
-  <div class="lcp-table__buttons">
-    <button
-      type="button"
-      class="lancer-button lcp-bulk-import"
-      title={game.i18n.localize("lancer.lcpManager.importSelected.label")}
-      tabindex="-1"
-      disabled={disabled || !lcpData.some(p => selectedRows.get(p.id))}
-      onclick={dispatchLCPsToInstall}
-    >
-      <i class="cci cci-content-manager i--4"></i>
-      {game.i18n.localize("lancer.lcpManager.importSelected.label")}
-    </button>
-
-    <button
-      type="button"
-      id="clear-button"
-      class="lancer-button lcp-clear-all"
-      title={game.i18n.localize("lancer.lcpManager.clearCompendiumData.label")}
-      tabindex="-1"
-      disabled={disabled || !lcpData.some(p => p.currentVersion !== "--")}
-      onclick={onClearCompendiums}
-    >
-      <i class="fas fa-trash i--2"></i>
-      {game.i18n.localize("lancer.lcpManager.clearCompendiumData.label")}
-    </button>
-  </div>
 </div>
 
 <style lang="scss">
   @layer lancer {
     @layer applications {
-      button {
-        border-radius: 2px;
-      }
-
       .lcp-table {
         flex-grow: 1;
         flex-shrink: 1;
@@ -282,28 +229,6 @@
 
         .content-icon {
           justify-self: center;
-        }
-      }
-
-      .lcp-table__buttons {
-        flex-grow: 0;
-        flex-shrink: 0;
-        flex-basis: auto;
-
-        .lcp-bulk-import,
-        .lcp-clear-all {
-          width: 100%;
-          max-height: 3em;
-          margin: 0.5em 0;
-        }
-
-        .lcp-clear-all {
-          background-color: var(--background-color);
-          border: 1px solid var(--lighten-5);
-          &:hover {
-            background-color: var(--color-level-error-bg) !important;
-            border: 1px solid var(--color-level-error-border) !important;
-          }
         }
       }
     }

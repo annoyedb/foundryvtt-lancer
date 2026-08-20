@@ -28,7 +28,7 @@
     },
     {
       "id": "lcpUpdate",
-      "selector": ".lcp-manager .lcp-table button.lcp-bulk-import",
+      "selector": ".lcp-manager .lcp-actions button.lcp-bulk-import",
       "title": "lancer.tour.lcp.lcpUpdate.title",
       "content": "lancer.tour.lcp.lcpUpdate.content",
       "inApp": true
@@ -42,14 +42,14 @@
     },
     {
       "id": "lcpImport",
-      "selector": ".lcp-manager .lcp-details button.lcp-import",
+      "selector": ".lcp-manager .lcp-actions button.lcp-bulk-import",
       "title": "lancer.tour.lcp.lcpImport.title",
       "content": "lancer.tour.lcp.lcpImport.content",
       "inApp": true
     },
     {
       "id": "clearData",
-      "selector": ".lcp-manager .lcp-table button.lcp-clear-all",
+      "selector": ".lcp-manager .lcp-actions button.lcp-clear-all",
       "title": "lancer.tour.lcp.clearData.title",
       "content": "lancer.tour.lcp.clearData.content",
       "inApp": true

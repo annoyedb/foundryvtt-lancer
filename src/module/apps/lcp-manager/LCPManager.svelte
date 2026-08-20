@@ -3,10 +3,19 @@
   import { LANCER } from "../../config";
   import Spinner from "../components/Spinner.svelte";
   import LCPDetails from "./LCPDetails.svelte";
+  import LLPDetails from "./LLPDetails.svelte";
   import LCPSelector from "./LCPSelector.svelte";
-  import { type ContentSummary, getOfficialData, type LCPData, mergeOfficialDataAndLcpIndex } from "../../util/lcps";
+  import {
+    type ContentSummary,
+    type LCPData,
+    getOfficialData,
+    mergeOfficialDataAndLcpIndex,
+    summarizeStagedPacks,
+  } from "../../util/lcps";
+  import { cacheLanguagePatches, summarizeLanguagePatches } from "../../util/llp";
   import LCPTable from "./LCPTable.svelte";
-  import type { IContentPack, IContentPackManifest } from "../../util/unpacking/packed-types";
+  import LCPActions from "./LCPActions.svelte";
+  import type { IContentPack, IContentPackManifest, PackedLanguagePatchWrapper } from "../../util/unpacking/packed-types";
   import { clearCompendiumData, importCP } from "../../comp-builder";
   import { LCPIndex } from "./lcp-manager";
   const lp = LANCER.log_prefix;
@@ -18,28 +27,37 @@
   let { loading = $bindable(true) }: Props = $props();
 
   let lcpData = $state<LCPData[]>([]);
-  let contentPacks = $state<IContentPack[]>([]);
-  let fileContentSummary = $state<ContentSummary | null>(null);
+
+  let languagePatches = $state<PackedLanguagePatchWrapper[]>([]);
+  let cachingPatches = $state(false);
+  let tablePacks = $state<IContentPack[]>([]); // This is batched with filePacks
+  let filePacks = $state<IContentPack[]>([]); // to generate one summary and one import call
+  let stagedPacks = $derived([...tablePacks, ...filePacks]);
+
+  let stagedSummary = $derived(summarizeStagedPacks(tablePacks, filePacks));
+  let patchSummary = $derived(summarizeLanguagePatches(languagePatches));
   let hoveredContentSummary = $state<ContentSummary | null>(null);
-  let aggregateContentSummary = $state<ContentSummary | null>(null);
+  let injectedContentSummary = $state<ContentSummary | null>(null); // Is only here to facilitate tours
+  let contentSummary: ContentSummary | null = $derived(
+    // Hovering a table row previews that row on top of the staged summary; it stages nothing
+    injectedContentSummary ?? hoveredContentSummary ?? stagedSummary
+  );
+
+  let canImport = $derived(stagedPacks.length > 0 || languagePatches.length > 0);
+  let canClear = $derived(lcpData.some(lcp => lcp.currentVersion !== "--"));
+  let coreVersion = $derived(lcpData.find(lcp => lcp.id === "core")?.currentVersion);
+
   let importingLcp = $state<IContentPack | null>(null);
   let importing = $state(false);
   let importingMany = $state(false);
   let clearing = $state(false);
+  let busy = $derived(importing || importingMany || clearing || cachingPatches);
   let barWidth = $state(0);
   let secondBarWidth = $state(0);
-  let injectedContentSummary = $state<ContentSummary | null>(null); // Is only here to facilitate tours
-
-  let busy = $derived(importing || importingMany || clearing);
-  let contentSummary: ContentSummary | null = $derived(
-    injectedContentSummary ?? hoveredContentSummary ?? fileContentSummary ?? aggregateContentSummary
-  );
-  let showImportButton = $derived(hoveredContentSummary !== null && !contentSummary?.aggregate);
-  let coreVersion = $derived(lcpData.find(lcp => lcp.id === "core")?.currentVersion);
 
   export function injectContentPack(content: ContentSummary | null) {
     // Is only here to facilitate tours
-    injectedContentSummary = contentSummary;
+    injectedContentSummary = content;
   }
 
   async function init() {
@@ -56,25 +74,20 @@
     return initPromise;
   }
 
-  function lcpLoaded(packs: IContentPack[] | null, summary: ContentSummary | null) {
-    if (!packs || !summary) {
-      packs = [];
-      fileContentSummary = null;
-      return;
-    }
+  function lcpsLoaded(packs: IContentPack[]) {
+    filePacks = packs;
+  }
 
-    fileContentSummary = summary;
-    contentPacks = packs;
+  function llpsLoaded(patches: PackedLanguagePatchWrapper[]) {
+    languagePatches = patches;
   }
 
   function lcpHovered(summary: ContentSummary | null) {
     hoveredContentSummary = summary;
   }
 
-  function updateAggregateSummary(summary: ContentSummary | null) {
-    aggregateContentSummary = summary;
-    contentPacks = [];
-    fileContentSummary = null;
+  function tableSelectionChanged(packs: IContentPack[]) {
+    tablePacks = packs;
   }
 
   async function updateLcpIndex(manifest: IContentPackManifest) {
@@ -121,11 +134,15 @@
     barWidth = 0;
     importingLcp = cp;
     updateProgressBar(0, 1);
-    console.log(`${lp} Starting import of ${cp.manifest.name} v${cp.manifest.version}.`);
-    console.log(`${lp} Parsed content pack:`, cp);
+    console.log(
+      `${lp} Starting import of '${$state.snapshot(cp.manifest.name)} v${$state.snapshot(cp.manifest.version)}'.`
+    );
+    console.log(`${lp} Parsed content pack:`, $state.snapshot(cp));
     await importCP(cp, (x, y) => updateProgressBar(x, y));
     updateProgressBar(1, 1);
-    console.log(`${lp} Import of ${cp.manifest.name} v${cp.manifest.version} complete.`);
+    console.log(
+      `${lp} Import of ${$state.snapshot(cp.manifest.name)} v${$state.snapshot(cp.manifest.version)} complete.`
+    );
     importing = false;
     setTimeout(() => {
       if (!importing && !importingMany) importingLcp = null;
@@ -137,8 +154,7 @@
     await updateLcpIndex(manifest);
   }
 
-  async function importManyLcps(lcps: IContentPack[] | null = null) {
-    if (!lcps) lcps = contentPacks;
+  async function importManyLcps(lcps: IContentPack[]) {
     if (!_canImportLcp()) return;
     importingMany = true;
     secondBarWidth = 0;
@@ -148,6 +164,27 @@
       await importLcp(cp);
     }
     importingMany = false;
+  }
+
+  async function importLlps() {
+    if (!languagePatches.length) return;
+    if (!game.user?.isGM) {
+      ui.notifications!.warn(game.i18n.localize("lancer.lcpManager.warning.privileges.label"));
+      return;
+    }
+    cachingPatches = true;
+    console.log(`${lp} Caching ${languagePatches.length} language patch(es).`, $state.snapshot(languagePatches));
+    const { stored, replaced } = await cacheLanguagePatches($state.snapshot(languagePatches));
+    if (!stored) return;
+    const message = [game.i18n.format("lancer.lcpManager.info.llpDone.label", { count: `${stored}` })];
+    if (replaced) message.push(game.i18n.format("lancer.lcpManager.info.llpReplaced.label", { count: `${replaced}` }));
+    ui.notifications?.info(message.join(" "));
+    cachingPatches = false;
+  }
+
+  async function importStaged() {
+    if (stagedPacks.length) await importManyLcps(stagedPacks);
+    await importLlps();
   }
 
   function updateProgressBar(done: number, outOf: number) {
@@ -186,22 +223,28 @@
           {lcpData}
           disabled={busy}
           onRowHovered={lcpHovered}
-          onAggregateSummary={updateAggregateSummary}
-          onImportMany={importManyLcps}
-          onClearCompendiums={clearCompendiums}
+          onSelectionChanged={tableSelectionChanged}
         />
         <LCPSelector
           disabled={busy}
-          onImport={lcpLoaded}
+          onLCPsLoaded={lcpsLoaded}
+          onLLPsLoaded={llpsLoaded}
+        />
+        <LCPActions
+          disabled={busy}
+          canImport={canImport}
+          canClear={canClear}
+          onImport={importStaged}
+          onClearCompendiums={clearCompendiums}
         />
       </div>
       <div class="lcp-manager__detail-column">
-        <LCPDetails
-          disabled={busy}
-          showImportButton={showImportButton}
-          contentSummary={contentSummary}
-          onImportMany={importManyLcps}
-        />
+        {#if patchSummary}
+          <LLPDetails patchSummary={patchSummary} />
+        {/if}
+        {#if !patchSummary || contentSummary}
+          <LCPDetails contentSummary={contentSummary} />
+        {/if}
       </div>
     </div>
     <div class="lcp-manager__progress-area">
@@ -235,6 +278,10 @@
   @layer lancer {
     @layer applications {
       @container lcp-manager (max-width: 40rem) {
+        .lcp-manager__main-content {
+          gap: 5px;
+        }
+
         .lcp-manager__import-column {
           max-height: 60%;
         }
@@ -261,6 +308,7 @@
             overflow: hidden;
             overflow-y: auto;
             min-height: 0;
+            gap: 5px;
           }
 
           .lcp-manager__import-column {

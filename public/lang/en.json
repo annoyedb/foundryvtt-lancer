@@ -903,6 +903,23 @@
         },
         "selectedOfficial": {
           "label": "Selected Official Sources"
+        },
+        "selectedLcps": {
+          "label": "Selected LCPs"
+        },
+        "noLlpSelected": {
+          "label": "No Language Patch Selected"
+        },
+        "selectedLlps": {
+          "label": "Selected Language Patches"
+        }
+      },
+      "info": {
+        "llpDone": {
+          "label": "Cached {count} LLP file(s)."
+        },
+        "llpReplaced": {
+          "label": "{count} already-cached entries were replaced."
         }
       },
       "warning": {
@@ -919,6 +936,15 @@
         },
         "lcpLoadFailed": {
           "label": "Failed to load LCP"
+        },
+        "unsupportedFileType": {
+          "label": "{file} is not an LCP or LLP file."
+        },
+        "llpParseFailed": {
+          "label": "{file} could not be read as JSON."
+        },
+        "invalidLlp": {
+          "label": "{file} is an invalid LLP; missing 'lang', 'target', and 'data' fields."
         }
       },
       "clearCompendium": {
@@ -963,6 +989,35 @@
       },
       "clearCompendiumData": {
         "label": "Clear Compendium Data"
+      },
+      "writtenBy": {
+        "label": "by"
+      },
+      "various": {
+        "label": "various"
+      },
+      "llp": {
+        "lines": {
+          "label": "translated lines"
+        },
+        "language": {
+          "label": "Language"
+        },
+        "target": {
+          "label": "LCP"
+        },
+        "targetVersion": {
+          "label": "LCP version"
+        },
+        "lastUpdate": {
+          "label": "Last updated"
+        },
+        "included": {
+          "label": "Includes"
+        },
+        "import": {
+          "label": "Import LLP"
+        }
       }
     },
     "setting": {

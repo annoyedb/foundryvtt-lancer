@@ -1,18 +1,12 @@
 <script lang="ts">
   import { fade } from "svelte/transition";
   import type { ContentSummary } from "../../util/lcps";
-  import type { IContentPack } from "../../util/unpacking/packed-types";
 
   interface Props {
     contentSummary: ContentSummary | null;
-    showImportButton: boolean;
-
-    onImportMany: (p: IContentPack[] | null) => void;
-
-    disabled: boolean;
   }
 
-  let { contentSummary, showImportButton, onImportMany, disabled = false }: Props = $props();
+  let { contentSummary }: Props = $props();
 
   const FADE_MS = 100;
 
@@ -168,11 +162,11 @@
             href={contentSummary.website}
             class="medium card clipped"
           >
-            by {contentSummary.author}
+            {game.i18n.localize("lancer.lcpManager.writtenBy.label")} {contentSummary.author}
           </a>
         {:else}
           <div class="medium card clipped">
-            by {contentSummary.author}
+            {game.i18n.localize("lancer.lcpManager.writtenBy.label")} {contentSummary.author}
           </div>
         {/if}
         <div class="lcp-details__content {imageExpanded ? 'image-expanded' : ''}">
@@ -181,20 +175,6 @@
             {@render lcpImage(contentSummary)}
           {/if}
         </div>
-        {#if !showImportButton && !contentSummary.aggregate}
-          <button
-            transition:fade|global
-            type="button"
-            class="lcp-import"
-            title={game.i18n.localize("lancer.lcpManager.importLcp.label")}
-            tabindex="-1"
-            {disabled}
-            onclick={() => onImportMany(null)}
-          >
-            <i class="cci cci-content-manager i--4"></i>
-            {game.i18n.localize("lancer.lcpManager.importLcp.label")}
-          </button>
-        {/if}
       {/if}
     </div>
   {/key}
@@ -203,10 +183,6 @@
 <style lang="scss">
   @layer lancer {
     @layer components {
-      button {
-        border-radius: 2px;
-      }
-
       .lcp-details {
         display: grid;
         height: 100%;
@@ -258,25 +234,25 @@
         overflow-y: auto;
 
         background-color: var(--darken-1);
-        margin-right: 5px;
         padding: 10px;
 
         transition: opacity 250ms ease;
       }
 
       .lcp-image {
+        display: flex;
+        justify-content: center;
+        align-items: stretch;
         flex-grow: 0;
         flex-shrink: 0;
         flex-basis: auto;
 
+        min-height: 0;
         min-width: 150px;
         max-width: 150px;
-
-        display: flex;
-        justify-content: center;
-        align-items: stretch;
-        min-height: 0;
         overflow: hidden;
+
+        margin-left: 5px;
 
         transition: opacity 250ms ease;
       }
