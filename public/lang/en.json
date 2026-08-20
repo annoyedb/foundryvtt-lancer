@@ -83,7 +83,8 @@
           "label": "Status"
         },
         "bonus": {
-          "label": "Bonus"
+          "label": "Bonus",
+          "plural": "Bonuses"
         },
         "prerequisite": {
           "label": "Prerequisite"
@@ -111,6 +112,14 @@
         "manufacturer": {
           "label": "Manufacturer",
           "plural": "Manufacturers"
+        },
+        "override": {
+          "label": "Override",
+          "plural": "Overrides"
+        },
+        "primary": {
+          "label": "Primary",
+          "plural": "Primaries"
         }
       },
       "state": {
@@ -392,7 +401,11 @@
         },
         "skill": {
           "label": "Skill",
-          "plural": "Skills"
+          "plural": "Skills",
+          "custom": {
+            "label": "Custom Skill",
+            "plural": "Custom Skills"
+          }
         },
         "status": {
           "label": "Status/Condition",
@@ -477,6 +490,29 @@
       },
       "integratedItems": {
         "label": "Integrated Items"
+      },
+      "context": {
+        "markRepaired": {
+          "label": "Mark Repaired"
+        },
+        "markDestroyed": {
+          "label": "Mark Destroyed"
+        },
+        "deleteDocument": {
+          "label": "Delete Document"
+        },
+        "unlink": {
+          "label": "Unlink"
+        },
+        "remove": {
+          "label": "Remove"
+        },
+        "edit": {
+          "label": "Edit"
+        },
+        "rename": {
+          "label": "Rename"
+        }
       }
     },
     "deployableSheet": {
@@ -496,6 +532,20 @@
       },
       "baseStats": {
         "label": "Base Stats"
+      },
+      "action": {
+        "activate": {
+          "label": "Activate"
+        },
+        "deactivate": {
+          "label": "Deactivate"
+        },
+        "recall": {
+          "label": "Recall"
+        },
+        "redeploy": {
+          "label": "Redeploy"
+        }
       }
     },
     "mechSheet": {
@@ -837,6 +887,9 @@
         },
         "talent": {
           "label": "Talent :: {title} {lvl}"
+        },
+        "coreActivation": {
+          "label": "Core Activation :: {title}"
         }
       },
       "attack": {
@@ -887,6 +940,19 @@
         },
         "inherited": {
           "label": "Inherited"
+        }
+      },
+      "pilot": {
+        "mech": {
+          "label": "Pilot → Mech Bonuses"
+        },
+        "deployable": {
+          "label": "Pilot → Deployable Bonuses"
+        }
+      },
+      "npc": {
+        "deployable": {
+          "label": "NPC → Deployable Bonuses"
         }
       }
     },
@@ -1007,7 +1073,21 @@
         "hint": "Where should scan results be recorded?",
         "both": "Chat & Journal",
         "chat": "Chat only",
-        "journal": "Journal only"
+        "journal": "Journal only",
+        "exotic": {
+          "weapon": {
+            "label": "UNKNOWN EXOTIC WEAPON"
+          },
+          "techAttack": {
+            "label": "UNKNOWN EXOTIC TECH ATTACK"
+          },
+          "system": {
+            "label": "UNKNOWN EXOTIC SYSTEM"
+          },
+          "trait": {
+            "label": "UNKNOWN EXOTIC TRAIT"
+          }
+        }
       },
       "statusIconsConfig": {
         "menu": {
