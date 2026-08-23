@@ -55,7 +55,7 @@
               {game.i18n.localize("lancer.lcpManager.llp.lines.label")}
             </li>
             {@render field(game.i18n.localize("lancer.lcpManager.llp.language.label"), patchSummary.lang)}
-            {@render field(game.i18n.localize("lancer.lcpManager.llp.targetVersion.label"), patchSummary.target)}
+            {@render field(game.i18n.localize("lancer.lcpManager.llp.target.label"), patchSummary.target)}
             {#if patchSummary.targetVersion}
               {@render field(game.i18n.localize("lancer.lcpManager.llp.targetVersion.label"), patchSummary.targetVersion)}
             {/if}
@@ -63,7 +63,7 @@
               {@render field(game.i18n.localize("lancer.lcpManager.llp.lastUpdate.label"), patchSummary.lastUpdate)}
             {/if}
           </ul>
-          {#if patchSummary.aggregate}
+          {#if patchSummary.entries.length}
             <span>{game.i18n.localize("lancer.lcpManager.llp.included.label")}:</span>
             <ul>
               {#each patchSummary.entries as entry (`${entry.lang}/${entry.target}`)}

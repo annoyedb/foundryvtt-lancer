@@ -169,7 +169,7 @@
             {game.i18n.localize("lancer.lcpManager.writtenBy.label")} {contentSummary.author}
           </div>
         {/if}
-        <div class="lcp-details__content {imageExpanded ? 'image-expanded' : ''}">
+        <div class={["lcp-details__content", imageExpanded && "image-expanded"]}>
           {@render lcpDescription(contentSummary)}
           {#if contentSummary.image_url}
             {@render lcpImage(contentSummary)}

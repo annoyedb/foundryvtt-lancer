@@ -1171,6 +1171,6 @@ export interface PackedLanguagePatchWrapper {
   translation_version: string;
   last_update: string;
   translator: string;
-  website: string;
+  website?: string;
   data: { [key: string]: string };
 }

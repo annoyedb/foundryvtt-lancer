@@ -1,5 +1,7 @@
 import { LANCER } from "../config";
-import { type PackedLanguagePatchWrapper } from "./unpacking/packed-types";
+import { CORE_BREW_ID, type LCPData } from "./lcps";
+import type { OfficialLocaleHandle } from "./llp-fetch";
+import { type IContentPackManifest, type PackedLanguagePatchWrapper } from "./unpacking/packed-types";
 
 /**
  * Summary of an LLP's contents, for use in the LCP Manager app.
@@ -20,19 +22,157 @@ export type LLPSummaryEntry = {
 
 /**
  * Summary wrapper for LCP Language Patches, for use in the LCP Manager app.
- * @param aggregate - True when this rolls up more than one patch, in which case `entries` carries the breakdown
  * @param targetVersion - Version range of the LCP the translation was written against
  * @param lastUpdate
  * @param website
- * @param entries
+ * @param entries - Empty if only one summary is being generated
  */
 export type LLPSummary = LLPSummaryEntry & {
-  aggregate: boolean;
   targetVersion: string;
   lastUpdate: string;
   website: string;
   entries: LLPSummaryEntry[];
 };
+
+/**
+ * For LLP table rows represented in the LCP Manager
+ * @param id - Composite of `lang` and the `LCPData.id` the patch matched, or its own `target` when it matched nothing,
+ * so that we can immediately sort out LLPs targeting the same language and LCP
+ * @param title - ISO lang code converted to the actual language name (e.g. `ru` -> `Russian`)
+ * @param translator - same as `author`
+ * @param currentVersion - `translation_version` of the installed patch, or `--`
+ * @param availableVersion - `translation_version` on offer, or `--`
+ * @param url - Author `website`
+ * @param patch - The current installed patch, for summary previews
+ * @param fetchHandle - Fetching metadata
+ * @remark
+ */
+export type LLPRow = {
+  id: string;
+  title: string;
+  translator: string;
+  currentVersion: string;
+  availableVersion: string;
+  url?: string;
+  patch?: PackedLanguagePatchWrapper;
+  fetchHandle?: OfficialLocaleHandle;
+};
+
+/**
+ * Wrapper to separate orphaned LLPs
+ * @param matched - Rows nested under the pack they translate, keyed by `LCPData.id`
+ * @param orphaned - Rows for packs that are not installed to be listed on their own at the end
+ */
+export type LLPRows = {
+  matched: Map<string, LLPRow[]>;
+  orphaned: LLPRow[];
+};
+
+/**
+ * Arbitrary name for Lancer core data so that core data LLPs built here have something to actually target
+ */
+export const CORE_PATCH_TARGET = "lancer-data";
+
+/**
+ * Builds for the LCP Manager rows of installed/available LLPs into one row per language per pack.
+ *
+ * An LLP targeting an LCP that is not installed is orphaned to a separate area at the bottom of the table and will
+ * get adopted when the target pack is installed.
+ * @param packs - Every pack the table lists, official and manually installed alike
+ * @param installed - Cached patches, from `getInstalledPatches`
+ * @param offered - Listing entries, from `listOfficialLocales`
+ * @remarks
+ */
+export function buildLLPRows(
+  packs: LCPData[],
+  installed: PackedLanguagePatchWrapper[],
+  offered: OfficialLocaleHandle[]
+): LLPRows {
+  const matched = new Map<string, LLPRow[]>();
+  const orphaned: LLPRow[] = []; // alms, alms, alms
+  const rows = new Map<string, LLPRow>(); // Every single row
+
+  // Row builder
+  function rowFor(id: string, title: string, into: LLPRow[]): LLPRow {
+    let row = rows.get(id);
+    if (!row) {
+      row = {
+        id: id,
+        title: title,
+        translator: "",
+        currentVersion: "--",
+        availableVersion: "--",
+      };
+      rows.set(id, row);
+      into.push(row);
+    }
+    return row;
+  }
+
+  function rowsUnder(packId: string): LLPRow[] {
+    let packRows = matched.get(packId);
+    if (!packRows) matched.set(packId, (packRows = []));
+    return packRows;
+  }
+
+  const packsByTarget = new Map<string, string>();
+  for (const pack of packs) {
+    for (const target of patchTargetsFor(pack)) packsByTarget.set(target, pack.id);
+  }
+
+  // Build installed
+  for (const patch of installed) {
+    const packId = packsByTarget.get(patch.target);
+    const langCode = normalizeLanguageCode(patch.lang);
+    const langLabel = getLanguageLabel(langCode);
+    /**
+     * Concatenated `packId` to `lang` instead of `target` because LLP authors arbitrarily pick between
+     * item_prefix and name as `target`s, which isn't helpful to know what exactly is being targeted.
+     * And because official content right now don't even have `target`s
+     *
+     * Orphaned LLPs have no pack id to key on and use their own `target` in its place.
+     */
+    const row = packId
+      ? rowFor(`${langCode}/${packId}`, langLabel, rowsUnder(packId))
+      : rowFor(`${langCode}/${patch.target}`, `${patch.target} (${langLabel})`, orphaned);
+    row.translator = patch.translator || row.translator;
+    row.currentVersion = patch.translation_version || "--";
+    row.url = patch.website || row.url;
+    row.patch = patch;
+  }
+
+  // Build official
+  for (const locale of offered) {
+    const language = getLanguageLabel(locale.code);
+    const row = rowFor(`${normalizeLanguageCode(locale.code)}/${locale.packId}`, language, rowsUnder(locale.packId));
+    row.title = language;
+    row.availableVersion = locale.version || "--";
+    row.fetchHandle = locale;
+  }
+
+  const byTitle = (a: LLPRow, b: LLPRow) => a.title.localeCompare(b.title);
+  for (const packRows of matched.values()) packRows.sort(byTitle);
+  orphaned.sort(byTitle); // Group orphans by the pack they are waiting on
+
+  return { matched: matched, orphaned: orphaned };
+}
+
+/**
+ *
+ * @param pack - The pack the patch targets
+ * @return Every `target` string a patch could name this pack by. Empty for a pack the table cannot name, which matches nothing
+ * @remarks LLPs are specced to only use `item_prefix` or `name`
+ */
+export function patchTargetsFor(pack: (LCPData & Partial<IContentPackManifest>) | undefined): string[] {
+  if (pack?.id === CORE_BREW_ID) return [CORE_PATCH_TARGET];
+  const manifest = pack?.cp?.manifest ?? pack;
+  const candidates = [manifest?.item_prefix, manifest?.name];
+  const targets = new Set(
+    // Filter undefined and dupes out (name and item_prefix is the same for w.e reason)
+    candidates.filter((target): target is string => !!target)
+  );
+  return [...targets];
+}
 
 /**
  * The bare minimum for usability is `lang` (the language), `target` (LCP target), and `data` (translation content)
@@ -53,14 +193,6 @@ export function isValidLanguagePatch(obj: unknown): obj is PackedLanguagePatchWr
 }
 
 /**
- * Normalizes potential BCP 47 (Foundry) to ISO locale (e.g. `en-CA` -> `en`)
- * @param lang
- */
-export function normalizeLanguageCode(lang: string): string {
-  return lang.toLowerCase().split("-")[0];
-}
-
-/**
  *
  * @param patch
  * @return Returns the number of locale strings included in the LLP
@@ -76,7 +208,6 @@ export function countPatchLines(patch: PackedLanguagePatchWrapper): number {
  */
 export function generateLLPSummary(patch: PackedLanguagePatchWrapper): LLPSummary {
   return {
-    aggregate: false,
     target: patch.target,
     lang: normalizeLanguageCode(patch.lang),
     translator: patch.translator,
@@ -84,7 +215,7 @@ export function generateLLPSummary(patch: PackedLanguagePatchWrapper): LLPSummar
     targetVersion: patch.target_version,
     lastUpdate: patch.last_update,
     lines: countPatchLines(patch),
-    website: patch.website,
+    website: patch.website ?? "",
     entries: [],
   };
 }
@@ -98,7 +229,6 @@ export function generateMultiLLPSummary(patches: PackedLanguagePatchWrapper[]): 
   const languages = [...new Set(patches.map(patch => normalizeLanguageCode(patch.lang)))].sort();
   const translators = [...new Set(patches.map(patch => patch.translator))];
   return {
-    aggregate: true,
     target: game.i18n.localize("lancer.lcpManager.header.selectedLlps.label"),
     lang: languages.join(", "),
     translator: translators.length === 1 ? translators[0] : game.i18n.localize("lancer.lcpManager.various.label"),
@@ -120,14 +250,17 @@ export function generateMultiLLPSummary(patches: PackedLanguagePatchWrapper[]): 
 /**
  * Summarizes `PackedLanguagePatchWrapper`s staged for import via official sources (table) and unofficial sources (patches)
  * @param official - LCP Language Patches from the checked rows of the official content table
- * @param patches - LCP Language Patches read from the file selector
+ * @param fromFile - LCP Language Patches read from the file selector
  * @return Returns a combined summary, or null when nothing is staged
- * TODO: official stuff (packaged inside the LCPs themselves (I think (maybe)))
+ * TODO: 'official' LLPs packaged inside the LCPs themselves are not handled currently because I don't want to think about priority patching/load orders. As of writing, official LLP content isn't actually versioned and/because we build it directly from fetching it at compcon-locales, so there's no good way to compare against other than to just let the user figure it out
  */
 export function summarizeStagedLanguagePatches(
   official: PackedLanguagePatchWrapper[],
-  patches: PackedLanguagePatchWrapper[]
-) {}
+  fromFile: PackedLanguagePatchWrapper[]
+): LLPSummary | null {
+  if (!fromFile.length && official.length > 1) return generateMultiLLPSummary(official);
+  return summarizeLanguagePatches([...official, ...fromFile]);
+}
 
 /**
  *
@@ -157,11 +290,11 @@ export async function readLanguagePatch(file: File): Promise<PackedLanguagePatch
   try {
     parsed = JSON.parse(await file.text());
   } catch {
-    ui.notifications?.error(game.i18n.format("lancer.lcpManager.error.llpParseFailed.label", { file: file.name }));
+    ui.notifications?.error(game.i18n.format("lancer.lcpManager.error.llpFailedParse.label", { file: file.name }));
     return null;
   }
   if (!isValidLanguagePatch(parsed)) {
-    ui.notifications?.error(game.i18n.format("lancer.lcpManager.error.invalidLlp.label", { file: file.name }));
+    ui.notifications?.error(game.i18n.format("lancer.lcpManager.error.llpInvalid.label", { file: file.name }));
     return null;
   }
   return parsed;
@@ -186,6 +319,15 @@ export async function cacheLanguagePatches(
   }
   if (stored) await game.settings.set(game.system.id, LANCER.setting_localization_llp_map, llpMap);
   return { stored, replaced };
+}
+
+/**
+ * @return Returns an array of all installed patches in the Foundry database
+ * @remark
+ */
+export function getInstalledPatches(): PackedLanguagePatchWrapper[] {
+  const llpMap = game.settings.get(game.system.id, LANCER.setting_localization_llp_map);
+  return Object.values(llpMap).flatMap(packs => Object.values(packs));
 }
 
 /**
@@ -216,6 +358,30 @@ export function satisfiesTargetVersion(version: string, range: string): boolean 
       return !newer;
     default:
       return !newer && !older;
+  }
+}
+
+/**
+ *
+ * @param lang
+ * @return Normalizes potential BCP 47 (Foundry) to ISO locale (e.g. pt_BR`/`pt-br`/whatever -> `pt`)
+ */
+export function normalizeLanguageCode(lang: string): string {
+  const tag = lang.replace(/_/g, "-");
+  return tag.toLowerCase().split("-")[0];
+}
+
+/**
+ *
+ * @param lang - Either locale code + country code (e.g. `pt_BR`/`pt-br`/whatever) or locale-only (e.g. `pt`)
+ * @return A language code as a name in the reader's own locale (e.g. `pt` -> `Portugeuse`). Returns given `code` on failure.
+ */
+export function getLanguageLabel(lang: string): string {
+  const tag = lang.replace(/_/g, "-");
+  try {
+    return new Intl.DisplayNames([game.i18n.lang], { type: "language" }).of(tag) ?? tag;
+  } catch {
+    return tag;
   }
 }
 

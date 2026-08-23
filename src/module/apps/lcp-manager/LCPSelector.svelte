@@ -1,14 +1,14 @@
 <script lang="ts">
-  import { type ContentSummary, readContentPacks, summarizeContentPacks } from "../../util/lcps";
-  import { type LLPSummary, readLanguagePatches, summarizeLanguagePatches } from "../../util/llp";
+  import { readContentPacks } from "../../util/lcps";
+  import { readLanguagePatches } from "../../util/llp";
   import { groupFilesByExtension } from "../../util/files";
   import type { IContentPack, PackedLanguagePatchWrapper } from "../../util/unpacking/packed-types";
   import { LANCER } from "../../config";
   const lp = LANCER.log_prefix;
 
   interface Props {
-    onLCPsLoaded: (packs: IContentPack[], summary: ContentSummary | null) => void;
-    onLLPsLoaded: (patches: PackedLanguagePatchWrapper[], summary: LLPSummary | null) => void;
+    onLCPsLoaded: (packs: IContentPack[]) => void;
+    onLLPsLoaded: (patches: PackedLanguagePatchWrapper[]) => void;
 
     disabled: boolean;
   }
@@ -20,11 +20,11 @@
     disabled = false,
   }: Props = $props();
 
-  export const deselect = () => {
+  const deselect = () => {
     selectedFiles = null;
     filenames = null;
-    onLCPsLoaded([], null);
-    onLLPsLoaded([], null);
+    onLCPsLoaded([]);
+    onLLPsLoaded([]);
   };
 
   let selectedFiles = $state<FileList | null>(null);
@@ -48,8 +48,8 @@
     const [packs, patches] = await Promise.all([readContentPacks(supported.lcp), readLanguagePatches(supported.llp)]);
     reading = false;
 
-    onLCPsLoaded(packs, summarizeContentPacks(packs));
-    onLLPsLoaded(patches, summarizeLanguagePatches(patches));
+    onLCPsLoaded(packs);
+    onLLPsLoaded(patches);
   }
 </script>
 

@@ -8,6 +8,7 @@ import { LANCER } from "./config";
 import { LancerActiveEffect } from "./effects/lancer-active-effect";
 import { applyTheme, applySimpleFonts } from "./themes";
 import fields = foundry.data.fields;
+import type { PackedLanguagePatchWrapper } from "./util/unpacking/packed-types";
 
 export const registerSettings = function () {
   /**
@@ -528,7 +529,7 @@ export class LocalizationOptions extends foundry.abstract.DataModel<Localization
 /**
  * Cache of LLP translation data, keyed first by ISO 639-1 locale code, then by LCP name.
  */
-export type LLPLocalizationMap = Record<string, Record<string, object>>;
+export type LLPLocalizationMap = Record<string, Record<string, PackedLanguagePatchWrapper>>;
 
 //
 // > LANCER INITIATIVE CONFIG

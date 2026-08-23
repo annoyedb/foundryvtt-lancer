@@ -1000,17 +1000,20 @@
         "select": {
           "label": "You must select an LCP file before importing."
         },
-        "lcpLoadFailed": {
+        "lcpFailedLoad": {
           "label": "Failed to load LCP"
         },
         "unsupportedFileType": {
           "label": "{file} is not an LCP or LLP file."
         },
-        "llpParseFailed": {
+        "llpFailedParse": {
           "label": "{file} could not be read as JSON."
         },
-        "invalidLlp": {
+        "llpInvalid": {
           "label": "{file} is an invalid LLP; missing 'lang', 'target', and 'data' fields."
+        },
+        "llpFailedDownload": {
+          "label": "Could not download the {lang} localization for {pack}."
         }
       },
       "clearCompendium": {
@@ -1048,6 +1051,12 @@
         },
         "available": {
           "label": "Available"
+        },
+        "locale": {
+          "tooltip": "Download an official translation for this content"
+        },
+        "orphanLocale": {
+          "tooltip": "Install the content this translates to apply it"
         }
       },
       "importSelected": {

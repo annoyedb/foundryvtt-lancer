@@ -12,7 +12,14 @@
     mergeOfficialDataAndLcpIndex,
     summarizeStagedPacks,
   } from "../../util/lcps";
-  import { cacheLanguagePatches, summarizeLanguagePatches } from "../../util/llp";
+  import {
+    buildLLPRows,
+    cacheLanguagePatches,
+    getInstalledPatches,
+    type LLPSummary,
+    summarizeStagedLanguagePatches,
+  } from "../../util/llp";
+  import { downloadOfficialLocales, listOfficialLocales, type OfficialLocaleHandle } from "../../util/llp-fetch";
   import LCPTable from "./LCPTable.svelte";
   import LCPActions from "./LCPActions.svelte";
   import type { IContentPack, IContentPackManifest, PackedLanguagePatchWrapper } from "../../util/unpacking/packed-types";
@@ -27,31 +34,42 @@
   let { loading = $bindable(true) }: Props = $props();
 
   let lcpData = $state<LCPData[]>([]);
+  let llpData = $state<PackedLanguagePatchWrapper[]>([]); // Language patches from the database cache
 
-  let languagePatches = $state<PackedLanguagePatchWrapper[]>([]);
-  let cachingPatches = $state(false);
+  let llpsAvailable = $state<OfficialLocaleHandle[]>([]); // Locales fetchable from compcon-locales
+  let llpRows = $derived(buildLLPRows(lcpData, llpData, llpsAvailable));
+
   let tablePacks = $state<IContentPack[]>([]); // This is batched with filePacks
   let filePacks = $state<IContentPack[]>([]); // to generate one summary and one import call
   let stagedPacks = $derived([...tablePacks, ...filePacks]);
 
-  let stagedSummary = $derived(summarizeStagedPacks(tablePacks, filePacks));
-  let patchSummary = $derived(summarizeLanguagePatches(languagePatches));
+  let tablePatches = $state<PackedLanguagePatchWrapper[]>([]); // Same as packs but with LCP Language Patches
+  let filePatches = $state<PackedLanguagePatchWrapper[]>([]);
+  let stagedPatches = $derived([...tablePatches, ...filePatches]);
+
+  // Hovering a table row previews that row on top of the staged summary; it stages nothing
+  let stagedContentSummary = $derived(summarizeStagedPacks(tablePacks, filePacks));
   let hoveredContentSummary = $state<ContentSummary | null>(null);
   let injectedContentSummary = $state<ContentSummary | null>(null); // Is only here to facilitate tours
   let contentSummary: ContentSummary | null = $derived(
-    // Hovering a table row previews that row on top of the staged summary; it stages nothing
-    injectedContentSummary ?? hoveredContentSummary ?? stagedSummary
+    injectedContentSummary ?? hoveredContentSummary ?? stagedContentSummary
   );
 
-  let canImport = $derived(stagedPacks.length > 0 || languagePatches.length > 0);
-  let canClear = $derived(lcpData.some(lcp => lcp.currentVersion !== "--"));
-  let coreVersion = $derived(lcpData.find(lcp => lcp.id === "core")?.currentVersion);
+  let stagedPatchSummary = $derived(summarizeStagedLanguagePatches(tablePatches, filePatches));
+  let hoveredPatchSummary = $state<LLPSummary | null>(null);
+  let patchSummary: LLPSummary | null = $derived(hoveredPatchSummary ?? stagedPatchSummary);
 
+  let canImport = $derived(stagedPacks.length > 0 || stagedPatches.length > 0);
+  let canClear = $derived(lcpData.some(lcp => lcp.currentVersion !== "--"));
+
+  let coreVersion = $derived(lcpData.find(lcp => lcp.id === "core")?.currentVersion);
   let importingLcp = $state<IContentPack | null>(null);
   let importing = $state(false);
   let importingMany = $state(false);
   let clearing = $state(false);
-  let busy = $derived(importing || importingMany || clearing || cachingPatches);
+  let downloadingLocale = $state(false);
+  let importingLlps = $state(false);
+  let busy = $derived(importing || importingMany || clearing || importingLlps || downloadingLocale);
   let barWidth = $state(0);
   let secondBarWidth = $state(0);
 
@@ -65,7 +83,9 @@
     const index = new LCPIndex(game.settings.get(game.system.id, LANCER.setting_lcps).index);
     const officialData = await getOfficialData(index);
     lcpData = mergeOfficialDataAndLcpIndex(officialData, index);
+    llpData = getInstalledPatches();
     loading = false;
+    llpsAvailable = await listOfficialLocales(lcpData);
   }
 
   const initPromise = init();
@@ -79,14 +99,29 @@
   }
 
   function llpsLoaded(patches: PackedLanguagePatchWrapper[]) {
-    languagePatches = patches;
+    filePatches = patches;
   }
 
   function lcpHovered(summary: ContentSummary | null) {
     hoveredContentSummary = summary;
   }
 
-  function tableSelectionChanged(packs: IContentPack[]) {
+  function llpHovered(summary: LLPSummary | null) {
+    hoveredPatchSummary = summary;
+  }
+
+  // Download locales only when table rows are checked
+  async function llpSelectionChanged(locales: OfficialLocaleHandle[]) {
+    if (!locales.length) {
+      tablePatches = [];
+      return;
+    }
+    downloadingLocale = true;
+    tablePatches = await downloadOfficialLocales(locales, lcpData);
+    downloadingLocale = false;
+  }
+
+  function lcpSelectionChanged(packs: IContentPack[]) {
     tablePacks = packs;
   }
 
@@ -98,6 +133,7 @@
     if (updatedLcp) updatedLcp.currentVersion = manifest.version;
     else
       lcpData.push({
+        ...manifest,
         title: manifest.name,
         author: manifest.author,
         currentVersion: manifest.version,
@@ -166,25 +202,32 @@
     importingMany = false;
   }
 
-  async function importLlps() {
-    if (!languagePatches.length) return;
+  function _canImportLlp(): boolean {
     if (!game.user?.isGM) {
       ui.notifications!.warn(game.i18n.localize("lancer.lcpManager.warning.privileges.label"));
-      return;
+      return false;
     }
-    cachingPatches = true;
-    console.log(`${lp} Caching ${languagePatches.length} language patch(es).`, $state.snapshot(languagePatches));
-    const { stored, replaced } = await cacheLanguagePatches($state.snapshot(languagePatches));
+    return true;
+  }
+
+  async function importManyLlps(llps: PackedLanguagePatchWrapper[]) {
+    if (!_canImportLlp()) return;
+    importingLlps = true;
+    console.log(`${lp} Starting import of ${llps.length} language patch(es).`, $state.snapshot(llps));
+    const { stored, replaced } = await cacheLanguagePatches($state.snapshot(llps));
+    llpData = getInstalledPatches(); // Refresh table
+    console.log(`${lp} Import of ${stored} language patch(es) complete.`);
+    importingLlps = false;
+
     if (!stored) return;
     const message = [game.i18n.format("lancer.lcpManager.info.llpDone.label", { count: `${stored}` })];
     if (replaced) message.push(game.i18n.format("lancer.lcpManager.info.llpReplaced.label", { count: `${replaced}` }));
     ui.notifications?.info(message.join(" "));
-    cachingPatches = false;
   }
 
   async function importStaged() {
     if (stagedPacks.length) await importManyLcps(stagedPacks);
-    await importLlps();
+    if (stagedPatches.length) await importManyLlps(stagedPatches);
   }
 
   function updateProgressBar(done: number, outOf: number) {
@@ -201,7 +244,8 @@
       },
       content: `
         <p>${game.i18n.localize("lancer.lcpManager.clearCompendium.content.0")}</p>\n
-        <p style="text-align: center"><i class=\"fas fa-triangle-exclamation i--4\"></i> ${game.i18n.localize("lancer.lcpManager.clearCompendium.content.1")}</p>`,
+        <p style="text-align: center"><i class=\"fas fa-triangle-exclamation i--4\"></i> ${game.i18n.localize("lancer.lcpManager.clearCompendium.content.1")}
+      `,
     });
     if (!answer) return;
     clearing = true;
@@ -220,10 +264,13 @@
     <div class="flexrow lcp-manager__main-content" style="flex: 1 1">
       <div class="lcp-manager__import-column">
         <LCPTable
-          {lcpData}
+          lcpData={lcpData}
+          llpRows={llpRows}
+          onLCPHovered={lcpHovered}
+          onLLPHovered={llpHovered}
+          onSelectionChanged={lcpSelectionChanged}
+          onLocalesChanged={llpSelectionChanged}
           disabled={busy}
-          onRowHovered={lcpHovered}
-          onSelectionChanged={tableSelectionChanged}
         />
         <LCPSelector
           disabled={busy}
@@ -231,11 +278,11 @@
           onLLPsLoaded={llpsLoaded}
         />
         <LCPActions
-          disabled={busy}
           canImport={canImport}
           canClear={canClear}
           onImport={importStaged}
           onClearCompendiums={clearCompendiums}
+          disabled={busy}
         />
       </div>
       <div class="lcp-manager__detail-column">
