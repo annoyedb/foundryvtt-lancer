@@ -1,6 +1,6 @@
 <script lang="ts">
   import { fade } from "svelte/transition";
-  import type { LLPSummary } from "../../util/llp";
+  import type { LLPSummary } from "../../util/localization/llp-import";
 
   interface Props {
     patchSummary: LLPSummary | null;

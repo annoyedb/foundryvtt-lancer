@@ -1,11 +1,11 @@
 // Temporary solution probably going to be turned into a permanent solution to not having any official way of accessing
 // locale `data` built by CC's Weblate pipeline that funnels into compcon-locales
-import { LANCER } from "../config";
-import type { LCPData } from "./lcps";
-import { normalizeLanguageCode, patchTargetsFor } from "./llp";
-import type { PackedLanguagePatchWrapper } from "./unpacking/packed-types";
+import { LANCER } from "../../config";
+import type { LCPData } from "../lcps";
+import { normalizeLanguageCode, patchTargetsFor } from "./llp-import";
+import type { PackedLanguagePatchWrapper } from "../unpacking/packed-types";
 
-const lp = LANCER.log_prefix;
+const lp = LANCER.log_prefix + " LLP |";
 
 const REPO = "massif-press/compcon-locales";
 const REF = "master";

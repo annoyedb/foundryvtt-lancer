@@ -1,6 +1,6 @@
 <script lang="ts">
   import { readContentPacks } from "../../util/lcps";
-  import { readLanguagePatches } from "../../util/llp";
+  import { readLanguagePatches } from "../../util/localization/llp-import";
   import { groupFilesByExtension } from "../../util/files";
   import type { IContentPack, PackedLanguagePatchWrapper } from "../../util/unpacking/packed-types";
   import { LANCER } from "../../config";

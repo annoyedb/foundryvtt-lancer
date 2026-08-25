@@ -1,10 +1,10 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import { type ContentSummary, generateLCPSummary, type LCPData } from "../../util/lcps";
-  import { generateLLPSummary, type LLPRow, type LLPRows, type LLPSummary } from "../../util/llp";
+  import { generateLLPSummary, type LLPRow, type LLPRows, type LLPSummary } from "../../util/localization/llp-import";
   import { SvelteMap, SvelteSet } from "svelte/reactivity";
   import type { IContentPack } from "../../util/unpacking/packed-types";
-  import type { OfficialLocaleHandle } from "../../util/llp-fetch";
+  import type { OfficialLocaleHandle } from "../../util/localization/llp-fetch";
 
   interface Props {
     lcpData: LCPData[];

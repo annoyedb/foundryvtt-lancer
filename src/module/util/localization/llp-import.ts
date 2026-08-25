@@ -1,7 +1,7 @@
-import { LANCER } from "../config";
-import { CORE_BREW_ID, type LCPData } from "./lcps";
+import { LANCER } from "../../config";
+import { CORE_BREW_ID, type LCPData } from "../lcps";
 import type { OfficialLocaleHandle } from "./llp-fetch";
-import { type IContentPackManifest, type PackedLanguagePatchWrapper } from "./unpacking/packed-types";
+import { type IContentPackManifest, type PackedLanguagePatchWrapper } from "../unpacking/packed-types";
 
 /**
  * Summary of an LLP's contents, for use in the LCP Manager app.
@@ -143,9 +143,9 @@ export function buildLLPRows(
 
   // Build official
   for (const locale of offered) {
-    const language = getLanguageLabel(locale.code);
-    const row = rowFor(`${normalizeLanguageCode(locale.code)}/${locale.packId}`, language, rowsUnder(locale.packId));
-    row.title = language;
+    const langLabel = getLanguageLabel(locale.code);
+    const row = rowFor(`${normalizeLanguageCode(locale.code)}/${locale.packId}`, langLabel, rowsUnder(locale.packId));
+    row.title = langLabel;
     row.availableVersion = locale.version || "--";
     row.fetchHandle = locale;
   }
@@ -331,6 +331,30 @@ export function getInstalledPatches(): PackedLanguagePatchWrapper[] {
 }
 
 /**
+ *
+ * @param lang
+ * @return Normalizes potential BCP 47 (Foundry) to ISO locale (e.g. pt_BR`/`pt-br`/whatever -> `pt`)
+ */
+export function normalizeLanguageCode(lang: string): string {
+  const tag = lang.replace(/_/g, "-");
+  return tag.toLowerCase().split("-")[0];
+}
+
+/**
+ *
+ * @param lang - Either locale code + country code (e.g. `pt_BR`/`pt-br`/whatever) or locale-only (e.g. `pt`)
+ * @return A language code as a name in the reader's own locale (e.g. `pt` -> `Portugeuse`). Returns given `code` on failure.
+ */
+export function getLanguageLabel(lang: string): string {
+  const tag = lang.replace(/_/g, "-");
+  try {
+    return new Intl.DisplayNames([game.i18n.lang], { type: "language" }).of(tag) ?? tag;
+  } catch {
+    return tag;
+  }
+}
+
+/**
  * Checks a target version against the proposed range
  * @param version Version right now (e.g. `1.0.0`)
  * @param range Version minimum/required (e.g. `>=1.0.0`)
@@ -358,50 +382,5 @@ export function satisfiesTargetVersion(version: string, range: string): boolean 
       return !newer;
     default:
       return !newer && !older;
-  }
-}
-
-/**
- *
- * @param lang
- * @return Normalizes potential BCP 47 (Foundry) to ISO locale (e.g. pt_BR`/`pt-br`/whatever -> `pt`)
- */
-export function normalizeLanguageCode(lang: string): string {
-  const tag = lang.replace(/_/g, "-");
-  return tag.toLowerCase().split("-")[0];
-}
-
-/**
- *
- * @param lang - Either locale code + country code (e.g. `pt_BR`/`pt-br`/whatever) or locale-only (e.g. `pt`)
- * @return A language code as a name in the reader's own locale (e.g. `pt` -> `Portugeuse`). Returns given `code` on failure.
- */
-export function getLanguageLabel(lang: string): string {
-  const tag = lang.replace(/_/g, "-");
-  try {
-    return new Intl.DisplayNames([game.i18n.lang], { type: "language" }).of(tag) ?? tag;
-  } catch {
-    return tag;
-  }
-}
-
-/**
- * Gets the `lid` and `target` path of the localization string
- * @param path
- */
-export function getLocalizationTarget(path: string) {
-  function splitFirst(str: string, sep: string): [string, string] {
-    const idx = str.indexOf(sep);
-    if (idx === -1) return [str, ""];
-    return [str.slice(0, idx), str.slice(idx + sep.length)];
-  }
-
-  const split = splitFirst(path, ".");
-  const lid = split[0];
-  const dotPath = split[1];
-  if (dotPath) {
-    return { lid: lid, target: dotPath };
-  } else {
-    return null;
   }
 }

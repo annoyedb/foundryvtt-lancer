@@ -18,8 +18,13 @@
     getInstalledPatches,
     type LLPSummary,
     summarizeStagedLanguagePatches,
-  } from "../../util/llp";
-  import { downloadOfficialLocales, listOfficialLocales, type OfficialLocaleHandle } from "../../util/llp-fetch";
+  } from "../../util/localization/llp-import";
+  import {
+    downloadOfficialLocales,
+    listOfficialLocales,
+    type OfficialLocaleHandle,
+  } from "../../util/localization/llp-fetch";
+  import { rebuildLLPIndex } from "../../util/localization/llp-index";
   import LCPTable from "./LCPTable.svelte";
   import LCPActions from "./LCPActions.svelte";
   import type { IContentPack, IContentPackManifest, PackedLanguagePatchWrapper } from "../../util/unpacking/packed-types";
@@ -228,6 +233,8 @@
   async function importStaged() {
     if (stagedPacks.length) await importManyLcps(stagedPacks);
     if (stagedPatches.length) await importManyLlps(stagedPatches);
+
+    if (stagedPacks.length || stagedPatches.length) await rebuildLLPIndex(); // Rebuild LLP indices when compendiums are changed
   }
 
   function updateProgressBar(done: number, outOf: number) {
@@ -250,6 +257,7 @@
     if (!answer) return;
     clearing = true;
     await clearCompendiumData();
+    await rebuildLLPIndex(); // Rebuild LLP indices when compendiums are changed
     const officialData = await getOfficialData();
     const index = new LCPIndex(game.settings.get(game.system.id, LANCER.setting_lcps).index);
     lcpData = mergeOfficialDataAndLcpIndex(officialData, index);
