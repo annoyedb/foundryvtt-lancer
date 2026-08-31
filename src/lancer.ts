@@ -75,7 +75,7 @@ import { TalentModel } from "./module/models/items/talent";
 import { LancerTerrain } from "./module/terrain";
 import { LancerToken, LancerTokenDocument, extendTokenConfig } from "./module/token";
 import { lookupOwnedDeployables } from "./module/util/lid";
-import { refreshLLPTranslations } from "./module/util/localization/llp-map";
+import { refreshLLPTranslations, translateCompendiumNames } from "./module/util/localization/llp-map";
 import { fulfillImportActor } from "./module/util/requests";
 
 import { dropStatusToCanvas } from "./module/canvas/drop-status";
@@ -478,6 +478,9 @@ Hooks.on("dropCanvasData", dropStatusToCanvas);
 
 // Create sidebar button to import LCP
 Hooks.on("renderCompendiumDirectory", addLCPManagerButton);
+
+// Translate compendium names when opened
+Hooks.on("renderCompendium", translateCompendiumNames);
 
 // TODO: keep or remove?
 // This seems broken

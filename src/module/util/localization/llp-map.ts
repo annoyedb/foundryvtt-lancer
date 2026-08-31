@@ -16,6 +16,7 @@ import { EntryType } from "../../enums";
 import { get_pack_id } from "../doc";
 
 const lp = LANCER.log_prefix + " LLP |";
+interface ApplicationV2 extends foundry.applications.api.ApplicationV2 {}
 
 //---
 
@@ -31,7 +32,9 @@ const reportStats = foundry.utils.debounce(() => {
   );
   if (stats.missed.size) {
     console.groupCollapsed(`${lp} ${stats.missed.size} fields with no matching key`);
-    for (const miss of [...stats.missed].sort()) console.debug(miss);
+    for (const miss of [...stats.missed].sort()) {
+      console.debug(miss);
+    }
     console.groupEnd();
   }
   stats.applied = 0;
@@ -278,7 +281,7 @@ export function translateActor(actor: LancerActor): void {
  * Applies translations from all the indexing built in llp-index onto Deployables
  * @param lid
  * @param actor
- * @remarks Deployables don't get their translations from their own LID, instead resolved through `aliasDeployableSubtrees`
+ * @remarks Deployables don't get their direct translations from their own LID, instead resolved through `aliasDeployableSubtrees`
  */
 function translateDeployable(lid: string, actor: LancerDEPLOYABLE): void {
   apply(lid, actor, "name", ["name"]);
@@ -287,6 +290,35 @@ function translateDeployable(lid: string, actor: LancerDEPLOYABLE): void {
   // @ts-ignore TODO remove when types aren't borked
   translateSynergies(lid, [""], actor.system.synergies);
   translateCounters(actor.system.counters);
+}
+
+/**
+ * Rewrites entry names in a rendered compendium listing through HTML DOM replacement
+ * @param app
+ * @param html
+ * @remarks DOM replacement so that the actual compendium source isn't being written over
+ */
+export function translateCompendiumNames(app: ApplicationV2, html: HTMLElement): void {
+  if (!hasTranslations()) return;
+  const collection = (app as { collection?: foundry.documents.collections.CompendiumCollection.Any }).collection;
+  if (!collection) return;
+  const index = collection.index;
+
+  let applied = 0;
+  for (const li of html.querySelectorAll<HTMLElement>("li[data-entry-id]")) {
+    const entry = index.get(li.dataset.entryId!) as { system?: { lid?: string } } | undefined;
+    const lid = entry?.system?.lid;
+    if (!lid) continue;
+    const hit = lookupTranslation(lid, "name");
+    if (!hit) continue;
+
+    const nameElement = li.querySelector(".entry-name a") ?? li.querySelector(".entry-name");
+    if (nameElement) {
+      nameElement.textContent = hit;
+      applied++;
+    }
+  }
+  if (applied) console.log(`${lp} Renamed ${applied} entries in compendium '${collection.metadata.label}'.`);
 }
 
 /**
