@@ -28,6 +28,7 @@ import { OverchargeFlow } from "../flows/overcharge";
 import { NPCRechargeFlow } from "../flows/npc";
 import * as lancer_data from "@massif/lancer-data";
 import { StabilizeFlow } from "../flows/stabilize";
+import { translateActor } from "../util/localization/llp-map";
 import { rollEvalSync, tokenScrollText, type TokenScrollTextOptions } from "../util/misc";
 import { BurnFlow } from "../flows/burn";
 import { createChatMessageStep } from "../flows/_render";
@@ -265,6 +266,9 @@ export class LancerActor<SubType extends Actor.SubType = Actor.SubType> extends 
       console.log("Actor is not a LancerActor:", this);
       return super.prepareBaseData();
     }
+
+    translateActor(this); // Apply LLP translations before derived data is built
+
     // TODO: Move these to the datamodels themselves
     // 1. First, finalize our system tasks. Items should be (minimally) prepared by now, so we can resolve embedded items
     // this.system.finalize_tasks();

@@ -75,7 +75,7 @@ import { TalentModel } from "./module/models/items/talent";
 import { LancerTerrain } from "./module/terrain";
 import { LancerToken, LancerTokenDocument, extendTokenConfig } from "./module/token";
 import { lookupOwnedDeployables } from "./module/util/lid";
-import { rebuildLLPIndex } from "./module/util/localization/llp-index";
+import { refreshLLPTranslations } from "./module/util/localization/llp-map";
 import { fulfillImportActor } from "./module/util/requests";
 
 import { dropStatusToCanvas } from "./module/canvas/drop-status";
@@ -383,8 +383,7 @@ Hooks.once("ready", async function () {
 
   await doMigration();
 
-  // Localization is done at runtime; this is the first (probably not last) time it is called (but only if the language is set)
-  await rebuildLLPIndex(); // Rebuild LLP indices when compendiums are changed
+  await refreshLLPTranslations(); // First run
 
   applyGlobalDragListeners();
 

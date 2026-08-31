@@ -8,6 +8,7 @@ import { LANCER } from "./config";
 import { LancerActiveEffect } from "./effects/lancer-active-effect";
 import { applyTheme, applySimpleFonts } from "./themes";
 import fields = foundry.data.fields;
+import { refreshLLPTranslations } from "./util/localization/llp-map";
 import type { PackedLanguagePatchWrapper } from "./util/unpacking/packed-types";
 
 export const registerSettings = function () {
@@ -214,6 +215,7 @@ export const registerSettings = function () {
     config: false,
     type: Object,
     default: {},
+    onChange: () => refreshLLPTranslations(), // Reapply changed LLPs to everyone
   });
 
   // Lancer initiative stuff

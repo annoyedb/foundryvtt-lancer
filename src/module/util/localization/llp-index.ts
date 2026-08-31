@@ -27,8 +27,7 @@ let translations: Map<string, Map<string, string>> = new Map(); // normalized LI
 /**
  * Collapses a slug/LID/path segment to lowercase `[a-z0-9]` strings joined by `_`, so spellings from the Lancer system's
  * `slugify` (the 'Deployable Shields' system) and from `compcon-locales`' unknown slugifier can be compared.
- *
- * I hate slugs.
+ * @param s
  */
 export function normalizeSlug(s: string): string {
   return s
@@ -103,7 +102,9 @@ export function splitPatchKey(key: string, lids: LIDIndex): { lid: string; path:
 
 /**
  * Rebuilds the runtime translation index: merges every installed patch matching the user's language into the LID-keyed
- * store, then reshapes deployable subtrees into entries of their own. Called at `ready` and whenever the cached LLP map changes.
+ * store, then reshapes exceptions/special cases into entries of their own.
+ *
+ * Rebuild the index whenever the LLP cache is changed.
  */
 export async function rebuildLLPIndex(): Promise<void> {
   const start = performance.now();
@@ -136,12 +137,12 @@ export async function rebuildLLPIndex(): Promise<void> {
     }
   }
 
-  const aliased = aliasDeployableSubtrees();
+  const aliasedDeployables = aliasDeployableSubtrees();
+  // const aliasedBonds = TODO
 
   console.log(
-    `${lp} Stored ${stored} translations for ${translations.size} LIDs (${aliased} aliased for deployables) in ${(
-      performance.now() - start
-    ).toFixed(0)}ms; ${discarded.length} keys matched no LID.`
+    `${lp} Stored ${stored} translations for ${translations.size} LIDs (${aliasedDeployables} aliased for deployables) in
+    ${(performance.now() - start).toFixed(0)}ms; ${discarded.length} keys matched no LID.`
   );
   if (discarded.length) {
     console.groupCollapsed(`${lp} ${discarded.length} unmatched patch keys`);
@@ -181,6 +182,7 @@ function aliasDeployableSubtrees(): number {
       if (at === -1) continue;
       const rest = parts.slice(at + 1).join(".");
       if (!rest) continue; // Malformed key ending at the segment itself
+
       aliases.push({ lid: "dep_" + parts[at].slice("deployable_".length), path: rest, value });
     }
   }
@@ -204,4 +206,13 @@ export function lookupTranslation(lid: string, path: string): string | undefined
  */
 export function hasTranslations(): boolean {
   return translations.size > 0;
+}
+
+/**
+ *
+ * @param lid
+ * @return Whether any translations are loaded for the given LID
+ */
+export function hasTranslationsFor(lid: string): boolean {
+  return translations.has(normalizeSlug(lid));
 }

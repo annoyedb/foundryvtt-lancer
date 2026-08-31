@@ -27,6 +27,7 @@ import { SystemFlow } from "../flows/system";
 import { DamageRollFlow } from "../flows/damage";
 import { randomString } from "../util/lid";
 import { generateItemID } from "../util/lcps";
+import { translateItem } from "../util/localization/llp-map";
 
 const lp = LANCER.log_prefix;
 
@@ -162,6 +163,8 @@ export class LancerItem<out SubType extends Item.SubType = Item.SubType> extends
     super.prepareBaseData();
     // Some modules create items with type "base", or potentially others we don't care about
     if (!(ITEM_TYPES as string[]).includes(this.type)) return;
+
+    translateItem(this); // Apply translations before the flattening
 
     // Collect all tags on mech weapons
     if (this.is_mech_weapon()) {
