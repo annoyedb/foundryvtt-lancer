@@ -75,7 +75,8 @@ import { TalentModel } from "./module/models/items/talent";
 import { LancerTerrain } from "./module/terrain";
 import { LancerToken, LancerTokenDocument, extendTokenConfig } from "./module/token";
 import { lookupOwnedDeployables } from "./module/util/lid";
-import { patchGetIndex, refreshLLPTranslations } from "./module/util/localization/llp-map";
+import { patchGetIndex, refreshLLPTranslations, refreshLLPTranslationsSoon } from "./module/util/localization/llp-map";
+import { getInstalledPatches } from "./module/util/localization/llp-import";
 import { fulfillImportActor } from "./module/util/requests";
 
 import { dropStatusToCanvas } from "./module/canvas/drop-status";
@@ -480,6 +481,13 @@ Hooks.on("dropCanvasData", dropStatusToCanvas);
 
 // Create sidebar button to import LCP
 Hooks.on("renderCompendiumDirectory", addLCPManagerButton);
+
+// Retranslate after compendium contents change (LCP install/reinstall/clear)
+Hooks.on("updateCompendium", (pack: foundry.documents.collections.CompendiumCollection.Any) => {
+  if (!["Item", "Actor"].includes(pack.documentName)) return;
+  if (!getInstalledPatches().length) return;
+  refreshLLPTranslationsSoon();
+});
 
 // TODO: keep or remove?
 // This seems broken

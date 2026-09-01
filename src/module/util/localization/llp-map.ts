@@ -292,47 +292,65 @@ function translateDeployable(lid: string, actor: LancerDEPLOYABLE): void {
 }
 
 /**
+ * Applies (or restores) the translated name on a single pack index entry
+ * @param entry
+ * @return Whether the entry's name changed
+ * @remarks
+ */
+function translateIndexEntry(entry: unknown): boolean {
+  const indexed = entry as IndexEntry;
+  const lid = indexed?.system?.lid;
+  if (!lid || typeof indexed.name !== "string") return false;
+
+  const source = (indexed._sourceName ??= indexed.name);
+  const next = lookupTranslation(lid, "name") ?? source;
+  if (indexed.name === next) return false;
+  indexed.name = next;
+  return true;
+}
+
+interface IndexEntry {
+  name?: string;
+  system?: { lid?: string };
+  _sourceName?: string;
+}
+
+/**
  * Applies (or restores) translated entry names on a pack's cached index
  * @param pack
  * @return Number of entry names changed
  * @remarks Modify the compendium indices over HTML so that they remain searchable
  */
 export function translatePackIndex(pack: foundry.documents.collections.CompendiumCollection.Any): number {
-  interface Entry {
-    name?: string;
-    system?: { lid?: string };
-    _sourceName?: string;
-  }
-
   let applied = 0;
   for (const entry of pack.index) {
-    const indexed = entry as Entry;
-    const lid = indexed.system?.lid;
-    if (!lid || typeof indexed.name !== "string") continue;
-
-    const source = (indexed._sourceName ??= indexed.name);
-    const next = lookupTranslation(lid, "name") ?? source;
-    if (indexed.name !== next) {
-      indexed.name = next;
-      applied++;
-    }
+    if (translateIndexEntry(entry)) applied++;
   }
   return applied;
 }
 
 /**
- * Patches `CompendiumCollection.getIndex` so a fetched compendium index is translated as it is called
+ * Patches `CompendiumCollection` so index entries are translated:
+ * - `getIndex`, for entries fetched from the server
+ * - `indexDocument`, for entries during LCP import, and every document load (`CompendiumCollection#set` keeps reverting `name` to the source language)
  * @remarks A little jank. It technically overrides the getter for non-system compendiums as well, but should be fine since
- * `translatePackIndex` checks each pack index for the appropriate structure, so things like journals shouldn't be hit, as
+ * `translateIndexEntry` checks each entry for the appropriate structure, so things like journals shouldn't be hit, as
  * they have no LID
  */
 export function patchGetIndex(): void {
   const proto = foundry.documents.collections.CompendiumCollection.prototype;
-  const original = proto.getIndex;
+
+  const ogGetIndex = proto.getIndex;
   proto.getIndex = async function (options) {
-    const index = await original.call(this, options);
+    const index = await ogGetIndex.call(this, options);
     translatePackIndex(this);
     return index;
+  };
+
+  const ogIndexDocument = proto.indexDocument;
+  proto.indexDocument = function (document) {
+    ogIndexDocument.call(this, document);
+    translateIndexEntry(this.index.get(document.id));
   };
 }
 
@@ -392,3 +410,9 @@ export async function refreshLLPTranslations(): Promise<void> {
 }
 
 // ---
+
+/**
+ * Jank-ass debounce to cover the case where an LLP is installed before its LCP is present and the compendium indices need to be updated
+ * @remarks Soon™
+ */
+export const refreshLLPTranslationsSoon = foundry.utils.debounce(() => refreshLLPTranslations(), 1000);
