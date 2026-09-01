@@ -394,6 +394,7 @@ export async function refreshLLPTranslations(): Promise<void> {
   let rendered = 0;
   for (const app of foundry.applications.instances.values()) {
     // ApplicationV2
+    if (app.element?.querySelector(".svelte-app-mount")) continue; // Do not touch Svelte apps
     await app.render();
     rendered++;
   }

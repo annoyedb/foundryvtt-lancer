@@ -322,6 +322,23 @@ export async function cacheLanguagePatches(
 }
 
 /**
+ * Removes one LLP from the cached LLP map and persists the change in the Foundry server's database.
+ * @param patch - An installed patch, from `getInstalledPatches`
+ * @return Whether the patch was found and removed
+ */
+export async function uncacheLanguagePatch(patch: PackedLanguagePatchWrapper): Promise<boolean> {
+  const llpMap = foundry.utils.deepClone(game.settings.get(game.system.id, LANCER.setting_localization_llp_map));
+  const lang = normalizeLanguageCode(patch.lang);
+  const packs = llpMap[lang];
+  if (!packs || !(patch.target in packs)) return false;
+
+  delete packs[patch.target];
+  if (!Object.keys(packs).length) delete llpMap[lang]; // Remove language keys w/ no patch
+  await game.settings.set(game.system.id, LANCER.setting_localization_llp_map, llpMap);
+  return true;
+}
+
+/**
  * @return Returns an array of all installed patches in the Foundry database
  * @remark
  */

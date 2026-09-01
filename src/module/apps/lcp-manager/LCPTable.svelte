@@ -3,7 +3,7 @@
   import { type ContentSummary, generateLCPSummary, type LCPData } from "../../util/lcps";
   import { generateLLPSummary, type LLPRow, type LLPRows, type LLPSummary } from "../../util/localization/llp-import";
   import { SvelteMap, SvelteSet } from "svelte/reactivity";
-  import type { IContentPack } from "../../util/unpacking/packed-types";
+  import type { IContentPack, PackedLanguagePatchWrapper } from "../../util/unpacking/packed-types";
   import type { OfficialLocaleHandle } from "../../util/localization/llp-fetch";
 
   interface Props {
@@ -14,6 +14,7 @@
     onLLPHovered: (s: LLPSummary | null) => void;
     onSelectionChanged: (packs: IContentPack[]) => void;
     onLocalesChanged: (locales: OfficialLocaleHandle[]) => void;
+    onRemovePatch: (patch: PackedLanguagePatchWrapper) => void;
 
     disabled: boolean;
   }
@@ -26,6 +27,7 @@
     onLLPHovered,
     onSelectionChanged,
     onLocalesChanged,
+    onRemovePatch,
 
     disabled = false,
   }: Props = $props();
@@ -156,6 +158,21 @@
       {/if}
     </span>
     <span class="avail-version">{row.availableVersion}</span>
+    {#if row.patch}
+      <button
+        type="button"
+        class="content-action locale-remove"
+        title={game.i18n.localize("lancer.lcpManager.table.removeLlp.tooltip")}
+        {disabled}
+        tabindex="-1"
+        onclick={e => {
+          e.stopPropagation();
+          onRemovePatch(row.patch!);
+        }}
+      >
+        <i class="fas fa-trash"></i>
+      </button>
+    {/if}
   </div>
 {/snippet}
 
@@ -259,6 +276,7 @@
         <span>{game.i18n.localize("lancer.lcpManager.table.current.label")}</span>
         <span></span>
         <span>{game.i18n.localize("lancer.lcpManager.table.available.label")}</span>
+        <span></span>
       </div>
       {#each lcpData as pack (pack.id)}
         {@render tableRow(pack)}
@@ -304,7 +322,7 @@
 
         .lcp-table__rows {
           display: grid;
-          grid-template-columns: 3em minmax(0, 2fr) minmax(0, 1fr) 1.5em minmax(0, 1fr) 1em minmax(0, 1fr);
+          grid-template-columns: 3em minmax(0, 2fr) minmax(0, 1fr) 1.5em minmax(0, 1fr) 1em minmax(0, 1fr) 2em;
         }
 
         .row {
@@ -356,10 +374,29 @@
           margin: 0;
           background: none;
           border-radius: 2px;
-          width: 100%;
+          width: 1.5em;
+          align-self: flex-start;
+          box-shadow: unset;
 
           &:hover {
             color: var(--primary-color);
+          }
+        }
+
+        .content-action {
+          padding: 0;
+          margin: 0;
+          background: none;
+          border-radius: 2px;
+          width: 1.5em;
+          box-shadow: unset;
+
+          &:hover:not(:disabled) {
+            color: var(--primary-color);
+          }
+          &:disabled {
+            color: var(--darken-5);
+            cursor: default;
           }
         }
 

@@ -16,8 +16,10 @@
     buildLLPRows,
     cacheLanguagePatches,
     getInstalledPatches,
+    getLanguageLabel,
     type LLPSummary,
     summarizeStagedLanguagePatches,
+    uncacheLanguagePatch,
   } from "../../util/localization/llp-import";
   import {
     downloadOfficialLocales,
@@ -74,7 +76,8 @@
   let clearing = $state(false);
   let downloadingLocale = $state(false);
   let importingLlps = $state(false);
-  let busy = $derived(importing || importingMany || clearing || importingLlps || downloadingLocale);
+  let removingLlp = $state(false);
+  let busy = $derived(importing || importingMany || clearing || importingLlps || downloadingLocale || removingLlp);
   let barWidth = $state(0);
   let secondBarWidth = $state(0);
 
@@ -242,6 +245,24 @@
     barWidth = Math.floor(percent * 100);
   }
 
+  async function removeLlp(patch: PackedLanguagePatchWrapper) {
+    const answer = await foundry.applications.api.DialogV2.confirm({
+      window: {
+        title: "lancer.lcpManager.removeLlp.title",
+        icon: "fas fa-triangle-exclamation",
+      },
+      content: `
+        <p>${game.i18n.format("lancer.lcpManager.removeLlp.content.0", { lang: getLanguageLabel(patch.lang), target: patch.target })}</p>\n
+        <p>${game.i18n.localize("lancer.lcpManager.removeLlp.content.1")}</p>
+      `,
+    });
+    if (!answer) return;
+    removingLlp = true;
+    await uncacheLanguagePatch($state.snapshot(patch)); // The setting's onChange retranslates every client
+    llpData = getInstalledPatches(); // Refresh the installed-patches table
+    removingLlp = false;
+  }
+
   async function clearCompendiums() {
     // Confirmation prompt
     const answer = await foundry.applications.api.DialogV2.confirm({
@@ -257,7 +278,9 @@
     if (!answer) return;
     clearing = true;
     await clearCompendiumData();
+    await game.settings.set(game.system.id, LANCER.setting_localization_llp_map, {});
     await rebuildLLPIndex(); // Rebuild LLP indices when compendiums are changed
+    llpData = getInstalledPatches(); // Refresh the installed-patches table
     const officialData = await getOfficialData();
     const index = new LCPIndex(game.settings.get(game.system.id, LANCER.setting_lcps).index);
     lcpData = mergeOfficialDataAndLcpIndex(officialData, index);
@@ -278,6 +301,7 @@
           onLLPHovered={llpHovered}
           onSelectionChanged={lcpSelectionChanged}
           onLocalesChanged={llpSelectionChanged}
+          onRemovePatch={removeLlp}
           disabled={busy}
         />
         <LCPSelector
