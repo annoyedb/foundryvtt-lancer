@@ -16,7 +16,6 @@ import { EntryType } from "../../enums";
 import { get_pack_id } from "../doc";
 
 const lp = LANCER.log_prefix + " LLP |";
-interface ApplicationV2 extends foundry.applications.api.ApplicationV2 {}
 
 //---
 
@@ -293,32 +292,48 @@ function translateDeployable(lid: string, actor: LancerDEPLOYABLE): void {
 }
 
 /**
- * Rewrites entry names in a rendered compendium listing through HTML DOM replacement
- * @param app
- * @param html
- * @remarks DOM replacement so that the actual compendium source isn't being written over
+ * Applies (or restores) translated entry names on a pack's cached index
+ * @param pack
+ * @return Number of entry names changed
+ * @remarks Modify the compendium indices over HTML so that they remain searchable
  */
-export function translateCompendiumNames(app: ApplicationV2, html: HTMLElement): void {
-  if (!hasTranslations()) return;
-  const collection = (app as { collection?: foundry.documents.collections.CompendiumCollection.Any }).collection;
-  if (!collection) return;
-  const index = collection.index;
+export function translatePackIndex(pack: foundry.documents.collections.CompendiumCollection.Any): number {
+  interface Entry {
+    name?: string;
+    system?: { lid?: string };
+    _sourceName?: string;
+  }
 
   let applied = 0;
-  for (const li of html.querySelectorAll<HTMLElement>("li[data-entry-id]")) {
-    const entry = index.get(li.dataset.entryId!) as { system?: { lid?: string } } | undefined;
-    const lid = entry?.system?.lid;
-    if (!lid) continue;
-    const hit = lookupTranslation(lid, "name");
-    if (!hit) continue;
+  for (const entry of pack.index) {
+    const indexed = entry as Entry;
+    const lid = indexed.system?.lid;
+    if (!lid || typeof indexed.name !== "string") continue;
 
-    const nameElement = li.querySelector(".entry-name a") ?? li.querySelector(".entry-name");
-    if (nameElement) {
-      nameElement.textContent = hit;
+    const source = (indexed._sourceName ??= indexed.name);
+    const next = lookupTranslation(lid, "name") ?? source;
+    if (indexed.name !== next) {
+      indexed.name = next;
       applied++;
     }
   }
-  if (applied) console.log(`${lp} Renamed ${applied} entries in compendium '${collection.metadata.label}'.`);
+  return applied;
+}
+
+/**
+ * Patches `CompendiumCollection.getIndex` so a fetched compendium index is translated as it is called
+ * @remarks A little jank. It technically overrides the getter for non-system compendiums as well, but should be fine since
+ * `translatePackIndex` checks each pack index for the appropriate structure, so things like journals shouldn't be hit, as
+ * they have no LID
+ */
+export function patchGetIndex(): void {
+  const proto = foundry.documents.collections.CompendiumCollection.prototype;
+  const original = proto.getIndex;
+  proto.getIndex = async function (options) {
+    const index = await original.call(this, options);
+    translatePackIndex(this);
+    return index;
+  };
 }
 
 /**
@@ -351,6 +366,12 @@ export async function refreshLLPTranslations(): Promise<void> {
     }
   }
 
+  // Retranslate (or restore, on removal) every cached pack index so listings and search match the new state
+  let renamed = 0;
+  for (const pack of game.packs) {
+    renamed += translatePackIndex(pack);
+  }
+
   // Rerender open documents
   let rendered = 0;
   for (const app of foundry.applications.instances.values()) {
@@ -365,7 +386,7 @@ export async function refreshLLPTranslations(): Promise<void> {
   }
 
   console.log(
-    `${lp} Reset ${reset} documents and re-rendered ${rendered} windows in
+    `${lp} Reset ${reset} documents, renamed ${renamed} index entries, and re-rendered ${rendered} windows in
     ${(performance.now() - start).toFixed(0)}ms.`
   );
 }

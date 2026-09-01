@@ -75,7 +75,7 @@ import { TalentModel } from "./module/models/items/talent";
 import { LancerTerrain } from "./module/terrain";
 import { LancerToken, LancerTokenDocument, extendTokenConfig } from "./module/token";
 import { lookupOwnedDeployables } from "./module/util/lid";
-import { refreshLLPTranslations, translateCompendiumNames } from "./module/util/localization/llp-map";
+import { patchGetIndex, refreshLLPTranslations } from "./module/util/localization/llp-map";
 import { fulfillImportActor } from "./module/util/requests";
 
 import { dropStatusToCanvas } from "./module/canvas/drop-status";
@@ -199,6 +199,8 @@ Hooks.once("init", () => {
   // Configure indexes
   CONFIG.Item.compendiumIndexFields = ["system.lid", "system.license", "system.key"]; // key is for licenses
   CONFIG.Actor.compendiumIndexFields = ["system.lid"];
+  // Translate pack indices as they are fetched, so compendium listings and search use the active language
+  patchGetIndex();
 
   // Register custom system settings
   registerSettings();
@@ -478,9 +480,6 @@ Hooks.on("dropCanvasData", dropStatusToCanvas);
 
 // Create sidebar button to import LCP
 Hooks.on("renderCompendiumDirectory", addLCPManagerButton);
-
-// Translate compendium names when opened
-Hooks.on("renderCompendium", translateCompendiumNames);
 
 // TODO: keep or remove?
 // This seems broken
