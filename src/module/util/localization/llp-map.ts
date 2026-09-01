@@ -52,7 +52,7 @@ const reportStats = foundry.utils.debounce(() => {
  */
 function apply(lid: string, obj: unknown, field: string, paths: string[]): void {
   const target = obj as Record<string, unknown>;
-  if (typeof target?.[field] !== "string") return;
+  if (typeof target?.[field] !== "string" || !target[field]) return;
   for (const path of paths) {
     const hit = lookupTranslation(lid, path);
     if (!hit) continue;
@@ -280,7 +280,7 @@ export function translateActor(actor: LancerActor): void {
  * Applies translations from all the indexing built in llp-index onto Deployables
  * @param lid
  * @param actor
- * @remarks Deployables don't get their direct translations from their own LID, instead resolved through `aliasDeployableSubtrees`
+ * @remarks Deployables don't get their direct translations from their own LID, instead resolved through `rekeyDeployableSubtrees`
  */
 function translateDeployable(lid: string, actor: LancerDEPLOYABLE): void {
   apply(lid, actor, "name", ["name"]);
@@ -289,6 +289,12 @@ function translateDeployable(lid: string, actor: LancerDEPLOYABLE): void {
   // @ts-ignore TODO remove when types aren't borked
   translateSynergies(lid, [""], actor.system.synergies);
   translateCounters(actor.system.counters);
+}
+
+interface IndexEntry {
+  name?: string;
+  system?: { lid?: string };
+  _sourceName?: string;
 }
 
 /**
@@ -309,17 +315,11 @@ function translateIndexEntry(entry: unknown): boolean {
   return true;
 }
 
-interface IndexEntry {
-  name?: string;
-  system?: { lid?: string };
-  _sourceName?: string;
-}
-
 /**
  * Applies (or restores) translated entry names on a pack's cached index
  * @param pack
  * @return Number of entry names changed
- * @remarks Modify the compendium indices over HTML so that they remain searchable
+ * @remarks Modify the actual compendium indices so that they remain searchable
  */
 export function translatePackIndex(pack: foundry.documents.collections.CompendiumCollection.Any): number {
   let applied = 0;

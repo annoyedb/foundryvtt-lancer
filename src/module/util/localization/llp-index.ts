@@ -1,3 +1,22 @@
+/**
+ * COMP/CON LID            ┌─► Translation Map
+ *       │ normalizeSlug() │   [normalized LID]
+ *       ▼                 │   │
+ * [normalized LID] ───────┘   └►[normalized dotpath]
+ *       ▲                       │
+ *       │ normalizeSlug()       └►[translated text]
+ * Foundry LID
+ * ---------(shout out to my GOAT asciiflow.com)----------
+ * It exists this way because of say, deployable LIDs:
+ * COMP/CON - `deployable_guardian_orochi_drone`
+ * Foundry - `dep_guardian_(orochi_drone)`
+ * LLP Index (you are here) - `dep_guardian_orochi_drone`
+ *
+ * It's a little overengineered, but I did this because of three things:
+ * 1. This lets localization be a completely isolated in case either COMP/CON or the system dramatically changes LIDs/dotpathing/whatever
+ * 2. COMP/CON's slugifier is weird
+ * 3. Changing how Foundry LIDs are parsed will fuck up everything and I really don't want to handle migration (the main reason)
+ */
 import { LANCER } from "../../config";
 import { EntryType } from "../../enums";
 import { get_pack_id } from "../doc";
@@ -5,11 +24,11 @@ import { getInstalledPatches, normalizeLanguageCode } from "./llp-import";
 
 const lp = LANCER.log_prefix + " LLP |";
 
+//---
+
 /**
- * Every LID the world's Lancer compendiums hold, both verbatim and in normalized spelling, so patch keys can be pruned
- * against known LIDs instead of guessing where a LID ends.
- *
- * (`ms___scorpion_v70.1` is a single LID even though translations are dotpathed lol)
+ * Every LID the world's Lancer compendiums hold, both verbatim and in normalized spelling.
+ * Could be a single Set, idk
  */
 type LIDIndex = {
   exact: Set<string>;
@@ -18,15 +37,17 @@ type LIDIndex = {
 
 /**
  * Merged translations for the active language, keyed by normalized LID and then by normalized LLP subpath
- * (e.g. `action_area_denial.detail`). Every document resolves its text through this map via `lookupTranslation(lid, path)`;
- * anything that cannot be keyed by its own LID must be reshaped into that form during `rebuildLLPIndex`
- * (e.g. `aliasDeployableSubtrees`).
+ * (e.g. `{"ms___scorpion_v70.1": {"action_activate_scorpion.detail": "bonjour world"}}`). Every document resolves its
+ * text through this map via `lookupTranslation(lid, path)`; anything that cannot be keyed by its own LID must be rekeyed
+ * into that form during `rebuildLLPIndex` (see: `rekeyDeployableSubtrees`).
  */
 let translations: Map<string, Map<string, string>> = new Map(); // normalized LID -> (normalized subpath -> translation)
 
+//---
+
 /**
  * Collapses a slug/LID/path segment to lowercase `[a-z0-9]` strings joined by `_`, so spellings from the Lancer system's
- * `slugify` (the 'Deployable Shields' system) and from `compcon-locales`' unknown slugifier can be compared.
+ * `slugify` (see: top of this file) and from COMP/CON's slugifier can be compared.
  * @param s
  */
 export function normalizeSlug(s: string): string {
@@ -37,14 +58,14 @@ export function normalizeSlug(s: string): string {
 }
 
 /**
- * Normalizes each segment of an LLP subpath for storage/lookup
+ * Normalizes each segment of an LLP subpath.
  */
 function normalizePath(path: string): string {
   return path.split(".").map(normalizeSlug).join(".");
 }
 
 /**
- * Sweeps every Lancer compendium for the LIDs they hold. Relies on `system.lid` being in `compendiumIndexFields`.
+ * Sweeps every Lancer compendium for the LIDs they hold.
  */
 export async function buildLIDIndex(): Promise<LIDIndex> {
   const start = performance.now();
@@ -58,11 +79,12 @@ export async function buildLIDIndex(): Promise<LIDIndex> {
   for (const id of packIDs) {
     const pack = game.packs.get(id);
     if (!pack) continue;
-    await pack.getIndex(); // Load compendium index so we can read it
+    await pack.getIndex(); // Compendium indices are lazy-loaded, so this needs to be here so we can read them
     sweptPacks++;
 
     pack.index.forEach(entry => {
-      const lid = (entry as { system?: { lid?: string } }).system?.lid; // Definitely there according to `compendiumIndexFields`
+      // Grab LIDs of all compendium entries and add them to the index
+      const lid = (entry as { system?: { lid?: string } }).system?.lid;
       if (lid) {
         lids.exact.add(lid);
         lids.normalized.set(normalizeSlug(lid), lid);
@@ -71,18 +93,24 @@ export async function buildLIDIndex(): Promise<LIDIndex> {
   }
 
   console.log(
-    `${lp} Indexed ${lids.exact.size} compendium LIDs across ${sweptPacks}/${packIDs.size} packs in ${(
-      performance.now() - start
-    ).toFixed(0)}ms.`
+    `${lp} Indexed ${lids.exact.size} compendium LIDs across ${sweptPacks}/${packIDs.size} packs in
+    ${(performance.now() - start).toFixed(0)}ms.`
   );
   return lids;
 }
 
 /**
  * Splits a patch key into its LID and subpath by pruning down from the full length against known LIDs.
- * @param key
- * @param lids
- * @return null when no head of the key is a known LID (target not installed, or a key like `GMS.name`/`act_*`, sitreps, etc)
+ * @param key - CC's patch key (e.g. `ms___scorpion_v70.1.action_activate_scorpion.detail`)
+ * @param lids - The built LID Index
+ * @return null when no head of the key is a known LID (target not installed, or a key like `GMS.name`/`act_*`, sitreps, etc),
+ * otherwise returns an object like
+ * ```
+ * {
+ *   lid: "ms___scorpion_v70.1", // This is an LID as this system understands it
+ *   path: "action_activate_scorpion.detail" // This is CC's/the LLP's dotpath
+ * }
+ * ```
  */
 export function splitPatchKey(key: string, lids: LIDIndex): { lid: string; path: string } | null {
   const parts = key.split(".");
@@ -102,9 +130,9 @@ export function splitPatchKey(key: string, lids: LIDIndex): { lid: string; path:
 
 /**
  * Rebuilds the runtime translation index: merges every installed patch matching the user's language into the LID-keyed
- * store, then reshapes exceptions/special cases into entries of their own.
+ * store, then rekeys exceptions/special cases into entries of their own.
  *
- * Rebuild the index whenever the LLP cache is changed.
+ * Run this whenever the LLP cache is changed.
  */
 export async function rebuildLLPIndex(): Promise<void> {
   const start = performance.now();
@@ -123,13 +151,14 @@ export async function rebuildLLPIndex(): Promise<void> {
 
   const lids = await buildLIDIndex();
 
+  // Find and store translations for LIDs we know
   let stored = 0;
-  const discarded: string[] = [];
+  const discarded: { key: string; value: string }[] = []; //Store for potential rekeying
   for (const patch of patches) {
     for (const [key, value] of Object.entries(patch.data)) {
       const hit = splitPatchKey(key, lids);
       if (!hit) {
-        discarded.push(key);
+        discarded.push({ key, value });
         continue;
       }
       storeTranslation(hit.lid, hit.path, value);
@@ -137,25 +166,35 @@ export async function rebuildLLPIndex(): Promise<void> {
     }
   }
 
-  const aliasedDeployables = aliasDeployableSubtrees();
-  // const aliasedBonds = TODO
+  // Rekey common patterns that require special handling and store their translations for LIDs we know
+  const rekeyedDeployables = rekeyDeployables();
+  const rekeyedCounters = rekeyCounters(discarded);
+  const rekeyedTags = rekeyTags(discarded);
+  // const rekeyedBonds = TODO
 
   console.log(
-    `${lp} Stored ${stored} translations for ${translations.size} LIDs (${aliasedDeployables} aliased for deployables) in
-    ${(performance.now() - start).toFixed(0)}ms; ${discarded.length} keys matched no LID.`
+    `${lp} Stored ${stored} translations for ${translations.size} LIDs (rekeyed: ${rekeyedDeployables} deployables,
+    ${rekeyedCounters} counters, ${rekeyedTags} tags) in ${(performance.now() - start).toFixed(0)}ms; ${
+      discarded.length
+    } keys matched no LID.`
   );
   if (discarded.length) {
     console.groupCollapsed(`${lp} ${discarded.length} unmatched patch keys`);
-    for (const key of discarded.sort()) console.debug(key);
+    for (const entry of discarded.sort((a, b) => a.key.localeCompare(b.key))) console.debug(entry.key);
     console.groupEnd();
   }
 }
 
 /**
- *
+ * Stores the translation by it's `normalized LID -> (normalized subpath -> translation)`
  * @param lid
  * @param path
  * @param value
+ * @remarks
+ * e.g.
+ * ```
+ * "ms_scorpion_v70_1": { { action_activate_scorpion.trigger: "bonjour world" } }
+ * ```
  */
 function storeTranslation(lid: string, path: string, value: string): void {
   const lidKey = normalizeSlug(lid);
@@ -165,10 +204,11 @@ function storeTranslation(lid: string, path: string, value: string): void {
 }
 
 /**
- * Special exception handler for aliasing deployables
+ * Special exception handler rekeying deployable subtrees
  * @return Number of entries copied
+ * @remarks Copies rather than moves — owners still resolve the nested text for their own rendering
  */
-function aliasDeployableSubtrees(): number {
+function rekeyDeployables(): number {
   const aliases: { lid: string; path: string; value: string }[] = [];
   /**
    * In CC deployable text nests under the owning item (`ms_assassin_drone.deployable_assassin_drone.name`) while the actor
@@ -188,6 +228,44 @@ function aliasDeployableSubtrees(): number {
   }
   for (const alias of aliases) storeTranslation(alias.lid, alias.path, alias.value);
   return aliases.length;
+}
+
+/**
+ * Special exception handler rekeying counters
+ * @param discarded - Entries the main pass matched no LID for; rekeyed entries are removed in place
+ * @return Number of entries rekeyed
+ */
+function rekeyCounters(discarded: { key: string; value: string }[]): number {
+  return rekeyDotlessLIDs(discarded, "ctr_");
+}
+
+/**
+ * Special exception handler rekeying tags
+ * @param discarded - Entries the main pass matched no LID for; rekeyed entries are removed in place
+ * @return Number of entries rekeyed
+ */
+function rekeyTags(discarded: { key: string; value: string }[]): number {
+  return rekeyDotlessLIDs(discarded, "tg_");
+}
+
+/**
+ * Stores discarded keys whose head segment is a whole LID of the given prefix
+ * @param discarded - Entries the main pass matched no LID for; rekeyed entries are removed in place
+ * @param prefix - LID prefix whose keys are safe to split at the first dot (e.g. `tg_`/`ctr_`)
+ * @return Number of entries rekeyed
+ */
+function rekeyDotlessLIDs(discarded: { key: string; value: string }[], prefix: string): number {
+  let rekeyed = 0;
+  for (let i = discarded.length - 1; i >= 0; i--) {
+    const { key, value } = discarded[i];
+    const [head, ...rest] = key.split(".");
+    if (!head.startsWith(prefix) || !rest.length) continue;
+
+    storeTranslation(head, rest.join("."), value);
+    discarded.splice(i, 1);
+    rekeyed++;
+  }
+  return rekeyed;
 }
 
 /**
