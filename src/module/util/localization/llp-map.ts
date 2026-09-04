@@ -1,4 +1,11 @@
-// see llp-index for how keys are stored
+/**
+ * Stuff here actually applies the translations. The `translateFoobar` functions navigate each
+ * document's data model, use its LID and possible LLP paths to look up translations from `llp-index`, and directly replace
+ * the corresponding fields on the document's prepared data.
+ *
+ * Overrides (through the localization settings submenu) are applied directly using Foundry's `setProperty` function since
+ * they should have fully qualified dotpaths.
+ */
 import type { LancerActor, LancerDEPLOYABLE } from "../../actor/lancer-actor";
 import { LANCER } from "../../config";
 import type {
@@ -10,8 +17,10 @@ import type {
 } from "../../item/lancer-item";
 import type { ActionData } from "../../models/bits/action";
 import type { CounterData } from "../../models/bits/counter";
+import type { LLPLocalizationIndexOverrides } from "../../settings";
 import { slugify } from "../lid";
-import { hasTranslations, hasTranslationsFor, lookupTranslation, rebuildLLPIndex } from "./llp-index";
+import { hasTranslations, hasTranslationsFor, lookupTranslation, normalizeSlug, rebuildLLPIndex } from "./llp-index";
+import { CORE_PATCH_TARGET, getInstalledPatches, normalizeLanguageCode } from "./llp-import";
 import { EntryType } from "../../enums";
 import { get_pack_id } from "../doc";
 
@@ -25,14 +34,27 @@ const stats = {
   missed: new Set<string>(),
 };
 
+let llpSources = new Map<string, { lid: string; paths: Set<string> }>();
+
 const reportStats = foundry.utils.debounce(() => {
-  console.log(
-    `${lp} Applied ${stats.applied} translations across ${stats.documents.size} documents; ${stats.missed.size} fields of translated LIDs matched no key.`
+  const sum = Array.from(stats.missed).reduce(
+    (sum, lid) => sum + (llpSources.get(normalizeSlug(lid))?.paths.size ?? 0),
+    0
   );
-  if (stats.missed.size) {
-    console.groupCollapsed(`${lp} ${stats.missed.size} fields with no matching key`);
-    for (const miss of [...stats.missed].sort()) {
-      console.debug(miss);
+  // console.log(
+  //   `${lp} Applied ${stats.applied} translations across ${stats.documents.size} documents; ${sum} fields of translated LIDs matched no key.`
+  // );
+  if (sum) {
+    console.groupCollapsed(`${lp} ${sum} unresolved LLP paths`);
+    for (const lid of stats.missed) {
+      const source = llpSources.get(normalizeSlug(lid));
+      if (!source?.paths.size) continue;
+
+      console.groupCollapsed(`Foundry LID: ${lid}; LLP LID: ${source.lid}; Index LID: ${normalizeSlug(lid)}`);
+      for (const path of source.paths) {
+        console.log(path);
+      }
+      console.groupEnd();
     }
     console.groupEnd();
   }
@@ -44,26 +66,56 @@ const reportStats = foundry.utils.debounce(() => {
 //---
 
 /**
+ * Keyed by Foundry object dotpath to translated value. Built in `rebuildOverrides`
+ */
+let overrides = new Map<string, string>();
+
+function normalizePath(path: string): string {
+  return path.split(".").map(normalizeSlug).join(".");
+}
+
+function resolveLLPPath(lid: string, path: string): void {
+  const source = llpSources.get(normalizeSlug(lid));
+  if (!source) return;
+
+  const normalizedPath = normalizePath(path);
+  for (const sourcePath of source.paths) {
+    if (normalizePath(sourcePath) === normalizedPath) source.paths.delete(sourcePath);
+  }
+}
+
+function removeLLPKey(key: string): void {
+  const parts = key.split(".");
+  for (let i = 1; i < parts.length; i++) {
+    const lid = parts.slice(0, i).join(".");
+    const source = llpSources.get(normalizeSlug(lid));
+    const path = parts.slice(i).join(".");
+    source?.paths.delete(path);
+  }
+}
+
+/**
  * Attempts to find a translation hit against given paths/subpaths and applies it to the object given at the target field.
- * @param lid
- * @param obj
- * @param field - System's field name
- * @param paths - CC's path(s)
+ * @param lid - LID of the target
+ * @param obj - Object (`LancerItem`, `LancerActor`, `system`, whatever) that directly contains the field being translated
+ * @param field - Property on `obj` that will receive the translated text
+ * @param paths - LLP path containing the translated text to apply onto `obj`[`field`]
  */
 function apply(lid: string, obj: unknown, field: string, paths: string[]): void {
-  const target = obj as Record<string, unknown>;
+  const target = obj as Record<string, unknown>; // Type cast basically just to satisfy TS as some object with string key properties
   if (typeof target?.[field] !== "string" || !target[field]) return;
   for (const path of paths) {
     const hit = lookupTranslation(lid, path);
     if (!hit) continue;
+
     target[field] = hit;
+    resolveLLPPath(lid, path);
     stats.applied++;
     stats.documents.add(lid);
     return;
   }
-  if (hasTranslationsFor(lid)) {
-    stats.missed.add(`${lid} :: ${paths.join(" | ")}`);
-  }
+
+  if (hasTranslationsFor(lid)) stats.missed.add(lid);
 }
 
 /**
@@ -100,7 +152,7 @@ function join(parents: string[], segments: string[]): string[] {
  * @param item
  */
 export function translateItem(item: LancerItem): void {
-  if (!hasTranslations()) return;
+  if (!hasTranslations() && !overrides.size) return;
   const lid = (item.system as { lid?: string }).lid;
   if (!lid) return;
 
@@ -115,6 +167,8 @@ export function translateItem(item: LancerItem): void {
   } //else if (item.is_npc_feature()) { TODO when beeftime extracts npc locales out
   //translateNPCFeature(lid, item);
   //}
+
+  translateOverrides(lid, item);
 
   reportStats();
 }
@@ -186,7 +240,12 @@ function translateTalent(lid: string, item: LancerTALENT): void {
   });
 }
 
-// TODO test
+/**
+ *
+ * @param lid
+ * @param parents
+ * @param synergies
+ */
 function translateSynergies(lid: string, parents: string[], synergies: { detail: string }[] | undefined): void {
   synergies?.forEach((synergy, index) => {
     apply(lid, synergy, "detail", join(parents, [`synergy_${index}.detail`]));
@@ -198,7 +257,6 @@ function translateSynergies(lid: string, parents: string[], synergies: { detail:
  * @param counters
  * @remarks keyed by their own top-level LID
  */
-// TODO test
 function translateCounters(counters: CounterData[] | undefined): void {
   for (const counter of counters ?? []) {
     if (counter.lid) apply(counter.lid, counter, "name", ["name"]);
@@ -214,7 +272,6 @@ function translateCounters(counters: CounterData[] | undefined): void {
  * @remarks Named array entries are singularized slugged elements (`action_[slug of source name]`) of the system ones (`actions[i]`),
  * with a positional fallback (`action_[i]`) for unnamed entries like system actions (`ms_aceso_stabilizer.action_[i]`.
  */
-// TODO test
 function translateActions(
   lid: string,
   parents: string[],
@@ -266,14 +323,96 @@ function translateNPCFeature(lid: string, item: LancerNPC_FEATURE): void {
  * @param actor
  */
 export function translateActor(actor: LancerActor): void {
-  if (!hasTranslations()) return;
+  if (!hasTranslations() && !overrides.size) return;
   const lid = actor.system.lid;
   if (!lid) return;
   if (actor.is_deployable()) {
     translateDeployable(lid, actor);
   }
 
+  translateOverrides(lid, actor);
   reportStats();
+}
+
+/**
+ * Applies manual overrides from the settings menu to the document dotpath it specifies
+ * @param lid
+ * @param document
+ */
+function translateOverrides(lid: string, document: LancerItem | LancerActor): void {
+  const lidPrefix = `${lid}.`;
+  let applied = 0;
+  for (const [destination, value] of overrides) {
+    if (!destination.startsWith(lidPrefix)) continue;
+    const destinationPath = destination.slice(lidPrefix.length);
+
+    foundry.utils.setProperty(document, destinationPath, value);
+    applied++;
+  }
+
+  if (!applied) return;
+  stats.applied += applied;
+  stats.documents.add(lid);
+}
+
+/**
+ * Loads the `overrides` map with the preset file if it is not present and persists it in the database
+ */
+async function loadOverrides(): Promise<LLPLocalizationIndexOverrides> {
+  const configured = game.settings.get(game.system.id, LANCER.setting_localization_llp_index_override);
+  if (Object.keys(configured).length) return configured;
+
+  const response = await fetch(`systems/${game.system.id}/llp-overrides/lancer-data.json`);
+  const defaults = (await response.json()) as Record<string, string>;
+  const loaded = { [CORE_PATCH_TARGET]: defaults };
+  if (game.user?.isGM) {
+    await game.settings.set(game.system.id, LANCER.setting_localization_llp_index_override, loaded);
+  }
+
+  return loaded;
+}
+
+/**
+ * (Re)builds the `overrides` map
+ * @param loadedOverrides
+ */
+function rebuildOverrides(loadedOverrides: LLPLocalizationIndexOverrides): void {
+  overrides = new Map();
+  llpSources = new Map();
+  const activeLanguage = normalizeLanguageCode(game.i18n.lang);
+
+  for (const patch of getInstalledPatches()) {
+    if (normalizeLanguageCode(patch.lang) !== activeLanguage) continue;
+
+    for (const key of Object.keys(patch.data)) {
+      const parts = key.split(".");
+      for (let i = 1; i < parts.length; i++) {
+        const lid = parts.slice(0, i).join(".");
+        const path = parts.slice(i).join(".");
+        const source = llpSources.get(normalizeSlug(lid)) ?? { lid, paths: new Set<string>() };
+
+        source.paths.add(path);
+        llpSources.set(normalizeSlug(lid), source);
+      }
+    }
+
+    const packOverrides = loadedOverrides[patch.target];
+    if (!packOverrides) continue;
+
+    for (const [source, destination] of Object.entries(packOverrides)) {
+      if (!destination) continue;
+
+      const sourceKeys = source.split(",").filter(Boolean);
+      const translatedValues = sourceKeys.map(key => patch.data[key]);
+      if (!sourceKeys.length || translatedValues.some(value => value === undefined)) continue;
+
+      overrides.set(destination, translatedValues.join("<br><br>"));
+
+      for (const key of sourceKeys) {
+        removeLLPKey(key);
+      }
+    }
+  }
 }
 
 /**
@@ -291,12 +430,6 @@ function translateDeployable(lid: string, actor: LancerDEPLOYABLE): void {
   translateCounters(actor.system.counters);
 }
 
-interface IndexEntry {
-  name?: string;
-  system?: { lid?: string };
-  _sourceName?: string;
-}
-
 /**
  * Applies (or restores) the translated name on a single pack index entry
  * @param entry
@@ -304,6 +437,12 @@ interface IndexEntry {
  * @remarks
  */
 function translateIndexEntry(entry: unknown): boolean {
+  interface IndexEntry {
+    name?: string;
+    system?: { lid?: string };
+    _sourceName?: string;
+  }
+
   const indexed = entry as IndexEntry;
   const lid = indexed?.system?.lid;
   if (!lid || typeof indexed.name !== "string") return false;
@@ -312,6 +451,7 @@ function translateIndexEntry(entry: unknown): boolean {
   const next = lookupTranslation(lid, "name") ?? source;
   if (indexed.name === next) return false;
   indexed.name = next;
+
   return true;
 }
 
@@ -326,6 +466,7 @@ export function translatePackIndex(pack: foundry.documents.collections.Compendiu
   for (const entry of pack.index) {
     if (translateIndexEntry(entry)) applied++;
   }
+
   return applied;
 }
 
@@ -362,6 +503,7 @@ export function patchGetIndex(): void {
  */
 export async function refreshLLPTranslations(): Promise<void> {
   await rebuildLLPIndex();
+  rebuildOverrides(await loadOverrides());
 
   const start = performance.now();
   let reset = 0;
@@ -404,7 +546,7 @@ export async function refreshLLPTranslations(): Promise<void> {
     rendered++;
   }
 
-  console.log(
+  console.debug(
     `${lp} Reset ${reset} documents, renamed ${renamed} index entries, and re-rendered ${rendered} windows in
     ${(performance.now() - start).toFixed(0)}ms.`
   );

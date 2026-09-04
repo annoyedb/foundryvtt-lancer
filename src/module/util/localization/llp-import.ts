@@ -79,7 +79,7 @@ export const CORE_PATCH_TARGET = "lancer-data";
  * An LLP targeting an LCP that is not installed is orphaned to a separate area at the bottom of the table and will
  * get adopted when the target pack is installed.
  * @param packs - Every pack the table lists, official and manually installed alike
- * @param installed - Cached patches, from `getInstalledPatches`
+ * @param installed - Stored patches, from `getInstalledPatches`
  * @param offered - Listing entries, from `listOfficialLocales`
  * @remarks
  */
@@ -301,14 +301,14 @@ export async function readLanguagePatch(file: File): Promise<PackedLanguagePatch
 }
 
 /**
- * Merges LLPs into the cached LLP map and persists it in the Foundry server's database. Overrides the current entry when overlapping keys are found.
+ * Merges LLPs into the persisted LLP files database. Overrides the current entry when overlapping keys are found.
  * @param patches
  * @remark Stored data object is keyed by language and then LCP target
  */
-export async function cacheLanguagePatches(
+export async function storeLanguagePatches(
   patches: PackedLanguagePatchWrapper[]
 ): Promise<{ stored: number; replaced: number }> {
-  const llpMap = foundry.utils.deepClone(game.settings.get(game.system.id, LANCER.setting_localization_llp_map));
+  const llpMap = foundry.utils.deepClone(game.settings.get(game.system.id, LANCER.setting_localization_llp_files));
   let stored = 0;
   let replaced = 0;
   for (const patch of patches) {
@@ -317,24 +317,24 @@ export async function cacheLanguagePatches(
     packs[patch.target] = patch;
     stored++;
   }
-  if (stored) await game.settings.set(game.system.id, LANCER.setting_localization_llp_map, llpMap);
+  if (stored) await game.settings.set(game.system.id, LANCER.setting_localization_llp_files, llpMap);
   return { stored, replaced };
 }
 
 /**
- * Removes one LLP from the cached LLP map and persists the change in the Foundry server's database.
+ * Removes one LLP from the persisted LLP files database.
  * @param patch - An installed patch, from `getInstalledPatches`
  * @return Whether the patch was found and removed
  */
-export async function uncacheLanguagePatch(patch: PackedLanguagePatchWrapper): Promise<boolean> {
-  const llpMap = foundry.utils.deepClone(game.settings.get(game.system.id, LANCER.setting_localization_llp_map));
+export async function unstoreLanguagePatch(patch: PackedLanguagePatchWrapper): Promise<boolean> {
+  const llpMap = foundry.utils.deepClone(game.settings.get(game.system.id, LANCER.setting_localization_llp_files));
   const lang = normalizeLanguageCode(patch.lang);
   const packs = llpMap[lang];
   if (!packs || !(patch.target in packs)) return false;
 
   delete packs[patch.target];
   if (!Object.keys(packs).length) delete llpMap[lang]; // Remove language keys w/ no patch
-  await game.settings.set(game.system.id, LANCER.setting_localization_llp_map, llpMap);
+  await game.settings.set(game.system.id, LANCER.setting_localization_llp_files, llpMap);
   return true;
 }
 
@@ -343,7 +343,7 @@ export async function uncacheLanguagePatch(patch: PackedLanguagePatchWrapper): P
  * @remark
  */
 export function getInstalledPatches(): PackedLanguagePatchWrapper[] {
-  const llpMap = game.settings.get(game.system.id, LANCER.setting_localization_llp_map);
+  const llpMap = game.settings.get(game.system.id, LANCER.setting_localization_llp_files);
   return Object.values(llpMap).flatMap(packs => Object.values(packs));
 }
 

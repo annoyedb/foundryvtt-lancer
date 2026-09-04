@@ -1,6 +1,7 @@
 import { ActionTrackerConfig } from "./apps/action-tracker-settings";
 import { AutomationConfig } from "./apps/automation-settings";
 import { StatusIconConfig } from "./apps/status-icon-config";
+import { LocalizationConfig } from "./apps/localization-settings";
 import type { LancerCombat, LancerCombatant } from "./combat/lancer-combat";
 import { setAppearance } from "./combat/lancer-combat-tracker";
 import { LANCER } from "./config";
@@ -192,13 +193,38 @@ export const registerSettings = function () {
     default: false,
   });
 
-  game.settings.register(game.system.id, LANCER.setting_localization_llp_map, {
-    name: "LLP Localization Cache",
+  game.settings.registerMenu(game.system.id, LANCER.setting_localization, {
+    name: "lancer.setting.localization.menu.name",
+    label: "lancer.setting.localization.menu.label",
+    hint: "lancer.setting.localization.menu.hint",
+    icon: "mdi mdi-translate",
+    type: LocalizationConfig,
+    restricted: true,
+  });
+
+  game.settings.register(game.system.id, LANCER.setting_localization, {
+    scope: "world",
+    config: false,
+    type: LocalizationOptions,
+    default: new LocalizationOptions(),
+  });
+
+  game.settings.register(game.system.id, LANCER.setting_localization_llp_files, {
+    name: "LLP Localization Files",
     scope: "world",
     config: false,
     type: Object,
     default: {},
     onChange: () => refreshLLPTranslations(), // Reapply changed LLPs to everyone
+  });
+
+  game.settings.register(game.system.id, LANCER.setting_localization_llp_index_override, {
+    name: "LLP Index Overrides",
+    scope: "world",
+    config: false,
+    type: Object,
+    default: {},
+    onChange: () => refreshLLPTranslations(),
   });
 
   // Lancer initiative stuff
@@ -500,11 +526,27 @@ export class StatusIconConfigOptions extends foundry.abstract.DataModel<StatusIc
 //
 // > LOCALIZATION CONFIGURATION
 //
+/**
+ * Object for settings related to localization of LCPs via LLPs in the system
+ */
+interface LocalizationOptionsSchema extends foundry.data.fields.DataSchema {}
+
+export class LocalizationOptions extends foundry.abstract.DataModel<LocalizationOptionsSchema> {
+  static defineSchema(): LocalizationOptionsSchema {
+    return {};
+  }
+}
 
 /**
- * Cache of LLP translation data, keyed first by ISO 639-1 locale code, then by LCP name.
+ * Nested map of LLP translation data, keyed first by ISO 639-1 locale code, then by LCP name.
  */
-export type LLPLocalizationMap = Record<string, Record<string, PackedLanguagePatchWrapper>>;
+export type LLPLocalizationFiles = Record<string, Record<string, PackedLanguagePatchWrapper>>;
+
+/**
+ * Map of LLP index overrides, keyed by LCP target and then LLP key.
+ * Each value is the complete Foundry LID + path to which the translation should be copied.
+ */
+export type LLPLocalizationIndexOverrides = Record<string, Record<string, string>>;
 
 //
 // > LANCER INITIATIVE CONFIG

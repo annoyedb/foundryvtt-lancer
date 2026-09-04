@@ -59,7 +59,9 @@ export const LANCER = {
   setting_square_grid_diagonals: "squareGridDiagonals",
   setting_tag_config: "tagConfig",
   setting_simple_fonts: "simpleFonts",
-  setting_localization_llp_map: "localizationLLPMap",
+  setting_localization: "localizationOptions",
+  setting_localization_llp_files: "localizationLLPFile",
+  setting_localization_llp_index_override: "localizationLLPOverride",
   // setting_120: "warningFor120", // Old setting, currently unused.
   // setting_beta_warning: "warningForBeta", // Old setting, currently unused.
 } as const;

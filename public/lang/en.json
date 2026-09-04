@@ -1263,6 +1263,57 @@
           "label": "Print Messages",
           "hint": "Prints chat messages for start and end of a token's turn."
         }
+      },
+      "localization": {
+        "menu": {
+          "name": "Localization",
+          "label": "Localization Settings",
+          "hint": "Configure localization options for imported LCPs"
+        },
+        "header": {
+          "override": {
+            "label": "LLP Override Map",
+            "hint": "Map the complete LLP paths to the complete LID and path used by the Lancer system. The system comes with curated overrides for official content by default."
+          }
+        },
+        "override": {
+          "consoleTip": {
+            "label": "Opening the affected compendium entries while the browser console is open will help in figuring out the paths",
+            "tooltip": "Depending on your browser and OS: [F12], [Ctrl + Shift + J], [Ctrl + Shift + K]"
+          },
+          "commaTip": {
+            "label": "Multiple LLP keys may be separated by commas.",
+            "tooltip": "[key1], [key2]"
+          },
+          "llpPathTip": {
+            "label": "Example LLP path:"
+          },
+          "systemPathTip": {
+            "label": "Example Foundry path:"
+          },
+          "systemKey": {
+            "label": "Foundry Key",
+            "placeholder": "Foundry path"
+          },
+          "llpKey": {
+            "label": "LLP Key",
+            "placeholder": "LLP path"
+          },
+          "none": {
+            "label": "No LLP files or index overrides stored."
+          }
+        },
+        "buttons": {
+          "add": {
+            "label": "Add Override"
+          },
+          "import": {
+            "label": "Import JSON"
+          },
+          "export": {
+            "label": "Export JSON"
+          }
+        }
       }
     },
     "statusIconsNames": {

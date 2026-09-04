@@ -1,21 +1,23 @@
 /**
- * COMP/CON LID            ┌─► Translation Map
- *       │ normalizeSlug() │   [normalized LID]
+ * COMP/CON LID                Translation Map
+ *       │ normalizeSlug() ┌─► [normalized LID]
  *       ▼                 │   │
  * [normalized LID] ───────┘   └►[normalized dotpath]
  *       ▲                       │
  *       │ normalizeSlug()       └►[translated text]
  * Foundry LID
  * ---------(shout out to my GOAT asciiflow.com)----------
- * It exists this way because of say, deployable LIDs:
- * COMP/CON - `deployable_guardian_orochi_drone`
- * Foundry - `dep_guardian_(orochi_drone)`
- * LLP Index (you are here) - `dep_guardian_orochi_drone`
+ * It exists this way because of say, deployable LIDs and by extension, their paths:
+ * COMP/CON - `mf_hydra.core_system.deployable_guardian_orochi_drone.name`
+ * Foundry - `dep_guardian_(orochi_drone).name`
+ * LLP Index (you are here) - As a special exception `rekeyDeployables()` rips apart the LLP path and normalizes it into `dep_guardian_orochi_drone.name`
  *
  * It's a little overengineered, but I did this because of three things:
  * 1. This lets localization be a completely isolated in case either COMP/CON or the system dramatically changes LIDs/dotpathing/whatever
- * 2. COMP/CON's slugifier is weird
- * 3. Changing how Foundry LIDs are parsed will fuck up everything and I really don't want to handle migration (the main reason)
+ * 2. Trying to key directly to Foundry's dotpath from here means I have to know the shape of the data model ahead of time, which is a headache when the models can completely differ from one another (we're still on V2 but I'm checking against LLP's V3-derived data; fml)
+ * 3. Changing how Foundry LIDs are parsed will fuck up everything and I really don't want to handle migration and neither can I ask beef to change his slugifiers
+ *
+ * The actual translation functions in `llp-map.ts` will then generate their likely candidates which `lookupTranslation()` will normalize before checking the index.
  */
 import { LANCER } from "../../config";
 import { EntryType } from "../../enums";
@@ -37,9 +39,9 @@ type LIDIndex = {
 
 /**
  * Merged translations for the active language, keyed by normalized LID and then by normalized LLP subpath
- * (e.g. `{"ms___scorpion_v70.1": {"action_activate_scorpion.detail": "bonjour world"}}`). Every document resolves its
+ * (e.g. `{"ms___scorpion_v70_1": {"action_activate_scorpion.detail": "bonjour world"}}`). Every document resolves its
  * text through this map via `lookupTranslation(lid, path)`; anything that cannot be keyed by its own LID must be rekeyed
- * into that form during `rebuildLLPIndex` (see: `rekeyDeployableSubtrees`).
+ * into that form during `rebuildLLPIndex` (see: `rekeyDeployables`).
  */
 let translations: Map<string, Map<string, string>> = new Map(); // normalized LID -> (normalized subpath -> translation)
 
@@ -60,7 +62,7 @@ export function normalizeSlug(s: string): string {
 /**
  * Normalizes each segment of an LLP subpath.
  */
-function normalizePath(path: string): string {
+export function normalizePath(path: string): string {
   return path.split(".").map(normalizeSlug).join(".");
 }
 
@@ -92,7 +94,7 @@ export async function buildLIDIndex(): Promise<LIDIndex> {
     });
   }
 
-  console.log(
+  console.debug(
     `${lp} Indexed ${lids.exact.size} compendium LIDs across ${sweptPacks}/${packIDs.size} packs in
     ${(performance.now() - start).toFixed(0)}ms.`
   );
@@ -125,6 +127,7 @@ export function splitPatchKey(key: string, lids: LIDIndex): { lid: string; path:
       };
     }
   }
+
   return null;
 }
 
@@ -153,7 +156,7 @@ export async function rebuildLLPIndex(): Promise<void> {
 
   // Find and store translations for LIDs we know
   let stored = 0;
-  const discarded: { key: string; value: string }[] = []; //Store for potential rekeying
+  const discarded: { key: string; value: string }[] = []; // Store for potential rekeying
   for (const patch of patches) {
     for (const [key, value] of Object.entries(patch.data)) {
       const hit = splitPatchKey(key, lids);
@@ -161,6 +164,7 @@ export async function rebuildLLPIndex(): Promise<void> {
         discarded.push({ key, value });
         continue;
       }
+
       storeTranslation(hit.lid, hit.path, value);
       stored++;
     }
@@ -172,21 +176,24 @@ export async function rebuildLLPIndex(): Promise<void> {
   const rekeyedTags = rekeyTags(discarded);
   // const rekeyedBonds = TODO
 
-  console.log(
+  console.debug(
     `${lp} Stored ${stored} translations for ${translations.size} LIDs (rekeyed: ${rekeyedDeployables} deployables,
-    ${rekeyedCounters} counters, ${rekeyedTags} tags) in ${(performance.now() - start).toFixed(0)}ms; ${
-      discarded.length
-    } keys matched no LID.`
+    ${rekeyedCounters} counters, ${rekeyedTags} tags) in ${(performance.now() - start).toFixed(0)}ms;
+    ${discarded.length} keys matched no LID.`
   );
   if (discarded.length) {
-    console.groupCollapsed(`${lp} ${discarded.length} unmatched patch keys`);
-    for (const entry of discarded.sort((a, b) => a.key.localeCompare(b.key))) console.debug(entry.key);
-    console.groupEnd();
+    console.debug(`${lp} ${discarded.length} unmatched patch keys`);
+    // console.groupCollapsed(`${lp} ${discarded.length} unmatched patch keys`);
+    // const sorted = discarded.sort((a, b) => a.key.localeCompare(b.key));
+    // for (const entry of sorted) {
+    //   console.log(entry.key);
+    // }
+    // console.groupEnd();
   }
 }
 
 /**
- * Stores the translation by it's `normalized LID -> (normalized subpath -> translation)`
+ * Stores the translation by its `normalized LID -> (normalized subpath -> translation)`
  * @param lid
  * @param path
  * @param value
@@ -226,7 +233,11 @@ function rekeyDeployables(): number {
       aliases.push({ lid: "dep_" + parts[at].slice("deployable_".length), path: rest, value });
     }
   }
-  for (const alias of aliases) storeTranslation(alias.lid, alias.path, alias.value);
+
+  for (const alias of aliases) {
+    storeTranslation(alias.lid, alias.path, alias.value);
+  }
+
   return aliases.length;
 }
 
@@ -265,6 +276,7 @@ function rekeyDotlessLIDs(discarded: { key: string; value: string }[], prefix: s
     discarded.splice(i, 1);
     rekeyed++;
   }
+
   return rekeyed;
 }
 

@@ -28,7 +28,8 @@ import type {
   ActionTrackerOptions,
   AutomationOptions,
   CombatTrackerAppearance,
-  LLPLocalizationMap,
+  LLPLocalizationFiles,
+  LLPLocalizationIndexOverrides,
   LocalizationOptions,
   StatusIconConfigOptions,
 } from "./module/settings";
@@ -146,7 +147,8 @@ declare module "fvtt-types/configuration" {
     "lancer.autoOKillHeat": boolean;
     "lancer.automationOptions": typeof AutomationOptions;
     "lancer.automationSwitch": boolean;
-    "lancer.localizationLLPMap": LLPLocalizationMap;
+    "lancer.localizationLLPFile": LLPLocalizationFiles;
+    "lancer.localizationLLPOverride": LLPLocalizationIndexOverrides;
     "lancer.localizationOptions": typeof LocalizationOptions;
     "lancer.scanOutputs": string;
     "lancer.combat-tracker-appearance": typeof CombatTrackerAppearance;

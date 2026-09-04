@@ -14,19 +14,19 @@
   } from "../../util/lcps";
   import {
     buildLLPRows,
-    cacheLanguagePatches,
+    storeLanguagePatches,
     getInstalledPatches,
     getLanguageLabel,
     type LLPSummary,
     summarizeStagedLanguagePatches,
-    uncacheLanguagePatch,
+    unstoreLanguagePatch,
   } from "../../util/localization/llp-import";
   import {
     downloadOfficialLocales,
     listOfficialLocales,
     type OfficialLocaleHandle,
   } from "../../util/localization/llp-fetch";
-  import { rebuildLLPIndex } from "../../util/localization/llp-index";
+  import { refreshLLPTranslations } from "../../util/localization/llp-map";
   import LCPTable from "./LCPTable.svelte";
   import LCPActions from "./LCPActions.svelte";
   import type { IContentPack, IContentPackManifest, PackedLanguagePatchWrapper } from "../../util/unpacking/packed-types";
@@ -222,7 +222,7 @@
     if (!_canImportLlp()) return;
     importingLlps = true;
     console.log(`${lp} Starting import of ${llps.length} language patch(es).`, $state.snapshot(llps));
-    const { stored, replaced } = await cacheLanguagePatches($state.snapshot(llps));
+    const { stored, replaced } = await storeLanguagePatches($state.snapshot(llps));
     llpData = getInstalledPatches(); // Refresh table
     console.log(`${lp} Import of ${stored} language patch(es) complete.`);
     importingLlps = false;
@@ -237,7 +237,7 @@
     if (stagedPacks.length) await importManyLcps(stagedPacks);
     if (stagedPatches.length) await importManyLlps(stagedPatches);
 
-    if (stagedPacks.length || stagedPatches.length) await rebuildLLPIndex(); // Rebuild LLP indices when compendiums are changed
+    if (stagedPacks.length || stagedPatches.length) await refreshLLPTranslations();
   }
 
   function updateProgressBar(done: number, outOf: number) {
@@ -258,7 +258,7 @@
     });
     if (!answer) return;
     removingLlp = true;
-    await uncacheLanguagePatch($state.snapshot(patch)); // The setting's onChange retranslates every client
+    await unstoreLanguagePatch($state.snapshot(patch)); // The setting's onChange retranslates every client
     llpData = getInstalledPatches(); // Refresh the installed-patches table
     removingLlp = false;
   }
@@ -278,8 +278,8 @@
     if (!answer) return;
     clearing = true;
     await clearCompendiumData();
-    await game.settings.set(game.system.id, LANCER.setting_localization_llp_map, {});
-    await rebuildLLPIndex(); // Rebuild LLP indices when compendiums are changed
+    await game.settings.set(game.system.id, LANCER.setting_localization_llp_files, {});
+    await refreshLLPTranslations();
     llpData = getInstalledPatches(); // Refresh the installed-patches table
     const officialData = await getOfficialData();
     const index = new LCPIndex(game.settings.get(game.system.id, LANCER.setting_lcps).index);
