@@ -956,6 +956,52 @@
         }
       }
     },
+    "pilotImporter": {
+      "loadout": {
+        "title": "Select Pilot Loadout",
+        "content": "Multiple pilot loadouts found. Please select a single loadout to import and use:",
+        "confirm": {
+          "label": "Import Selected Loadout"
+        }
+      },
+      "incomplete": {
+        "title": "Incomplete Pilot Import"
+      },
+      "warning": {
+        "failed": {
+          "label": "Failed to update pilot: {err}"
+        },
+        "crbRequired": {
+          "label": "You must import the Core Book Data in the Lancer Compendium Manager before importing a pilot."
+        },
+        "createPermissions": {
+          "label": "Could not import mech '{name}' as you lack the permission to create new actors. Please ask your GM to import for you, or give you permissions."
+        },
+        "updatePermissions": {
+          "label": "Could not import mech '{name}' as you lack the permission to update actors. Please ask your GM to import for you, or give you permissions."
+        },
+        "missingData": {
+          "label": {
+            "0": "Partially loaded '{name}'s new state.",
+            "1": " {number} actors could not be created/updated.",
+            "2": " {number} items could not be found.",
+            "3": " See dialog for details."
+          }
+        }
+      },
+      "info": {
+        "success": {
+          "label": "Successfully loaded pilot new state."
+        }
+      },
+      "createPermissions": {
+        "title": "Cannot Create Actors",
+        "content": {
+          "0": "You are not permitted to create actors and no GM's are online, so sync will not produce any new mechs or deployables.",
+          "1": "Your GM can allow Players/Trusted Players to create actors in Settings -> Configure Permissions."
+        }
+      }
+    },
     "lcpManager": {
       "header": {
         "noLcpSelected": {
