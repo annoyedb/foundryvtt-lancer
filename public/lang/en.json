@@ -1165,6 +1165,85 @@
         "content": "The LANCER Compendium Manager has had a major update. Would you like to get a tour?"
       }
     },
+    "hotbar": {
+      "error": {
+        "invalidUuid": {
+          "label": "Invalid UUID for flow drop on hotbar"
+        },
+        "basicNotActor": {
+          "label": "Basic flow drop on hotbar was not from an actor"
+        },
+        "basicMissingSubtype": {
+          "label": "No flow subtype provided for basic flow drop on hotbar"
+        },
+        "statNotActor": {
+          "label": "Stat flow drop on hotbar was not from an actor"
+        },
+        "statMissingPath": {
+          "label": "Stat flow drop on hotbar was missing a stat path"
+        },
+        "attackNotItem": {
+          "label": "Attack flow drop on hotbar was not from an item"
+        },
+        "attackNotWeapon": {
+          "label": "Attack flow drop on hotbar was not from a weapon"
+        },
+        "techAttackNotItem": {
+          "label": "Tech attack flow drop on hotbar was not from an item"
+        },
+        "techAttackInvalidItem": {
+          "label": "Tech attack flow drop on hotbar was not from a system or NPC feature"
+        },
+        "damageNotItem": {
+          "label": "Damage flow drop on hotbar was not from an item"
+        },
+        "damageNotWeapon": {
+          "label": "Damage flow drop on hotbar was not from a weapon"
+        },
+        "chatNotItem": {
+          "label": "Chat flow drop on hotbar was not from an item"
+        },
+        "chatMissingData": {
+          "label": "Chat flow drop on hotbar was missing required data"
+        },
+        "skillNotItem": {
+          "label": "Skill flow drop on hotbar was not from an item"
+        },
+        "skillNotSkill": {
+          "label": "Skill flow drop on hotbar was not from a skill item"
+        },
+        "bondPowerNotItem": {
+          "label": "Bond power flow drop on hotbar was not from an item"
+        },
+        "bondPowerNotBondPower": {
+          "label": "Bond power flow drop on hotbar was not from a bond power item"
+        },
+        "bondPowerMissingPowerIndex": {
+          "label": "Bond power flow drop on hotbar was missing a power index"
+        },
+        "effectNotItem": {
+          "label": "Effect flow drop on hotbar was not from an item"
+        },
+        "activationNotItem": {
+          "label": "Activation flow drop on hotbar was not from an item"
+        },
+        "activationMissingActionPath": {
+          "label": "Activation flow drop on hotbar was missing an action path"
+        },
+        "coreActiveNotItem": {
+          "label": "Core active flow drop on hotbar was not from an item"
+        },
+        "coreActiveMissingActionPath": {
+          "label": "Core active flow drop on hotbar was missing an action path"
+        },
+        "coreActiveNotFrame": {
+          "label": "Core active flow drop on hotbar was not from a frame item"
+        },
+        "unknownFlowType": {
+          "label": "Unknown flow type for flow drop on hotbar!"
+        }
+      }
+    },
     "setting": {
       "floatingDamageNumbers": {
         "name": "Floating Damage Numbers",
