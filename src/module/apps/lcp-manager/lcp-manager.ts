@@ -33,7 +33,7 @@ export function addLCPManagerButton(_app: foundry.applications.api.ApplicationV2
   if (!game.user?.isGM) return;
   const buttons = html.querySelector<HTMLDivElement>(".header-actions");
   if (!buttons) {
-    ui.notifications!.error("Unable to add LCP Manager button - Compendium Tab buttons not found!", {
+    ui.notifications!.error(game.i18n.localize("lancer.notifications.error.lcpManagerCompendiumTabButtonsNotFound"), {
       permanent: true,
     });
     console.log(`${lp} Unable to add LCP Manager button - Compendium Tab buttons not found!`, buttons);
