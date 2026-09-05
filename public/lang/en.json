@@ -520,6 +520,8 @@
         "attackNonNpcCannotFireNpcWeapon": "Non-NPC cannot fire an NPC weapon!",
         "attackNonPilotCannotFirePilotWeapon": "Non-pilot cannot fire a pilot weapon!",
         "attackWeaponNotLoaded": "Weapon {name} is not loaded!",
+        "cascadeOnlyMechsCanCascade": "Only mechs can cascade.",
+        "frameNoCorePowerRemaining": "No core power remaining on this frame!",
         "pilotImportFailed": "Failed to update pilot: {err}",
         "pilotImportCrbRequired": "You must import the Core Book Data in the Lancer Compendium Manager before importing a pilot.",
         "pilotImportCreatePermissions": "Could not import mech '{name}' as you lack the permission to create new actors. Please ask your GM to import for you, or give you permissions.",
@@ -540,7 +542,9 @@
         "pilotJsonImportStarting": "Starting import of '{name}', callsign '{callsign}'. Please wait.",
         "pilotJsonImportComplete": "Import of '{name}', callsign '{callsign}' complete.",
         "worldMigrationInProgress": "Migration to v{version} in progress. Please do not shut down your world or refresh the page until migration is complete.",
-        "worldMigrationComplete": "LANCER System migration to version {version} completed!"
+        "worldMigrationComplete": "LANCER System migration to version {version} completed!",
+        "compendiumBuilderClearInProgress": "Clearing all LANCER Compendium data. Please wait.",
+        "compendiumBuilderClearComplete": "LANCER Compendiums cleared."
       }
     },
     "commonSheet": {
