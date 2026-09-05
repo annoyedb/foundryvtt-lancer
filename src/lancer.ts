@@ -544,11 +544,11 @@ Hooks.on("renderChatMessageHTML", async (cm, el, data) => {
             return ui.notifications?.error(game.i18n.localize("lancer.chatCard.error.missingImportActorId.label"));
           const toImport = await LancerActor.fromUuid(
             importId,
-            game.i18n.localize("lancer.data.error.invalidImportTarget.label")
+            game.i18n.localize("lancer.chatCard.error.invalidImportTarget.label")
           );
           const forActor = await LancerActor.fromUuid(
             actorId,
-            game.i18n.localize("lancer.data.error.invalidActorTarget.label")
+            game.i18n.localize("lancer.chatCard.error.invalidActorTarget.label")
           );
           await fulfillImportActor(toImport, forActor);
           break;

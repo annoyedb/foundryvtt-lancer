@@ -440,16 +440,6 @@
         }
       }
     },
-    "data": {
-      "error": {
-        "invalidImportTarget": {
-          "label": "Invalid import actor ID on actor import prompt button."
-        },
-        "invalidActorTarget": {
-          "label": "Invalid target actor ID on actor import prompt button."
-        }
-      }
-    },
     "commonSheet": {
       "tabs": {
         "effects": {
@@ -525,6 +515,14 @@
           "label": "Rename"
         }
       },
+      "error": {
+        "actorNotFound": {
+          "label": "{prefix}Actor {uuid} not found."
+        },
+        "documentNotActor": {
+          "label": "{prefix}Document {uuid} not an actor."
+        }
+      },
       "warning": {
         "systemNoRemainingUses": {
           "label": "System {name} has no remaining uses!"
@@ -543,6 +541,15 @@
         },
         "weaponNotRecharged": {
           "label": "Weapon {name} has not recharged!"
+        },
+        "onlyMechsCanOvercharge": {
+          "label": "Only mechs can overcharge!"
+        },
+        "onlyNpcsCanRecharge": {
+          "label": "Only NPCs can recharge!"
+        },
+        "onlyMechsAndNpcsCanTechAttack": {
+          "label": "Only mechs and NPCs can tech attack!"
         }
       }
     },
@@ -1010,6 +1017,12 @@
         },
         "invalidDismembermentDamage": {
           "label": "Invalid actor ID dismemberment damage button."
+        },
+        "invalidImportTarget": {
+          "label": "Invalid import actor ID on actor import prompt button."
+        },
+        "invalidActorTarget": {
+          "label": "Invalid target actor ID on actor import prompt button."
         }
       }
     },
