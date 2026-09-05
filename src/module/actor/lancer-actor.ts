@@ -886,7 +886,7 @@ export class LancerActor<SubType extends Actor.SubType = Actor.SubType> extends 
 
     let actor = (await fromUuid(x)) as LancerActor | TokenDocument.Implementation;
     if (!actor) {
-      let message = game.i18n.format("lancer.commonSheet.error.actorNotFound.label", {
+      let message = game.i18n.format("lancer.notifications.error.actorNotFound", {
         prefix: messagePrefix ? `${messagePrefix} | ` : "",
         uuid: x,
       });
@@ -895,7 +895,7 @@ export class LancerActor<SubType extends Actor.SubType = Actor.SubType> extends 
     }
     if (actor instanceof TokenDocument.implementation) actor = actor.actor!;
     if (!(actor instanceof LancerActor)) {
-      let message = game.i18n.format("lancer.commonSheet.error.documentNotActor.label", {
+      let message = game.i18n.format("lancer.notifications.error.actorDocumentNotActor", {
         prefix: messagePrefix ? `${messagePrefix} | ` : "",
         uuid: x,
       });
@@ -911,7 +911,7 @@ export class LancerActor<SubType extends Actor.SubType = Actor.SubType> extends 
 
     let actor = fromUuidSync(x) as LancerActor | TokenDocument.Implementation;
     if (!actor) {
-      let message = game.i18n.format("lancer.commonSheet.error.actorNotFound.label", {
+      let message = game.i18n.format("lancer.notifications.error.actorNotFound", {
         prefix: messagePrefix ? `${messagePrefix} | ` : "",
         uuid: x,
       });
@@ -920,7 +920,7 @@ export class LancerActor<SubType extends Actor.SubType = Actor.SubType> extends 
     }
     if (actor instanceof TokenDocument.implementation) actor = actor.actor!;
     if (!(actor instanceof LancerActor)) {
-      let message = game.i18n.format("lancer.commonSheet.error.documentNotActor.label", {
+      let message = game.i18n.format("lancer.notifications.error.actorDocumentNotActor", {
         prefix: messagePrefix ? `${messagePrefix} | ` : "",
         uuid: x,
       });
@@ -1069,7 +1069,7 @@ export class LancerActor<SubType extends Actor.SubType = Actor.SubType> extends 
 
   async beginOverchargeFlow(): Promise<boolean> {
     if (!this.is_mech()) {
-      ui.notifications!.warn(game.i18n.localize("lancer.commonSheet.warning.onlyMechsCanOvercharge.label"));
+      ui.notifications!.warn(game.i18n.localize("lancer.notifications.warning.actorOnlyMechsCanOvercharge"));
       return false;
     }
     const flow = new OverchargeFlow(this);
@@ -1078,7 +1078,7 @@ export class LancerActor<SubType extends Actor.SubType = Actor.SubType> extends 
 
   async beginRechargeFlow(): Promise<boolean> {
     if (!this.is_npc()) {
-      ui.notifications!.warn(game.i18n.localize("lancer.commonSheet.warning.onlyNpcsCanRecharge.label"));
+      ui.notifications!.warn(game.i18n.localize("lancer.notifications.warning.actorOnlyNpcsCanRecharge"));
       return false;
     }
     const flow = new NPCRechargeFlow(this);
@@ -1107,7 +1107,7 @@ export class LancerActor<SubType extends Actor.SubType = Actor.SubType> extends 
 
   async beginBasicTechAttackFlow(title?: string): Promise<boolean> {
     if (!this.is_mech() && !this.is_npc()) {
-      ui.notifications!.warn(game.i18n.localize("lancer.commonSheet.warning.onlyMechsAndNpcsCanTechAttack.label"));
+      ui.notifications!.warn(game.i18n.localize("lancer.notifications.warning.actorOnlyMechsAndNpcsCanTechAttack"));
       return false;
     }
     const params = {

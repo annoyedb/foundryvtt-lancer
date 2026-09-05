@@ -538,22 +538,22 @@ Hooks.on("renderChatMessageHTML", async (cm, el, data) => {
         case "importActor":
           const actorId = elt.dataset.targetId;
           if (!actorId)
-            return ui.notifications?.error(game.i18n.localize("lancer.chatCard.error.missingTargetActorId.label"));
+            return ui.notifications?.error(game.i18n.localize("lancer.notifications.error.chatMissingTargetActorId"));
           const importId = elt.dataset.importId;
           if (!importId)
-            return ui.notifications?.error(game.i18n.localize("lancer.chatCard.error.missingImportActorId.label"));
+            return ui.notifications?.error(game.i18n.localize("lancer.notifications.error.chatMissingImportActorId"));
           const toImport = await LancerActor.fromUuid(
             importId,
-            game.i18n.localize("lancer.chatCard.error.invalidImportTarget.label")
+            game.i18n.localize("lancer.notifications.error.chatInvalidImportTarget")
           );
           const forActor = await LancerActor.fromUuid(
             actorId,
-            game.i18n.localize("lancer.chatCard.error.invalidActorTarget.label")
+            game.i18n.localize("lancer.notifications.error.chatInvalidActorTarget")
           );
           await fulfillImportActor(toImport, forActor);
           break;
         default:
-          ui.notifications?.error(game.i18n.localize("lancer.chatCard.error.invalidAction.label"));
+          ui.notifications?.error(game.i18n.localize("lancer.notifications.error.chatInvalidAction"));
           return false;
       }
       if (elt.classList.contains("self-destruct")) {
@@ -599,25 +599,25 @@ Hooks.on("renderChatMessageHTML", async (cm, el, data) => {
         case "secondaryStructure":
           if (!actorId)
             return ui.notifications?.error(
-              game.i18n.localize("lancer.chatCard.error.missingSecondaryStructureActorId.label")
+              game.i18n.localize("lancer.notifications.error.chatMissingSecondaryStructureActorId")
             );
           beginSecondaryStructureFlow(actorId);
           break;
         case "cascade":
           if (!actorId)
-            return ui.notifications?.error(game.i18n.localize("lancer.chatCard.error.missingCascadeActorId.label"));
+            return ui.notifications?.error(game.i18n.localize("lancer.notifications.error.chatMissingCascadeActorId"));
           beginCascadeFlow(actorId);
           break;
         case "dismembermentDamage": {
           const actor = LancerActor.fromUuidSync(
             actorId ?? "",
-            game.i18n.localize("lancer.chatCard.error.invalidDismembermentDamage.label")
+            game.i18n.localize("lancer.notifications.error.chatInvalidDismembermentDamage")
           );
           beginDismembermentDamageFlow(actor);
           break;
         }
         default:
-          return ui.notifications?.error(game.i18n.localize("lancer.chatCard.error.invalidFlowType.label"));
+          return ui.notifications?.error(game.i18n.localize("lancer.notifications.error.chatInvalidFlowType"));
       }
       return true;
     }
@@ -667,16 +667,11 @@ async function promptInstallCoreData() {
   await app.render(true);
   // Render a dialog on top to explain
   let content = `
-    <h2 style="text-align: center">${game.i18n.localize("lancer.onboarding.import.content.0")}</h2>
-    <p style="text-align: center;margin-bottom: 1em">${game.i18n.localize("lancer.onboarding.import.content.1")}</p>
-    <p style="text-align: center;margin-bottom: 1em">${game.i18n.localize("lancer.onboarding.import.content.2")}</p>
-  `;
-
+  <h2 style="text-align: center">${game.i18n.localize("lancer.onboarding.import.content.0")}</h2>
+  <p style="text-align: center;margin-bottom: 1em">${game.i18n.localize("lancer.onboarding.import.content.1")}</p>
+  <p style="text-align: center;margin-bottom: 1em">${game.i18n.localize("lancer.onboarding.import.content.2")}</p>`;
   new foundry.applications.api.DialogV2({
-    window: {
-      title: game.i18n.localize("lancer.onboarding.import.title"),
-      icon: "cci cci-content-manager i--3",
-    },
+    window: { title: game.i18n.localize("lancer.onboarding.import.title"), icon: "cci cci-content-manager i--3" },
     position: {
       width: 700,
     },
@@ -754,9 +749,7 @@ async function versionCheck(): Promise<"first_run" | "yes" | "no" | "too_old"> {
 
 async function promptLCPManagerTour() {
   const showTour = await foundry.applications.api.DialogV2.confirm({
-    window: {
-      title: game.i18n.localize("lancer.onboarding.lcpManagerTour.title"),
-    },
+    window: { title: game.i18n.localize("lancer.onboarding.lcpManagerTour.title") },
     content: game.i18n.localize("lancer.onboarding.lcpManagerTour.content"),
     rejectClose: false,
   });
@@ -799,7 +792,7 @@ async function doMigration() {
   } else if (needsMigrate == "too_old") {
     // System version is too old for migration
     ui.notifications!.error(
-      game.i18n.format("lancer.migration.error.tooOld.label", {
+      game.i18n.format("lancer.notifications.error.migrationTooOld", {
         version: String(game.settings.get(game.system.id, LANCER.setting_migration_version)),
       }),
       { permanent: true }
@@ -812,7 +805,9 @@ async function doMigration() {
     // Update the stored version number for next migration
     await game.settings.set(game.system.id, LANCER.setting_migration_version, game.system.version);
   } else if (needsMigrate == "yes") {
-    ui.notifications!.warn(game.i18n.localize("lancer.migration.warning.gmRequired.label"), { permanent: true });
+    ui.notifications!.warn(game.i18n.localize("lancer.notifications.warning.migrationGmRequired"), {
+      permanent: true,
+    });
   } else if (needsMigrate == "no" && game.user!.isGM) {
     // Update the stored version number for next migration
     await game.settings.set(game.system.id, LANCER.setting_migration_version, game.system.version);

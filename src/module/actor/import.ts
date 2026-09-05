@@ -742,7 +742,7 @@ export async function importCCv3(
     const createNewMech = async (importData: PackedMechData) => {
       if (!game.user?.can("ACTOR_CREATE")) {
         ui.notifications!.warn(
-          game.i18n.format("lancer.pilotImporter.warning.createPermissions.label", { name: importData.name }),
+          game.i18n.format("lancer.notifications.warning.pilotImportCreatePermissions", { name: importData.name }),
           { permanent: true }
         );
         _missingActors.push({ name: importData.name, lid: importData.frameData.id });
@@ -768,7 +768,7 @@ export async function importCCv3(
       }
       if (!mech.canUserModify(game.user!, "update")) {
         ui.notifications!.warn(
-          game.i18n.format("lancer.pilotImporter.warning.updatePermissions.label", { name: importedMech.name }),
+          game.i18n.format("lancer.notifications.warning.pilotImportUpdatePermissions", { name: importedMech.name }),
           { permanent: true }
         );
         _missingActors.push({ name: importedMech.name, lid: importedMech.frameData.id });
@@ -978,11 +978,11 @@ export async function importCCv3(
     pilot.effectHelper.propagateEffects(true);
     // Reset current data and render all
     pilot.render();
-    ui.notifications!.info(game.i18n.localize("lancer.pilotImporter.info.success.label"));
+    ui.notifications!.info(game.i18n.localize("lancer.notifications.info.pilotImportSuccess"));
   } catch (e) {
     console.warn(e);
     ui.notifications!.warn(
-      game.i18n.format("lancer.pilotImporter.warning.failed.label", {
+      game.i18n.format("lancer.notifications.warning.pilotImportFailed", {
         err: e instanceof Error ? e.message : String(e),
       }),
       { permanent: true }
@@ -994,7 +994,9 @@ export async function importCCv3(
 export async function importCCv2(pilot: LancerPILOT, data: PackedPilotData, clearFirst = true) {
   const coreVersion = game.settings.get(game.system.id, LANCER.setting_core_data);
   if (!coreVersion) {
-    ui.notifications!.warn(game.i18n.localize("lancer.pilotImporter.warning.crbRequired.label"), { permanent: true });
+    ui.notifications!.warn(game.i18n.localize("lancer.notifications.warning.pilotImportCrbRequired"), {
+      permanent: true,
+    });
     return;
   }
   console.log(`${lp} Importing v2 Pilot`, pilot, data);
@@ -1279,7 +1281,7 @@ export async function importCCv2(pilot: LancerPILOT, data: PackedPilotData, clea
       if (!mech) {
         if (!game.user?.can("ACTOR_CREATE")) {
           ui.notifications!.warn(
-            game.i18n.format("lancer.pilotImporter.warning.createPermissions.label", { name: cloudMech.name }),
+            game.i18n.format("lancer.notifications.warning.pilotImportCreatePermissions", { name: cloudMech.name }),
             { permanent: true }
           );
           missingActors.push({ name: cloudMech.name, lid: cloudMech.frame });
@@ -1298,7 +1300,7 @@ export async function importCCv2(pilot: LancerPILOT, data: PackedPilotData, clea
       }
       if (!mech.canUserModify(game.user!, "update")) {
         ui.notifications!.warn(
-          game.i18n.format("lancer.pilotImporter.warning.updatePermissions.label", { name: cloudMech.name }),
+          game.i18n.format("lancer.notifications.warning.pilotImportUpdatePermissions", { name: cloudMech.name }),
           { permanent: true }
         );
         missingActors.push({ name: cloudMech.name, lid: cloudMech.frame });
@@ -1515,18 +1517,18 @@ export async function importCCv2(pilot: LancerPILOT, data: PackedPilotData, clea
     // Reset curr data and render all
     pilot.render();
     if (missingItems.length || missingActors.length) {
-      let message = game.i18n.format("lancer.pilotImporter.warning.missingData.label.0", { name: pilot.name });
+      let message = game.i18n.format("lancer.notifications.warning.pilotImportMissingData.0", { name: pilot.name });
       if (missingActors.length) {
-        message += game.i18n.format("lancer.pilotImporter.warning.missingData.label.1", {
+        message += game.i18n.format("lancer.notifications.warning.pilotImportMissingData.1", {
           number: missingActors.length.toString(),
         });
       }
       if (missingItems.length) {
-        message += game.i18n.format("lancer.pilotImporter.warning.missingData.label.2", {
+        message += game.i18n.format("lancer.notifications.warning.pilotImportMissingData.2", {
           number: missingItems.length.toString(),
         });
       }
-      message += game.i18n.localize("lancer.pilotImporter.warning.missingData.label.3");
+      message += game.i18n.localize("lancer.notifications.warning.pilotImportMissingData.3");
       ui.notifications!.warn(message, { permanent: true });
       console.warn(`${lp} Some actors and/or items were missed during pilot import:`, missingActors, missingItems);
 
@@ -1556,12 +1558,12 @@ export async function importCCv2(pilot: LancerPILOT, data: PackedPilotData, clea
         ],
       }).render(true);
     } else {
-      ui.notifications!.info(game.i18n.localize("lancer.pilotImporter.info.success.label"));
+      ui.notifications!.info(game.i18n.localize("lancer.notifications.info.pilotImportSuccess"));
     }
   } catch (e) {
     console.warn(e);
     ui.notifications!.warn(
-      game.i18n.format("lancer.pilotImporter.warning.failed.label", {
+      game.i18n.format("lancer.notifications.warning.pilotImportFailed", {
         err: e instanceof Error ? e.message : String(e),
       }),
       { permanent: true }

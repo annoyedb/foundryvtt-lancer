@@ -74,7 +74,7 @@
     if (filesData.length === 1) {
       const fd = filesData[0];
       if (!fd.data) {
-        ui.notifications.error(`${game.i18n.localize("lancer.lcpManager.error.lcpLoadFailed.label")} ${fd.name}`);
+        ui.notifications.error(`${game.i18n.localize("lancer.notifications.error.lcpSelectorLoadFailed")} ${fd.name}`);
         return;
       }
       try {
@@ -83,7 +83,7 @@
         return;
       } catch (err: any) {
         ui.notifications.error(
-          `${game.i18n.localize("lancer.lcpManager.error.lcpLoadFailed.label")} ${fd.name}: ${err.message || err}`,
+          `${game.i18n.localize("lancer.notifications.error.lcpSelectorLoadFailed")} ${fd.name}: ${err.message || err}`,
           { permanent: true }
         );
         return;
@@ -101,7 +101,9 @@
     await Promise.all(
       filesData.map(async fd => {
         if (!fd.data) {
-          ui.notifications.error(`${game.i18n.localize("lancer.lcpManager.error.lcpLoadFailed.label")} '${fd.name}'`);
+          ui.notifications.error(
+            `${game.i18n.localize("lancer.notifications.error.lcpSelectorLoadFailed")} '${fd.name}'`
+          );
           return;
         }
 
@@ -113,7 +115,7 @@
           aggregateManifest.description += `<b>${fd.cp.manifest.name}</b> v${fd.cp.manifest.version} by ${author}<br />`;
         } catch (err: any) {
           ui.notifications.error(
-            `${game.i18n.localize("lancer.lcpManager.error.lcpLoadFailed.label")} ${fd.name}: ${err.message || err}`,
+            `${game.i18n.localize("lancer.notifications.error.lcpSelectorLoadFailed")} ${fd.name}: ${err.message || err}`,
             { permanent: true }
           );
         }

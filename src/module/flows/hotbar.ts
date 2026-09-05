@@ -63,7 +63,7 @@ export function onHotbarDrop(_bar: any, data: any, slot: number) {
 
   const actorOrItem = fromUuidSync(data.uuid);
   if (!actorOrItem) {
-    ui.notifications!.error(game.i18n.localize("lancer.hotbar.error.invalidUuid.label"));
+    ui.notifications!.error(game.i18n.localize("lancer.notifications.error.hotbarInvalidUuid"));
     throw new Error("Invalid UUID for flow drop on hotbar");
   }
   let title = "";
@@ -79,12 +79,12 @@ export function onHotbarDrop(_bar: any, data: any, slot: number) {
   switch (data.flowType) {
     case DroppableFlowType.BASIC:
       if (!(actorOrItem instanceof LancerActor)) {
-        ui.notifications!.error(game.i18n.localize("lancer.hotbar.error.basicNotActor.label"));
+        ui.notifications!.error(game.i18n.localize("lancer.notifications.error.hotbarBasicNotActor"));
         throw new Error("Basic flow drop on hotbar was not from an actor");
       }
       actor = actorOrItem;
       if (!data.flowSubtype) {
-        ui.notifications!.error(game.i18n.localize("lancer.hotbar.error.basicMissingSubtype.label"));
+        ui.notifications!.error(game.i18n.localize("lancer.notifications.error.hotbarBasicMissingSubtype"));
         throw new Error("No flow subtype provided for basic flow");
       }
       const BasicFlowType = LancerFlowState.BasicFlowType;
@@ -143,11 +143,11 @@ export function onHotbarDrop(_bar: any, data: any, slot: number) {
       break;
     case DroppableFlowType.STAT:
       if (!(actorOrItem instanceof LancerActor)) {
-        ui.notifications!.error(game.i18n.localize("lancer.hotbar.error.statNotActor.label"));
+        ui.notifications!.error(game.i18n.localize("lancer.notifications.error.hotbarStatNotActor"));
         throw new Error("Stat flow drop on hotbar was not from an actor");
       }
       if (!data.args?.statPath) {
-        ui.notifications!.error(game.i18n.localize("lancer.hotbar.error.statMissingPath.label"));
+        ui.notifications!.error(game.i18n.localize("lancer.notifications.error.hotbarStatMissingPath"));
         throw new Error("Stat flow drop on hotbar was missing a stat path");
       }
       actor = actorOrItem;
@@ -176,7 +176,7 @@ export function onHotbarDrop(_bar: any, data: any, slot: number) {
       command = `${getActor}actor.beginStatFlow("${data.args?.statPath}");`;
     case DroppableFlowType.ATTACK:
       if (!(actorOrItem instanceof LancerItem)) {
-        ui.notifications!.error(game.i18n.localize("lancer.hotbar.error.attackNotItem.label"));
+        ui.notifications!.error(game.i18n.localize("lancer.notifications.error.hotbarAttackNotItem"));
         throw new Error("Attack flow drop on hotbar was not from an item");
       }
       if (
@@ -184,7 +184,7 @@ export function onHotbarDrop(_bar: any, data: any, slot: number) {
         data.lancerType !== EntryType.PILOT_WEAPON &&
         data.lancerType !== EntryType.NPC_FEATURE
       ) {
-        ui.notifications!.error(game.i18n.localize("lancer.hotbar.error.attackNotWeapon.label"));
+        ui.notifications!.error(game.i18n.localize("lancer.notifications.error.hotbarAttackNotWeapon"));
         throw new Error("Attack flow drop on hotbar was not from a weapon");
       }
       item = actorOrItem;
@@ -194,11 +194,11 @@ export function onHotbarDrop(_bar: any, data: any, slot: number) {
       break;
     case DroppableFlowType.TECH_ATTACK:
       if (!(actorOrItem instanceof LancerItem)) {
-        ui.notifications!.error(game.i18n.localize("lancer.hotbar.error.techAttackNotItem.label"));
+        ui.notifications!.error(game.i18n.localize("lancer.notifications.error.hotbarTechAttackNotItem"));
         throw new Error("Tech attack flow drop on hotbar was not from an item");
       }
       if (data.lancerType !== EntryType.MECH_SYSTEM && data.lancerType !== EntryType.NPC_FEATURE) {
-        ui.notifications!.error(game.i18n.localize("lancer.hotbar.error.techAttackInvalidItem.label"));
+        ui.notifications!.error(game.i18n.localize("lancer.notifications.error.hotbarTechAttackInvalidItem"));
         throw new Error("Tech attack flow drop on hotbar was not from a system or NPC feature");
       }
       item = actorOrItem;
@@ -208,7 +208,7 @@ export function onHotbarDrop(_bar: any, data: any, slot: number) {
       break;
     case DroppableFlowType.DAMAGE:
       if (!(actorOrItem instanceof LancerItem)) {
-        ui.notifications!.error(game.i18n.localize("lancer.hotbar.error.damageNotItem.label"));
+        ui.notifications!.error(game.i18n.localize("lancer.notifications.error.hotbarDamageNotItem"));
         throw new Error("Damage flow drop on hotbar was not from an item");
       }
       if (
@@ -216,7 +216,7 @@ export function onHotbarDrop(_bar: any, data: any, slot: number) {
         data.lancerType !== EntryType.PILOT_WEAPON &&
         data.lancerType !== EntryType.NPC_FEATURE
       ) {
-        ui.notifications!.error(game.i18n.localize("lancer.hotbar.error.damageNotWeapon.label"));
+        ui.notifications!.error(game.i18n.localize("lancer.notifications.error.hotbarDamageNotWeapon"));
         throw new Error("Damage flow drop on hotbar was not from a weapon");
       }
       item = actorOrItem;
@@ -226,11 +226,11 @@ export function onHotbarDrop(_bar: any, data: any, slot: number) {
       break;
     case DroppableFlowType.CHAT:
       if (!(actorOrItem instanceof LancerItem)) {
-        ui.notifications!.error(game.i18n.localize("lancer.hotbar.error.chatNotItem.label"));
+        ui.notifications!.error(game.i18n.localize("lancer.notifications.error.hotbarChatNotItem"));
         throw new Error("Chat flow drop on hotbar was not from an item");
       }
       if (!data.args) {
-        ui.notifications!.error(game.i18n.localize("lancer.hotbar.error.chatMissingData.label"));
+        ui.notifications!.error(game.i18n.localize("lancer.notifications.error.hotbarChatMissingData"));
         throw new Error("Chat flow drop on hotbar was missing required data");
       }
       item = actorOrItem;
@@ -241,12 +241,12 @@ export function onHotbarDrop(_bar: any, data: any, slot: number) {
       break;
     case DroppableFlowType.SKILL:
       if (!(actorOrItem instanceof LancerItem)) {
-        ui.notifications!.error(game.i18n.localize("lancer.hotbar.error.skillNotItem.label"));
+        ui.notifications!.error(game.i18n.localize("lancer.notifications.error.hotbarSkillNotItem"));
         throw new Error("Skill flow drop on hotbar was not from an item");
       }
       item = actorOrItem;
       if (!item.is_skill()) {
-        ui.notifications!.error(game.i18n.localize("lancer.hotbar.error.skillNotSkill.label"));
+        ui.notifications!.error(game.i18n.localize("lancer.notifications.error.hotbarSkillNotSkill"));
         throw new Error("Skill flow drop on hotbar was not from a skill item");
       }
       img = _chooseItemImage(item);
@@ -255,16 +255,16 @@ export function onHotbarDrop(_bar: any, data: any, slot: number) {
       break;
     case DroppableFlowType.BOND_POWER:
       if (!(actorOrItem instanceof LancerItem)) {
-        ui.notifications!.error(game.i18n.localize("lancer.hotbar.error.bondPowerNotItem.label"));
+        ui.notifications!.error(game.i18n.localize("lancer.notifications.error.hotbarBondPowerNotItem"));
         throw new Error("Bond power flow drop on hotbar was not from an item");
       }
       item = actorOrItem;
       if (!item.is_bond()) {
-        ui.notifications!.error(game.i18n.localize("lancer.hotbar.error.bondPowerNotBondPower.label"));
+        ui.notifications!.error(game.i18n.localize("lancer.notifications.error.hotbarBondPowerNotBondPower"));
         throw new Error("Bond power flow drop on hotbar was not from a bond power item");
       }
       if (!data.args?.powerIndex) {
-        ui.notifications!.error(game.i18n.localize("lancer.hotbar.error.bondPowerMissingPowerIndex.label"));
+        ui.notifications!.error(game.i18n.localize("lancer.notifications.error.hotbarBondPowerMissingPowerIndex"));
         throw new Error("Bond power flow drop on hotbar was missing a power index");
       }
       img = _chooseItemImage(item);
@@ -273,7 +273,7 @@ export function onHotbarDrop(_bar: any, data: any, slot: number) {
       break;
     case DroppableFlowType.EFFECT:
       if (!(actorOrItem instanceof LancerItem)) {
-        ui.notifications!.error(game.i18n.localize("lancer.hotbar.error.effectNotItem.label"));
+        ui.notifications!.error(game.i18n.localize("lancer.notifications.error.hotbarEffectNotItem"));
         throw new Error("Effect flow drop on hotbar was not from an item");
       }
       item = actorOrItem;
@@ -283,11 +283,11 @@ export function onHotbarDrop(_bar: any, data: any, slot: number) {
       break;
     case DroppableFlowType.ACTIVATION:
       if (!(actorOrItem instanceof LancerItem)) {
-        ui.notifications!.error(game.i18n.localize("lancer.hotbar.error.activationNotItem.label"));
+        ui.notifications!.error(game.i18n.localize("lancer.notifications.error.hotbarActivationNotItem"));
         throw new Error("Activation flow drop on hotbar was not from an item");
       }
       if (!data.args?.path) {
-        ui.notifications!.error(game.i18n.localize("lancer.hotbar.error.activationMissingActionPath.label"));
+        ui.notifications!.error(game.i18n.localize("lancer.notifications.error.hotbarActivationMissingActionPath"));
         throw new Error("Activation flow drop on hotbar was missing an action path");
       }
       item = actorOrItem;
@@ -298,16 +298,16 @@ export function onHotbarDrop(_bar: any, data: any, slot: number) {
       break;
     case DroppableFlowType.CORE_ACTIVE:
       if (!(actorOrItem instanceof LancerItem)) {
-        ui.notifications!.error(game.i18n.localize("lancer.hotbar.error.coreActiveNotItem.label"));
+        ui.notifications!.error(game.i18n.localize("lancer.notifications.error.hotbarCoreActiveNotItem"));
         throw new Error("Core active flow drop on hotbar was not from an item");
       }
       if (!data.args?.path) {
-        ui.notifications!.error(game.i18n.localize("lancer.hotbar.error.coreActiveMissingActionPath.label"));
+        ui.notifications!.error(game.i18n.localize("lancer.notifications.error.hotbarCoreActiveMissingActionPath"));
         throw new Error("Core active flow drop on hotbar was missing an action path");
       }
       item = actorOrItem;
       if (!item.is_frame()) {
-        ui.notifications!.error(game.i18n.localize("lancer.hotbar.error.coreActiveNotFrame.label"));
+        ui.notifications!.error(game.i18n.localize("lancer.notifications.error.hotbarCoreActiveNotFrame"));
         throw new Error("Core active flow drop on hotbar was not from a frame item");
       }
       img = _chooseItemImage(item);
@@ -315,7 +315,7 @@ export function onHotbarDrop(_bar: any, data: any, slot: number) {
       command = `${getItem}item.beginCoreActiveFlow("${data.args.path}");`;
       break;
     default:
-      ui.notifications!.error(game.i18n.localize("lancer.hotbar.error.unknownFlowType.label"));
+      ui.notifications!.error(game.i18n.localize("lancer.notifications.error.hotbarUnknownFlowType"));
       throw new Error("Unknown flow type for flow drop on hotbar!");
   }
 

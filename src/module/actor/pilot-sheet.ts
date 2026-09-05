@@ -69,34 +69,34 @@ export class LancerPilotSheet extends LancerActorSheet<EntryType.PILOT> {
         download.on("click", async ev => {
           ev.stopPropagation();
           if (!pilot.system.cloud_id)
-            return ui.notifications!.error(game.i18n.localize("lancer.pilotSheet.error.missingShareCode.label"));
+            return ui.notifications!.error(game.i18n.localize("lancer.notifications.error.pilotMissingShareCode"));
 
           // Fetch data to sync
           let raw_pilot_data = null;
           if (pilot.system.cloud_id.match(shareCodeMatcherV3)) {
             // pilot share codes
-            ui.notifications!.info(game.i18n.localize("lancer.pilotSheet.info.importingV3ShareCode.label"));
+            ui.notifications!.info(game.i18n.localize("lancer.notifications.info.pilotV3ShareCodeImportStarting"));
             console.log(`${lp} Attempting import with V3 share code: ${pilot.system.cloud_id}`);
             try {
               raw_pilot_data = await fetchV3PilotViaShareCode(pilot.system.cloud_id);
             } catch (error) {
-              ui.notifications!.error(game.i18n.localize("lancer.pilotSheet.error.v3ShareCode.label"));
+              ui.notifications!.error(game.i18n.localize("lancer.notifications.error.pilotV3ShareCodeImportFailed"));
               console.error(`${lp} Failed import with V3 share code ${pilot.system.cloud_id}, error:`, error);
               return;
             }
           } else if (pilot.system.cloud_id.match(shareCodeMatcherV2)) {
             // pilot share codes
-            ui.notifications!.info(game.i18n.localize("lancer.pilotSheet.info.importingV2ShareCode.label"));
+            ui.notifications!.info(game.i18n.localize("lancer.notifications.info.pilotV2ShareCodeImportStarting"));
             console.log(`${lp} Attempting import with V2 share code: ${pilot.system.cloud_id}`);
             try {
               raw_pilot_data = await fetchV2PilotViaShareCode(pilot.system.cloud_id);
             } catch (error) {
-              ui.notifications!.error(game.i18n.localize("lancer.pilotSheet.error.v2ShareCode.label"));
+              ui.notifications!.error(game.i18n.localize("lancer.notifications.error.pilotV2ShareCodeImportFailed"));
               console.error(`${lp} Failed import with V2 share code ${pilot.system.cloud_id}, error:`, error);
               return;
             }
           } else {
-            ui.notifications!.error(game.i18n.localize("lancer.pilotSheet.error.characterNotFound.label"));
+            ui.notifications!.error(game.i18n.localize("lancer.notifications.error.pilotCharacterNotFound"));
             return;
           }
           await importCC(this.actor as LancerPILOT, raw_pilot_data);
@@ -147,22 +147,22 @@ export class LancerPilotSheet extends LancerActorSheet<EntryType.PILOT> {
 
     if (!pilotData) return;
     ui.notifications!.info(
-      game.i18n.format("lancer.pilotSheet.info.importStarting.label", {
+      game.i18n.format("lancer.notifications.info.pilotJsonImportStarting", {
         name: pilotData.name,
         callsign: pilotData.callsign,
       })
     );
-    console.log(`${lp} Starting import of ${pilotData.name}, callsign ${pilotData.callsign}.`);
+    console.log(`${lp} Starting import of ${pilotData.name}, Callsign ${pilotData.callsign}.`);
     console.log(`${lp} Parsed Pilot Data pack:`, pilotData);
 
     await importCC(this.actor as LancerPILOT, pilotData);
     ui.notifications!.info(
-      game.i18n.format("lancer.pilotSheet.info.importComplete.label", {
+      game.i18n.format("lancer.notifications.info.pilotJsonImportComplete", {
         name: pilotData.name,
         callsign: pilotData.callsign,
       })
     );
-    console.log(`${lp} Import of ${pilotData.name}, callsign ${pilotData.callsign} complete.`);
+    console.log(`${lp} Import of ${pilotData.name}, Callsign ${pilotData.callsign} complete.`);
     this.render();
   }
 
