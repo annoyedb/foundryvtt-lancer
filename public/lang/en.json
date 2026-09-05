@@ -456,6 +456,14 @@
         "actorSheetCouldNotInferActionType": "Could not infer action type",
         "tokenFromDifferentScene": "Trying to access tokens from a different scene!",
         "migrationTooOld": "Your LANCER system data is from too old a version ({version}) and cannot be reliably migrated to the latest version. Please install and migrate to version 1.5.0+ before attempting this migration",
+        "worldMigrationTooOld": "This world is too old to migrate directly to Lancer {version} and Foundry 13. Restore a backup of this world and migrate to Foundry 12.343 first.",
+        "worldMigrationCompendiumUnlockFailed": "Could not migrate {collection}: unable to unlock",
+        "worldMigrationActorCompendiumFailed": "Error while migrating actor compendium {name}. Check the console for details.",
+        "worldMigrationItemCompendiumFailed": "Error while migrating item compendium {name}. Check the console for details.",
+        "worldMigrationSceneCompendiumFailed": "Error while migrating scene {name}. Check the console for details.",
+        "worldMigrationActorFailed": "Error while migrating actor {name}. Check the console for details.",
+        "worldMigrationUnlinkedTokenFailed": "Error while migrating unlinked token {token} in scene {scene}. Check the console for details.",
+        "worldMigrationSceneFailed": "Error while migrating scene {name}. Check the console for details.",
         "pilotMissingShareCode": "You must enter a Comp/Con pilot share code before downloading!",
         "pilotV3ShareCodeImportFailed": "Error importing from V3 share code.",
         "pilotV2ShareCodeImportFailed": "Error importing from V2 share code. V2 share codes may no longer work, or this share code may need to be refreshed.",
@@ -530,7 +538,9 @@
         "pilotV3ShareCodeImportStarting": "Importing character from V3 share code...",
         "pilotV2ShareCodeImportStarting": "Importing character from V2 share code...",
         "pilotJsonImportStarting": "Starting import of '{name}', callsign '{callsign}'. Please wait.",
-        "pilotJsonImportComplete": "Import of '{name}', callsign '{callsign}' complete."
+        "pilotJsonImportComplete": "Import of '{name}', callsign '{callsign}' complete.",
+        "worldMigrationInProgress": "Migration to v{version} in progress. Please do not shut down your world or refresh the page until migration is complete.",
+        "worldMigrationComplete": "LANCER System migration to version {version} completed!"
       }
     },
     "commonSheet": {
