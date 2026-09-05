@@ -439,6 +439,16 @@
         }
       }
     },
+    "data": {
+      "error": {
+        "invalidImportTarget": {
+          "label": "Invalid import actor ID on actor import prompt button."
+        },
+        "invalidActorTarget": {
+          "label": "Invalid target actor ID on actor import prompt button."
+        }
+      }
+    },
     "commonSheet": {
       "tabs": {
         "effects": {
@@ -924,6 +934,41 @@
       },
       "remaining": {
         "label": "{total} / {max} Remaining"
+      },
+      "error": {
+        "missingTargetActorId": {
+          "label": "No target actor ID found on actor import prompt button."
+        },
+        "missingImportActorId": {
+          "label": "No import actor ID found on actor import prompt button."
+        },
+        "invalidAction": {
+          "label": "Invalid action on chat button."
+        },
+        "missingSecondaryStructureActorId": {
+          "label": "No actor ID found on secondary structure prompt button."
+        },
+        "missingCascadeActorId": {
+          "label": "No actor ID found on cascade prompt button."
+        },
+        "invalidFlowType": {
+          "label": "Invalid flow type on flow prompt button."
+        },
+        "invalidDismembermentDamage": {
+          "label": "Invalid actor ID dismemberment damage button."
+        }
+      }
+    },
+    "migration": {
+      "error": {
+        "tooOld": {
+          "label": "Your LANCER system data is from too old a version ({version}) and cannot be reliably migrated to the latest version. Please install and migrate to version 1.5.0+ before attempting this migration"
+        }
+      },
+      "warning": {
+        "gmRequired": {
+          "label": "Your GM needs to migrate this world. Please do not attempt to play the game or edit anything until migrations are done."
+        }
       }
     },
     "activeEffects": {
@@ -1075,6 +1120,20 @@
       },
       "clearCompendiumData": {
         "label": "Clear Compendium Data"
+      }
+    },
+    "onboarding": {
+      "import": {
+        "title": "Install Core Data",
+        "content": {
+          "0": "WELCOME GAME MASTER",
+          "1": "THIS IS YOUR <span class=\"horus--very--subtle\">FIRST</span> TIME LAUNCHING",
+          "2": "Use the LANCER Compendium Manager window to install the <span class=\"horus--very--subtle\">LANCER DATA</span> you wish to use."
+        }
+      },
+      "lcpManagerTour": {
+        "title": "Compendium Manager Tour?",
+        "content": "The LANCER Compendium Manager has had a major update. Would you like to get a tour?"
       }
     },
     "setting": {
