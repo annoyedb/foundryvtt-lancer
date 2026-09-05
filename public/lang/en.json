@@ -543,6 +543,8 @@
         "frameNoCorePowerRemaining": "No core power remaining on this frame!",
         "damageItemCannotDealDamage": "Item {id} can't deal damage!",
         "damageNotConfigured": "No damage configured, skipping the roll.",
+        "overheatOnlyMechsAndNpcsCanTakeStressDamage": "Only Mechs and NPCs can take stress damage",
+        "overheatOnlyNpcsAndMechsCanRollOverheat": "Only npcs and mechs can roll overheat.",
         "pilotImportFailed": "Failed to update pilot: {err}",
         "pilotImportCrbRequired": "You must import the Core Book Data in the Lancer Compendium Manager before importing a pilot.",
         "pilotImportCreatePermissions": "Could not import mech '{name}' as you lack the permission to create new actors. Please ask your GM to import for you, or give you permissions.",
@@ -565,7 +567,9 @@
         "worldMigrationInProgress": "Migration to v{version} in progress. Please do not shut down your world or refresh the page until migration is complete.",
         "worldMigrationComplete": "LANCER System migration to version {version} completed!",
         "compendiumBuilderClearInProgress": "Clearing all LANCER Compendium data. Please wait.",
-        "compendiumBuilderClearComplete": "LANCER Compendiums cleared."
+        "compendiumBuilderClearComplete": "LANCER Compendiums cleared.",
+        "overheatTokenBelowHeatCap": "Token is not at heat cap. No need to roll stress.",
+        "overheatMechAtFullStress": "The mech is at full Stress, no overheat check to roll."
       }
     },
     "commonSheet": {
