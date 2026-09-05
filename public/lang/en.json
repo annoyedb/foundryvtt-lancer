@@ -273,6 +273,7 @@
         "sensor": {
           "short": "SENS",
           "label": "Sensor",
+          "plural": "Sensors",
           "range": {
             "label": "Sensor Range"
           }
@@ -806,6 +807,34 @@
         },
         "talents": {
           "label": "Talents"
+        }
+      },
+      "error": {
+        "missingShareCode": {
+          "label": "You must enter a Comp/Con pilot share code before downloading!"
+        },
+        "v3ShareCode": {
+          "label": "Error importing from V3 share code."
+        },
+        "v2ShareCode": {
+          "label": "Error importing from V2 share code. V2 share codes may no longer work, or this share code may need to be refreshed."
+        },
+        "characterNotFound": {
+          "label": "Could not find character to import! No share code entered."
+        }
+      },
+      "info": {
+        "importingV3ShareCode": {
+          "label": "Importing character from V3 share code..."
+        },
+        "importingV2ShareCode": {
+          "label": "Importing character from V2 share code..."
+        },
+        "importStarting": {
+          "label": "Starting import of '{name}', callsign '{callsign}'. Please wait."
+        },
+        "importComplete": {
+          "label": "Import of '{name}', callsign '{callsign}' complete."
         }
       }
     },
