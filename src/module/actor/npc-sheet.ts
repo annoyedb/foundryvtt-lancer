@@ -81,7 +81,7 @@ export class LancerNPCSheet extends LancerActorSheet<EntryType.NPC> {
     // For roll-stat macros
     event.stopPropagation(); // Avoids triggering parent event handlers
     let statInput = getStatInput(event);
-    if (!statInput) return ui.notifications!.error("Error finding stat input for macro.");
+    if (!statInput) return ui.notifications!.error("lancer.npcSheet.error.missingStat.label");
 
     let tSplit = statInput.id.split(".");
     let data = {

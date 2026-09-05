@@ -719,6 +719,11 @@
       },
       "tactics": {
         "label": "Tactics"
+      },
+      "error": {
+        "missingStat": {
+          "label": "Error finding stat input for macro."
+        }
       }
     },
     "pilotSheet": {
