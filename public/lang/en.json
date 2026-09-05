@@ -524,6 +524,26 @@
         "rename": {
           "label": "Rename"
         }
+      },
+      "warning": {
+        "systemNoRemainingUses": {
+          "label": "System {name} has no remaining uses!"
+        },
+        "weaponNoRemainingUses": {
+          "label": "Weapon {name} has no remaining uses!"
+        },
+        "itemNoRemainingUses": {
+          "label": "{type} {name} has no remaining uses!"
+        },
+        "reserveAlreadyUsed": {
+          "label": "Reserve {name} has already been used!"
+        },
+        "systemNotRecharged": {
+          "label": "System {name} has not recharged!"
+        },
+        "weaponNotRecharged": {
+          "label": "Weapon {name} has not recharged!"
+        }
       }
     },
     "deployableSheet": {
