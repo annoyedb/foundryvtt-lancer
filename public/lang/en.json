@@ -489,6 +489,7 @@
         "damageUndoNothingToUndo": "Damage undo button has no damage to undo!",
         "itemNoMacroForType": "Error - No macro exists for item type \"{type}\"",
         "counterEditorInvalidNumericValue": "{value} is not a valid numeric value",
+        "structureDismembermentActorMissing": "No actor found for dismemberment damage button.",
         "scanTargetRequired": "You must target a token to scan.",
         "scanTargetActorMissing": "The targeted token has no associated actor.",
         "scanNpcTargetRequired": "You can only scan NPC actors.",
@@ -547,20 +548,22 @@
         "frameNoCorePowerRemaining": "No core power remaining on this frame!",
         "damageItemCannotDealDamage": "Item {id} can't deal damage!",
         "damageNotConfigured": "No damage configured, skipping the roll.",
-        "overheatOnlyMechsAndNpcsCanTakeStressDamage": "Only Mechs and NPCs can take stress damage",
-        "overheatOnlyNpcsAndMechsCanRollOverheat": "Only npcs and mechs can roll overheat.",
+        "overheatInvalidDamageActor": "Only Mechs and NPCs can take stress damage",
+        "overheatInvalidRollActor": "Only npcs and mechs can roll overheat.",
+        "structureInvalidDamageActor": "Only Mechs and NPCs can take structure damage",
+        "structureInvalidRollActor": "Only npcs and mechs can roll structure.",
+        "structureOverheatInvalidActor": "Only npcs and mechs can roll structure/overheat.",
+        "structureRemainingInvalidActor": "Only npcs and mechs can work with \"remaining structure\" logic.",
         "pilotImportFailed": "Failed to update pilot: {err}",
         "pilotImportCrbRequired": "You must import the Core Book Data in the Lancer Compendium Manager before importing a pilot.",
         "pilotImportCreatePermissions": "Could not import mech '{name}' as you lack the permission to create new actors. Please ask your GM to import for you, or give you permissions.",
         "pilotImportUpdatePermissions": "Could not import mech '{name}' as you lack the permission to update actors. Please ask your GM to import for you, or give you permissions.",
         "lcpManagerImportPrivileges": "Only a user with the Gamemaster role can import LCPs.",
         "lcpManagerCoreVersionRequired": "Please update the Core data before importing LCPs.",
-        "pilotImportMissingData": {
-          "0": "Partially loaded '{name}'s new state.",
-          "1": " {number} actors could not be created/updated.",
-          "2": " {number} items could not be found.",
-          "3": " See dialog for details."
-        }
+        "pilotImportMissingData": "Partially loaded '{name}'s new state.",
+        "pilotImportMissingActor": " {number} actors could not be created/updated.",
+        "pilotImportMissingItem": " {number} items could not be found.",
+        "pilotImportMissingDataDefer": " See dialog for details."
       },
       "info": {
         "pilotImportSuccess": "Successfully loaded pilot new state.",
@@ -573,7 +576,9 @@
         "compendiumBuilderClearInProgress": "Clearing all LANCER Compendium data. Please wait.",
         "compendiumBuilderClearComplete": "LANCER Compendiums cleared.",
         "overheatTokenBelowHeatCap": "Token is not at heat cap. No need to roll stress.",
-        "overheatMechAtFullStress": "The mech is at full Stress, no overheat check to roll."
+        "overheatMechAtFullStress": "The mech is at full Stress, no overheat check to roll.",
+        "structureTokenHasHpRemaining": "Token has hp remaining. No need to roll structure.",
+        "structureMechAtFullStructure": "The mech is at full Structure, no structure check to roll."
       }
     },
     "commonSheet": {

@@ -1517,18 +1517,18 @@ export async function importCCv2(pilot: LancerPILOT, data: PackedPilotData, clea
     // Reset curr data and render all
     pilot.render();
     if (missingItems.length || missingActors.length) {
-      let message = game.i18n.format("lancer.notifications.warning.pilotImportMissingData.0", { name: pilot.name });
+      let message = game.i18n.format("lancer.notifications.warning.pilotImportMissingData", { name: pilot.name });
       if (missingActors.length) {
-        message += game.i18n.format("lancer.notifications.warning.pilotImportMissingData.1", {
+        message += game.i18n.format("lancer.notifications.warning.pilotImportMissingActor", {
           number: missingActors.length.toString(),
         });
       }
       if (missingItems.length) {
-        message += game.i18n.format("lancer.notifications.warning.pilotImportMissingData.2", {
+        message += game.i18n.format("lancer.notifications.warning.pilotImportMissingItem", {
           number: missingItems.length.toString(),
         });
       }
-      message += game.i18n.localize("lancer.notifications.warning.pilotImportMissingData.3");
+      message += game.i18n.localize("lancer.notifications.warning.pilotImportMissingDataDefer");
       ui.notifications!.warn(message, { permanent: true });
       console.warn(`${lp} Some actors and/or items were missed during pilot import:`, missingActors, missingItems);
 

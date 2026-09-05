@@ -56,9 +56,7 @@ export async function preOverheatRollChecks(state: FlowState<LancerFlowState.Ove
   if (!state.data) throw new TypeError(`Overheat roll flow data missing!`);
   const actor = state.actor;
   if (!actor.is_mech() && !actor.is_npc()) {
-    ui.notifications!.warn(
-      game.i18n.localize("lancer.notifications.warning.overheatOnlyMechsAndNpcsCanTakeStressDamage")
-    );
+    ui.notifications!.warn(game.i18n.localize("lancer.notifications.warning.overheatInvalidDamageActor"));
     return false;
   }
 
@@ -139,7 +137,7 @@ export async function rollOverheatTable(state: FlowState<LancerFlowState.Overhea
   if (!state.data) throw new TypeError(`Overheat roll flow data missing!`);
   const actor = state.actor;
   if (!actor.is_mech() && !actor.is_npc()) {
-    ui.notifications!.warn(game.i18n.localize("lancer.notifications.warning.overheatOnlyNpcsAndMechsCanRollOverheat"));
+    ui.notifications!.warn(game.i18n.localize("lancer.notifications.warning.overheatInvalidRollActor"));
     return false;
   }
 
@@ -204,7 +202,7 @@ export async function noStressRemaining(state: FlowState<LancerFlowState.Overhea
 
   let actor = state.actor;
   if (!actor.is_mech() && !actor.is_npc()) {
-    ui.notifications!.warn(game.i18n.localize("lancer.notifications.warning.overheatOnlyNpcsAndMechsCanRollOverheat"));
+    ui.notifications!.warn(game.i18n.localize("lancer.notifications.warning.overheatInvalidRollActor"));
     return false;
   }
 
@@ -240,7 +238,7 @@ export async function checkOverheatMultipleOnes(state: FlowState<LancerFlowState
 
   let actor = state.actor;
   if (!actor.is_mech() && !actor.is_npc()) {
-    ui.notifications!.warn(game.i18n.localize("lancer.notifications.warning.overheatOnlyNpcsAndMechsCanRollOverheat"));
+    ui.notifications!.warn(game.i18n.localize("lancer.notifications.warning.overheatInvalidRollActor"));
     return false;
   }
 
@@ -276,7 +274,7 @@ export async function overheatInsertEngCheckButton(
 
   let actor = state.actor;
   if (!actor.is_mech() && !actor.is_npc()) {
-    ui.notifications!.warn(game.i18n.localize("lancer.notifications.warning.overheatOnlyNpcsAndMechsCanRollOverheat"));
+    ui.notifications!.warn(game.i18n.localize("lancer.notifications.warning.overheatInvalidRollActor"));
     return false;
   }
 
