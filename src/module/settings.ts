@@ -543,8 +543,8 @@ export class LocalizationOptions extends foundry.abstract.DataModel<Localization
 export type LLPLocalizationFiles = Record<string, Record<string, PackedLanguagePatchWrapper>>;
 
 /**
- * Map of LLP index overrides, keyed by LCP target and then LLP key.
- * Each value is the complete Foundry LID + path to which the translation should be copied.
+ * Map of LLP index overrides, keyed by LCP target and then complete Foundry LID + path.
+ * Each value is the LLP key containing the translation to copy, possibly delimited by commas.
  */
 export type LLPLocalizationIndexOverrides = Record<string, Record<string, string>>;
 

@@ -1,15 +1,5 @@
 <section class="llp-override-editor">
   <h3>{{localize "lancer.setting.localization.header.override.label"}}</h3>
-  <p>{{localize "lancer.setting.localization.header.override.hint"}}</p>
-  <p data-tooltip="{{localize "lancer.setting.localization.override.consoleTip.tooltip"}}">
-    <i class="mdi mdi-help-circle-outline"></i> {{{localize "lancer.setting.localization.override.consoleTip.label"}}}
-  </p>
-  <p data-tooltip="{{localize "lancer.setting.localization.override.commaTip.tooltip"}}">
-    <i class="mdi mdi-help-circle-outline"></i> {{{localize "lancer.setting.localization.override.commaTip.label"}}}
-  </p>
-  <p class="flexrow"><span><i class="mdi mdi-help-circle-outline"></i> {{localize "lancer.setting.localization.override.llpPathTip.label"}}</span><code>ms_clamp_bombs.deployable_clamp_bombs.name</code></p>
-  <p class="flexrow"><span><i class="mdi mdi-help-circle-outline"></i> {{localize "lancer.setting.localization.override.systemPathTip.label"}}</span><code>ms_clamp_bombs.system.actions.0.name</code></p>
-  <hr>
   {{#if packs.length}}
     {{#each packs as |entry|}}
       <div>
@@ -63,4 +53,15 @@
   {{else}}
     <p class="notes">{{localize "lancer.setting.localization.override.none.label"}}</p>
   {{/if}}
+  <hr>
+  <p>{{localize "lancer.setting.localization.header.override.hint"}}</p>
+  <p data-tooltip="{{localize "lancer.setting.localization.override.consoleTip.tooltip"}}">
+    <i class="mdi mdi-help-circle-outline"></i> {{{localize "lancer.setting.localization.override.consoleTip.label"}}}
+  </p>
+  <p data-tooltip="{{localize "lancer.setting.localization.override.commaTip.tooltip"}}">
+    <i class="mdi mdi-help-circle-outline"></i> {{{localize "lancer.setting.localization.override.commaTip.label"}}}
+  </p>
+  <p class="flexrow"><span><i class="mdi mdi-help-circle-outline"></i> {{localize "lancer.setting.localization.override.llpPathTip.label"}}</span><code>ms_clamp_bombs.deployable_clamp_bombs.name</code></p>
+  <p class="flexrow"><span><i class="mdi mdi-help-circle-outline"></i> {{localize "lancer.setting.localization.override.systemPathTip.label"}}</span><code>ms_clamp_bombs.system.actions.0.name</code></p>
+
 </section>

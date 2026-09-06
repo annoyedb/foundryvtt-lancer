@@ -399,8 +399,8 @@ function rebuildOverrides(loadedOverrides: LLPLocalizationIndexOverrides): void 
     const packOverrides = loadedOverrides[patch.target];
     if (!packOverrides) continue;
 
-    for (const [source, destination] of Object.entries(packOverrides)) {
-      if (!destination) continue;
+    for (const [destination, source] of Object.entries(packOverrides)) {
+      if (!source) continue;
 
       const sourceKeys = source.split(",").filter(Boolean);
       const translatedValues = sourceKeys.map(key => patch.data[key]);

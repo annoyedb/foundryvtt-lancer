@@ -58,10 +58,10 @@ export class LocalizationConfig extends HandlebarsApplicationMixin(
       const packOverrides = overrides[pack] ?? {};
       const rows = Object.keys(packOverrides)
         .sort()
-        .map(source => ({
-          source,
-          destination: packOverrides[source],
-          translation: source
+        .map(destination => ({
+          source: packOverrides[destination],
+          destination,
+          translation: packOverrides[destination]
             .split(",")
             .map(key => translations[key] ?? "")
             .join("\n\n"), // This is how they are joined in the index as well
@@ -103,7 +103,7 @@ export class LocalizationConfig extends HandlebarsApplicationMixin(
         const destination = row.querySelector<HTMLInputElement>('[data-field="destination"]')!.value;
         if (!source || !destination) continue;
         result[pack] ??= {};
-        result[pack][source] = destination;
+        result[pack][destination] = source;
       }
     }
 
@@ -219,7 +219,7 @@ export class LocalizationConfig extends HandlebarsApplicationMixin(
       !!value &&
       typeof value === "object" &&
       !Array.isArray(value) &&
-      Object.values(value).every(destination => typeof destination === "string")
+      Object.values(value).every(source => typeof source === "string")
     );
   }
 }
