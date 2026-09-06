@@ -1,5 +1,6 @@
 import { LANCER } from "../config";
 import type { LLPLocalizationIndexOverrides } from "../settings";
+import { slugify } from "../util/lid";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
@@ -160,7 +161,7 @@ export class LocalizationConfig extends HandlebarsApplicationMixin(
     const file = new Blob([JSON.stringify(overrides, undefined, 2)], { type: "application/json" });
     const link = document.createElement("a");
     link.href = URL.createObjectURL(file);
-    link.download = `${pack}-llp-index-overrides.json`;
+    link.download = `${slugify(pack, "-")}-llp-index-overrides.json`;
     link.click();
     URL.revokeObjectURL(link.href);
   }

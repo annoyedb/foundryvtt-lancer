@@ -166,7 +166,7 @@ export function buildLLPRows(
 export function patchTargetsFor(pack: (LCPData & Partial<IContentPackManifest>) | undefined): string[] {
   if (pack?.id === CORE_BREW_ID) return [CORE_PATCH_TARGET];
   const manifest = pack?.cp?.manifest ?? pack;
-  const candidates = [manifest?.item_prefix, manifest?.name];
+  const candidates = [manifest?.name, manifest?.item_prefix];
   const targets = new Set(
     // Filter undefined and dupes out (name and item_prefix is the same for w.e reason)
     candidates.filter((target): target is string => !!target)
