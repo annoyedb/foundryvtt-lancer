@@ -10,7 +10,7 @@ export function handleTagEditButtons(html: JQuery, doc: LancerItem) {
     ev.stopPropagation();
     const path = ev.currentTarget?.dataset.path;
     if (!path) {
-      ui.notifications!.error("Tag edit button missing data-path attribute");
+      ui.notifications!.error(game.i18n.localize("lancer.notifications.error.tagEditPathMissing"));
       return;
     }
     TagEditForm.edit(doc, path);
