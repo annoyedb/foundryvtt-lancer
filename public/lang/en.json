@@ -535,9 +535,13 @@
         "hotbarCoreActiveMissingActionPath": "Core active flow drop on hotbar was missing an action path",
         "hotbarCoreActiveNotFrame": "Core active flow drop on hotbar was not from a frame item",
         "hotbarUnknownFlowType": "Unknown flow type for flow drop on hotbar!",
-        "lcpManagerFileNotSelected": "You must select an LCP file before importing.",
+        "lcpManagerFileNotSelected": "You must select an LCP or LLP file before importing.",
         "lcpManagerCompendiumTabButtonsNotFound": "Unable to add LCP Manager button - Compendium Tab buttons not found!",
-        "lcpSelectorLoadFailed": "Failed to load LCP"
+        "lcpManagerUnsupportedFileType": "{file} is not an LCP or LLP file.",
+        "lcpManagerLcpFailedLoad": "Failed to load LCP",
+        "lcpManagerLlpFailedParse": "{file} could not be read as JSON.",
+        "lcpManagerLlpInvalid": "{file} is an invalid LLP; missing 'lang', 'target', and 'data' fields.",
+        "lcpManagerLlpFailedDownload": "Could not download the {lang} localization for {pack}."
       },
       "warning": {
         "migrationGmRequired": "Your GM needs to migrate this world. Please do not attempt to play the game or edit anything until migrations are done.",
@@ -600,7 +604,9 @@
         "overheatTokenBelowHeatCap": "Token is not at heat cap. No need to roll stress.",
         "overheatMechAtFullStress": "The mech is at full Stress, no overheat check to roll.",
         "structureTokenHasHpRemaining": "Token has hp remaining. No need to roll structure.",
-        "structureMechAtFullStructure": "The mech is at full Structure, no structure check to roll."
+        "structureMechAtFullStructure": "The mech is at full Structure, no structure check to roll.",
+        "lcpManagerLlpImported": "Stored {count} LLP file(s).",
+        "lcpManagerLlpReplaced": "{count} already-stored entries were replaced."
       }
     },
     "commonSheet": {
@@ -1161,14 +1167,6 @@
         },
         "selectedLlps": {
           "label": "Selected Language Patches"
-        }
-      },
-      "info": {
-        "llpDone": {
-          "label": "Cached {count} LLP file(s)."
-        },
-        "llpReplaced": {
-          "label": "{count} already-cached entries were replaced."
         }
       },
       "clearCompendium": {

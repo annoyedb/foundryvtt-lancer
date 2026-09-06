@@ -212,7 +212,7 @@
 
   function _canImportLlp(): boolean {
     if (!game.user?.isGM) {
-      ui.notifications!.warn(game.i18n.localize("lancer.lcpManager.warning.privileges.label"));
+      ui.notifications!.warn(game.i18n.localize("lancer.notifications.warning.lcpManagerImportPrivileges"));
       return false;
     }
     return true;
@@ -228,8 +228,9 @@
     importingLlps = false;
 
     if (!stored) return;
-    const message = [game.i18n.format("lancer.lcpManager.info.llpDone.label", { count: `${stored}` })];
-    if (replaced) message.push(game.i18n.format("lancer.lcpManager.info.llpReplaced.label", { count: `${replaced}` }));
+    const message = [game.i18n.format("lancer.notifications.info.lcpManagerLlpImported", { count: `${stored}` })];
+    if (replaced)
+      message.push(game.i18n.format("lancer.notifications.info.lcpManagerLlpReplaced", { count: `${replaced}` }));
     ui.notifications?.info(message.join(" "));
   }
 

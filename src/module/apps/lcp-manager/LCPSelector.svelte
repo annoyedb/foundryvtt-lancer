@@ -40,7 +40,9 @@
     const { supported, unsupported } = groupFilesByExtension(files, ["lcp", "llp"]);
     for (const file of unsupported) {
       console.error(`${lp} Unsupported file type on '${file.name}'`);
-      ui.notifications.error(game.i18n.format("lancer.lcpManager.error.unsupportedFileType.label", { file: file.name }));
+      ui.notifications.error(
+        game.i18n.format("lancer.notifications.error.lcpManagerUnsupportedFileType", { file: file.name })
+      );
     }
 
     // Each format reads and summarizes itself; the two never share a summary type

@@ -228,7 +228,7 @@ export async function readContentPacks(files: File[]): Promise<IContentPack[]> {
         return await parseContentPack(await file.arrayBuffer());
       } catch (err: any) {
         ui.notifications.error(
-          `${game.i18n.localize("lancer.lcpManager.error.lcpFailedLoad.label")} ${file.name}: ${err.message || err}`,
+          `${game.i18n.localize("lancer.notifications.error.lcpManagerLcpFailedLoad")} ${file.name}: ${err.message || err}`,
           { permanent: true }
         );
         return null;

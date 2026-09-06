@@ -290,11 +290,13 @@ export async function readLanguagePatch(file: File): Promise<PackedLanguagePatch
   try {
     parsed = JSON.parse(await file.text());
   } catch {
-    ui.notifications?.error(game.i18n.format("lancer.lcpManager.error.llpFailedParse.label", { file: file.name }));
+    ui.notifications?.error(
+      game.i18n.format("lancer.notifications.error.lcpManagerLlpFailedParse", { file: file.name })
+    );
     return null;
   }
   if (!isValidLanguagePatch(parsed)) {
-    ui.notifications?.error(game.i18n.format("lancer.lcpManager.error.llpInvalid.label", { file: file.name }));
+    ui.notifications?.error(game.i18n.format("lancer.notifications.error.lcpManagerLlpInvalid", { file: file.name }));
     return null;
   }
   return parsed;

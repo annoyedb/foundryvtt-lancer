@@ -134,7 +134,7 @@ async function downloadOfficialLocale(
   } catch (err) {
     console.error(`${lp} Failed to download '${locale.code}' for '${locale.packId}'.`, err);
     ui.notifications?.error(
-      game.i18n.format("lancer.lcpManager.error.llpFailedDownload.label", {
+      game.i18n.format("lancer.notifications.error.lcpManagerLlpFailedDownload", {
         lang: locale.code,
         pack: locale.packId,
       })
