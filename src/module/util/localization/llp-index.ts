@@ -174,7 +174,7 @@ export async function rebuildLLPIndex(): Promise<void> {
   const rekeyedDeployables = rekeyDeployables();
   const rekeyedCounters = rekeyCounters(discarded);
   const rekeyedTags = rekeyTags(discarded);
-  // const rekeyedBonds = TODO
+  // const rekeyedBonds = TODO when beeftime extracts bonds
 
   console.debug(
     `${lp} Stored ${stored} translations for ${translations.size} LIDs (rekeyed: ${rekeyedDeployables} deployables,

@@ -356,16 +356,33 @@ function translateOverrides(lid: string, document: LancerItem | LancerActor): vo
 }
 
 /**
- * Loads the `overrides` map with the preset file if it is not present and persists it in the database
+ * Loads any missing preset override maps and persists them in the database
  */
 async function loadOverrides(): Promise<LLPLocalizationIndexOverrides> {
   const configured = game.settings.get(game.system.id, LANCER.setting_localization_llp_index_override);
-  if (Object.keys(configured).length) return configured;
 
-  const response = await fetch(`systems/${game.system.id}/llp-overrides/lancer-data.json`);
-  const defaults = (await response.json()) as Record<string, string>;
-  const loaded = { [CORE_PATCH_TARGET]: defaults };
-  if (game.user?.isGM) {
+  // The actual name dictated by the lcp_manifest is preferred here because that's how it shows up in the override manager
+  const overrides = {
+    [CORE_PATCH_TARGET]: "lancer-data.json", // Except CRB data, but "lancer-data" is good enough lol since core data has no lcp_manifest
+    "Lancer Long Rim Data": "long-rim-data.json",
+    "Lancer Wallflower Data": "wallflower-data.json",
+    "Operation Solstice Rain Data": "osr-data.json",
+    "LANCER: Dustgrave": "dustgrave-data.json",
+    "Siren's Song, A Mountain's Remorse": "ssmr-data.json",
+    //"Operation Winter Scar": data is actually perfect,
+    "Shadow of the Wolf": "sotw-data.json",
+    "Lancer KTB Data": "ktb-data.json",
+  };
+  const loaded = { ...configured };
+  const installedTargets = new Set(getInstalledPatches().map(patch => patch.target));
+  for (const [target, file] of Object.entries(overrides)) {
+    if (!installedTargets.has(target) || target in loaded) continue;
+
+    const response = await fetch(`systems/${game.system.id}/llp-overrides/${file}`);
+    loaded[target] = (await response.json()) as Record<string, string>;
+  }
+
+  if (game.user?.isGM && Object.keys(loaded).length !== Object.keys(configured).length) {
     await game.settings.set(game.system.id, LANCER.setting_localization_llp_index_override, loaded);
   }
 
