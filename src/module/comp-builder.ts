@@ -278,12 +278,12 @@ export async function setAllLock(lock = false, v1 = false) {
  * @param options.v1 Whether to clear v1 data
  */
 export async function clearCompendiumData(options = { v1: false }) {
-  ui.notifications!.info(`Clearing all LANCER Compendium data. Please wait.`);
+  ui.notifications!.info(game.i18n.localize("lancer.notifications.info.compendiumBuilderClearInProgress"));
   console.log(`${lp} Clearing all LANCER Compendium data.`);
   await game.settings.set(game.system.id, LANCER.setting_core_data, "");
   await game.settings.set(game.system.id, LANCER.setting_lcps, new LCPIndex(null));
   await clearAll(options.v1);
-  ui.notifications!.info(`LANCER Compendiums cleared.`);
+  ui.notifications!.info(game.i18n.localize("lancer.notifications.info.compendiumBuilderClearComplete"));
 }
 
 declare module "fvtt-types/configuration" {

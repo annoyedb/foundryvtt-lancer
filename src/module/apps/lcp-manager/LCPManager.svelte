@@ -154,11 +154,11 @@
 
   function _canImportLcp(): boolean {
     if (!game.user?.isGM) {
-      ui.notifications!.warn(game.i18n.localize("lancer.lcpManager.warning.privileges.label"));
+      ui.notifications!.warn(game.i18n.localize("lancer.notifications.warning.lcpManagerImportPrivileges"));
       return false;
     }
     if (!coreVersion) {
-      ui.notifications!.warn(game.i18n.localize("lancer.lcpManager.warning.coreVersion.label"));
+      ui.notifications!.warn(game.i18n.localize("lancer.notifications.warning.lcpManagerCoreVersionRequired"));
       return false;
     }
     return true;
@@ -166,7 +166,7 @@
 
   async function importLcp(cp: IContentPack | null = null) {
     if (!cp) {
-      ui.notifications.error(game.i18n.localize("lancer.lcpManager.error.select.label"));
+      ui.notifications.error(game.i18n.localize("lancer.notifications.error.lcpManagerFileNotSelected"));
       return;
     }
     if (!_canImportLcp()) return;
