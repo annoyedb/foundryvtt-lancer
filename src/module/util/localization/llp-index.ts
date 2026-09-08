@@ -119,11 +119,12 @@ export function splitPatchKey(key: string, lids: LIDIndex): { lid: string; path:
   // Thanks to shit like `ms___scorpion_v70.1` it is better to read the tail as the head
   for (let i = parts.length - 1; i > 0; i--) {
     const head = parts.slice(0, i).join(".");
-    const lid = lids.exact.has(head) ? head : lids.normalized.get(normalizeSlug(head));
-    if (lid) {
+    const path = parts.slice(i).join(".");
+
+    if (lids.exact.has(head)) {
       return {
-        lid: lid,
-        path: parts.slice(i).join("."),
+        lid: head,
+        path: path,
       };
     }
   }
@@ -154,7 +155,7 @@ export async function rebuildLLPIndex(): Promise<void> {
 
   const lids = await buildLIDIndex();
 
-  // Find and store translations for LIDs we know
+  // Find and store translations for LIDs of the index
   let stored = 0;
   const discarded: { key: string; value: string }[] = []; // Store for potential rekeying
   for (const patch of patches) {
@@ -174,7 +175,7 @@ export async function rebuildLLPIndex(): Promise<void> {
   const rekeyedDeployables = rekeyDeployables();
   const rekeyedCounters = rekeyCounters(discarded);
   const rekeyedTags = rekeyTags(discarded);
-  // const rekeyedBonds = TODO when beeftime extracts bonds
+  // const rekeyedBonds = TODO when beeftime extracts bond strings to compcon-locale
 
   console.debug(
     `${lp} Stored ${stored} translations for ${translations.size} LIDs (rekeyed: ${rekeyedDeployables} deployables,
@@ -200,7 +201,7 @@ export async function rebuildLLPIndex(): Promise<void> {
  * @remarks
  * e.g.
  * ```
- * "ms_scorpion_v70_1": { { action_activate_scorpion.trigger: "bonjour world" } }
+ * "ms_scorpion_v70_1": { { action_activate_scorpion.trigger: "bonjour world" } } // Note how we don't store the actual LID (ms_scorpion_v70_1 vs ms_scorpion_v70.1)
  * ```
  */
 function storeTranslation(lid: string, path: string, value: string): void {
@@ -218,9 +219,10 @@ function storeTranslation(lid: string, path: string, value: string): void {
 function rekeyDeployables(): number {
   const aliases: { lid: string; path: string; value: string }[] = [];
   /**
-   * In CC deployable text nests under the owning item (`ms_assassin_drone.deployable_assassin_drone.name`) while the actor
-   * is unpacked with `lid: "dep_" + slugify(name)`. Rather than special-casing lookups, copy every `deployable_<slug>` subtree
-   * to an entry under `dep_<slug>`, so deployable actors resolve through the same `lookupTranslation` as everything else.
+   * In CC deployable text nests under the owning item (`reserve_deployable_shield.deployable_deployable_shield_reserve.name`)
+   * while the actor is unpacked with `lid: "dep_" + slugify(name)`, which can produce lids like `dep_deployable_shield_(reserve)`.
+   * Copy every `deployable_<slug>` subtree to an entry under `dep_<slug>`, so deployable actors resolve through the same
+   * `lookupTranslation` as everything else.
    */
   for (const paths of translations.values()) {
     for (const [path, value] of paths) {
@@ -260,7 +262,7 @@ function rekeyTags(discarded: { key: string; value: string }[]): number {
 }
 
 /**
- * Stores discarded keys whose head segment is a whole LID of the given prefix
+ * Stores discarded keys whose LIDs matching a given prefix have no subtrees
  * @param discarded - Entries the main pass matched no LID for; rekeyed entries are removed in place
  * @param prefix - LID prefix whose keys are safe to split at the first dot (e.g. `tg_`/`ctr_`)
  * @return Number of entries rekeyed
