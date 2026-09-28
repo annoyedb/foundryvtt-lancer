@@ -3,7 +3,7 @@
     <i class="cci cci-reactor i--4"></i>
     {{#if reroll_data}}<span class="spacer"></span>{{/if}}
     <div class="flexcol">
-      <span>{{decorate-card (upper-case (localize "lancer.chatCard.title.overheating.label"))}}</span>
+      {{#decorate-card}}<span>{{upper-case (localize "lancer.chatCard.title.overheating.label")}}</span>{{/decorate-card}}
       <span style="align-self: center;">
         {{upper-case (localize "lancer.chatCard.remaining.label" total=val max=max)}}
       </span>
