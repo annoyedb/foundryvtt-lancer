@@ -12,6 +12,7 @@ import { renderTemplateStep } from "./_render";
 import { Flow, type FlowState, type Step } from "./flow";
 import { LancerFlowState } from "./interfaces";
 import type { LocaleFlag } from "../util/localization/llp-cards";
+import { createTranslationRef } from "../util/localization/llp-map";
 
 const lp = LANCER.log_prefix;
 
@@ -502,6 +503,26 @@ export async function printAttackCard(
 ): Promise<boolean> {
   if (!state.data) throw new TypeError(`Attack flow state missing!`);
   const template = options?.template || `systems/${game.system.id}/templates/chat/attack-card.hbs`;
+
+  const localeData: LocaleFlag = {
+    lid: state.item?.system.lid || "",
+    title: "name",
+    trigger: "trigger",
+    effect: "effect",
+  };
+  if (state.item?.is_mech_weapon()) {
+    // TODO test when I figure out wtf item to use for testing
+    const profile = state.item.system.active_profile;
+    const profileIndex = state.item.system.profiles.indexOf(profile);
+    if (profileIndex >= 0) {
+      const profilePath = `system.profiles.${profileIndex}`;
+      localeData.effect = createTranslationRef(profile, "effect", `${profilePath}.effect`);
+      localeData.onAttack = createTranslationRef(profile, "on_attack", `${profilePath}.on_attack`);
+      localeData.onHit = createTranslationRef(profile, "on_hit", `${profilePath}.on_hit`);
+      localeData.onCrit = createTranslationRef(profile, "on_crit", `${profilePath}.on_crit`);
+    }
+  } // etc...
+
   const flags: { attackData: AttackFlag; localeData: LocaleFlag } = {
     attackData: {
       origin: state.actor.id!,
@@ -518,12 +539,7 @@ export async function printAttackCard(
         };
       }),
     },
-    localeData: {
-      lid: state.item?.system.lid || "",
-      title: "name",
-      trigger: "trigger",
-      effect: "effect",
-    },
+    localeData,
   };
   state.data.defense = state.data.is_smart ? "E-DEF" : "EVASION";
   // Add roll data to the hit results for the HBS template

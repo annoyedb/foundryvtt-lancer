@@ -23,6 +23,7 @@ import {
   hasTranslations,
   hasTranslationsFor,
   lookupTranslation,
+  lookupTranslationCandidates,
   normalizePath,
   normalizeSlug,
   rebuildLLPIndex,
@@ -45,7 +46,12 @@ export const translationsReady = new Promise<void>(r => {
   translationsAreReady = r;
 });
 
-//---
+/**
+ * Keyed by Foundry object dotpath to translated value. Built in `rebuildOverrides`
+ */
+let overrides = new Map<string, string>();
+
+//--- Debug
 
 const stats = {
   applied: 0,
@@ -80,22 +86,17 @@ const reportStats = foundry.utils.debounce(() => {
   stats.missed.clear();
 }, 2000);
 
-//---
+//--- Foundry entry points for localization index
 
 /**
- * Keyed by Foundry object dotpath to translated value. Built in `rebuildOverrides`
- */
-let overrides = new Map<string, string>();
-
-/**
- * Converts a Foundry data path to a positional path understood by the LLP index. Collapses indexed
+ * Converts a Foundry data path to a positional path understood by the LLP index. Collapses indexed actions/profiles/etc into how it's represented in LLP data.
  * @param path
  * @returns
  * @remarks
  * This function helps anything requesting localization by the indexer from Foundry by just letting it give a path to return for
  * `lookupTranslation`
  *
- * It's jank because it loops around to converting Foundry paths into LLP paths into indexer but uh
+ * This is jank because it loops around to converting Foundry paths into LLP paths into indexer but uh idk
  */
 export function normalizeFoundryPath(path: string): string {
   return normalizePath(
@@ -114,6 +115,80 @@ export function normalizeFoundryPath(path: string): string {
       .replace(/\b(?:active_synergies|passive_synergies|synergies)\.(\d+)/g, "synergy_$1")
   );
 }
+
+/**
+ * Some obj with string key properties keyed to a map of Foundry dotpaths keyed to an array of LLP dotpaths.
+ */
+const translationCandidates = new WeakMap<object, Map<string, string[]>>();
+
+export type TranslationRef = {
+  foundryPath: string;
+  candidates: string[];
+};
+
+/**
+ * Stores an object with its possible candidate paths in the candidates cache
+ * @param obj -
+ * @param field -
+ * @param candidates -
+ * @remarks Since candidates are stored per-object, something like say a mech system may exist as:
+ *  - compendium item
+ *  - world item
+ *  - embedded item on actor x/y/z
+ *
+ * which is why I used a [WeakMap](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap)
+ * so that if the object gets discarded/reset/whatever garbate collection can remove their candidate entries automatically instead
+ * of us. Technically means there may be dozens of the same copy but I don't see it being an issue.
+ *
+ * It is written this way because `apply` is designed to not have to know the exact dotpath.
+ */
+function storeTranslationCandidates(obj: object, field: string, candidates: string[]): void {
+  let fields = translationCandidates.get(obj);
+  if (!fields) {
+    fields = new Map();
+    translationCandidates.set(obj, fields);
+  }
+
+  fields.set(field, candidates);
+}
+
+/**
+ * Given some object, searches the cached translation candidates for that object and returns its candidates.
+ * @param obj - Created during prepareData phase of a document
+ * @param field - Property on `obj` that will receive the translated text; same as `apply`
+ * @param foundryPath - Full Foundry system dotpath
+ * @returns
+ */
+export function createTranslationRef(
+  obj: object | null | undefined,
+  field: string,
+  foundryPath: string
+): TranslationRef {
+  const candidates = obj && translationCandidates.get(obj)?.get(field);
+  return {
+    foundryPath,
+    candidates: candidates ?? [normalizeFoundryPath(foundryPath)],
+  };
+}
+
+/**
+ * Looks up a translation for a document's LID and a Foundry subpath (e.g. `name`, `description`). This function normalizes
+ * both inputs.
+ * @param lid
+ * @param source
+ * @returns undefined when no translation is installed for the active language
+ */
+export function lookupFoundryTranslation(lid: string, source: string | TranslationRef): string | undefined {
+  const reference: TranslationRef =
+    typeof source === "string" ? { foundryPath: source, candidates: [normalizeFoundryPath(source)] } : source;
+
+  const override = overrides.get(`${lid}.${reference.foundryPath}`);
+  if (override !== undefined) return override;
+
+  return lookupTranslationCandidates(lid, reference.candidates)?.value;
+}
+
+// ---
 
 function resolveLLPPath(lid: string, path: string): void {
   const source = llpSources.get(normalizeSlug(lid));
@@ -138,19 +213,21 @@ function removeLLPKey(key: string): void {
 /**
  * Attempts to find a translation hit against given paths/subpaths and applies it to the object given at the target field.
  * @param lid - LID of the target
- * @param obj - Object (`LancerItem`, `LancerActor`, `system`, whatever) with accessible string keys that directly contains the field being translated
+ * @param obj - Object document (`LancerItem`, `LancerActor`, `system`, whatever)
  * @param field - Property on `obj` that will receive the translated text
  * @param paths - LLP path containing the translated text to apply onto `obj`[`field`]
  */
 function apply(lid: string, obj: unknown, field: string, paths: string[]): void {
-  const target = obj as Record<string, unknown>; // Should be some object with string key properties
-  if (typeof target?.[field] !== "string" || !target[field]) return;
-  for (const path of paths) {
-    const hit = lookupTranslation(lid, path);
-    if (!hit) continue;
+  if (!obj || typeof obj !== "object") return;
 
-    target[field] = hit;
-    resolveLLPPath(lid, path);
+  const target = obj as Record<string, unknown>; // Not actually what it is, just to allow easy string dereferencing
+  storeTranslationCandidates(target, field, paths);
+  if (typeof target?.[field] !== "string" || !target[field]) return;
+
+  const hit = lookupTranslationCandidates(lid, paths);
+  if (hit) {
+    target[field] = hit.value;
+    resolveLLPPath(lid, hit.path);
     stats.applied++;
     stats.documents.add(lid);
     return;
@@ -562,7 +639,6 @@ export function patchGetIndex(): void {
 export async function refreshLLPTranslations(): Promise<void> {
   await rebuildLLPIndex();
   rebuildOverrides(await loadOverrides());
-  translationsAreReady(); // Signal that indices/overrides have been built/loaded respectively
 
   const start = performance.now();
   let reset = 0;
@@ -584,6 +660,9 @@ export async function refreshLLPTranslations(): Promise<void> {
       reset++;
     }
   }
+
+  // Signal that the index, overrides, and translation candidates are ready.
+  translationsAreReady();
 
   // Retranslate (or restore, on removal) every cached pack index so listings and search match the new state
   let renamed = 0;

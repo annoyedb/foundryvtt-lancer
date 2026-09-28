@@ -1,5 +1,4 @@
-import { lookupTranslation } from "./llp-index";
-import { normalizeFoundryPath, translationsReady } from "./llp-map";
+import { lookupFoundryTranslation, translationsReady, type TranslationRef } from "./llp-map";
 
 /**
  * Using the indexer, a tail/subpath, and LID, we can create a candidate to get the translation string via `lookupTranslation`
@@ -12,9 +11,12 @@ import { normalizeFoundryPath, translationsReady } from "./llp-map";
  */
 export type LocaleFlag = {
   lid: string;
-  title?: string;
-  effect?: string;
-  trigger?: string;
+  title?: string | TranslationRef;
+  effect?: string | TranslationRef;
+  trigger?: string | TranslationRef;
+  onAttack?: string | TranslationRef;
+  onHit?: string | TranslationRef;
+  onCrit?: string | TranslationRef;
 };
 
 /**
@@ -55,7 +57,10 @@ export async function translateChatCard(
           const localeKey = subPath.dataset.localizeSubpath;
           if (!localeKey || !hasOwnKey(data, localeKey)) continue;
 
-          const translation = lookupTranslation(data.lid, localeKey);
+          const translationPath = data[localeKey];
+          if (!translationPath) continue;
+
+          const translation = lookupFoundryTranslation(data.lid, translationPath);
           if (translation) subPath.innerHTML = translation;
           console.log("TRANSLATE", data, translation);
         }
@@ -67,9 +72,9 @@ export async function translateChatCard(
         const translationPath = data[localeKey]; // ... when combined gives us the localization subpath...
         if (!translationPath) continue;
 
-        const translation = lookupTranslation(data.lid, normalizeFoundryPath(translationPath)); // ... which we use with the localedata's LID to get the string
+        const translation = lookupFoundryTranslation(data.lid, translationPath); // ... which we use with the localedata's LID to get the string
         if (translation) path.innerHTML = translation;
-        console.log("TRANSLATE", data, localeKey, translationPath, translation, paths);
+        console.log("TRANSLATE", data, localeKey, translationPath, translation);
       }
     }
   }

@@ -56,7 +56,7 @@
       <div class="lancer-mini-header collapse-trigger" data-collapse-id="{{_uuid}}-effect">
         {{decorate-card (upper-case (localize "lancer.common.activation.onAttack.label"))}}
       </div>
-      <span class="effect-text collapse" data-collapse-id="{{_uuid}}-effect" data-localize="effect">{{{on_attack}}}</span>
+      <span class="effect-text collapse" data-collapse-id="{{_uuid}}-effect" data-localize="onAttack">{{{on_attack}}}</span>
     </div>
   {{/if}}
   {{#if on_hit}}
@@ -64,7 +64,7 @@
       <div class="lancer-mini-header collapse-trigger" data-collapse-id="{{_uuid}}-effect">
         {{decorate-card (upper-case (localize "lancer.common.activation.onHit.label"))}}
       </div>
-      <span class="effect-text collapse" data-collapse-id="{{_uuid}}-effect" data-localize="effect">{{{on_hit}}}</span>
+      <span class="effect-text collapse" data-collapse-id="{{_uuid}}-effect" data-localize="onHit">{{{on_hit}}}</span>
     </div>
   {{/if}}
   {{#if on_crit}}
@@ -72,7 +72,7 @@
       <div class="lancer-mini-header collapse-trigger" data-collapse-id="{{_uuid}}-effect">
         {{decorate-card (upper-case (localize "lancer.common.activation.onCrit.label"))}}
       </div>
-      <span class="effect-text collapse" data-collapse-id="{{_uuid}}-effect" data-localize="effect">{{{on_crit}}}</span>
+      <span class="effect-text collapse" data-collapse-id="{{_uuid}}-effect" data-localize="onCrit">{{{on_crit}}}</span>
     </div>
   {{/if}}
   {{{tag-list "tags"}}}

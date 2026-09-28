@@ -61,6 +61,7 @@ export function normalizeSlug(s: string): string {
 
 /**
  * Normalizes each segment of an LLP subpath.
+ * @param path
  */
 export function normalizePath(path: string): string {
   return path.split(".").map(normalizeSlug).join(".");
@@ -285,12 +286,31 @@ function rekeyDotlessLIDs(discarded: { key: string; value: string }[], prefix: s
 /**
  * Looks up a translation for a document's LID and an LLP subpath (e.g. `name`, `description`). This function normalizes
  * both inputs.
- * @return undefined when no translation is installed for the active language
  * @param lid
  * @param path
+ * @return undefined when no translation is installed for the active language
  */
 export function lookupTranslation(lid: string, path: string): string | undefined {
   return translations.get(normalizeSlug(lid))?.get(normalizePath(path));
+}
+
+/**
+ * Wrapper for `lookupTranslation`. Looks up a translation for a document's LID and in a list of LLP subpaths (e.g. `name`, `description`)
+ * and returns the first hit found.
+ * @param lid
+ * @param candidates - List of LLP paths
+ * @returns undefined when no translation is installed for the active language
+ */
+export function lookupTranslationCandidates(
+  lid: string,
+  candidates: string[]
+): { path: string; value: string } | undefined {
+  for (const path of candidates) {
+    const value = lookupTranslation(lid, path);
+    if (value !== undefined) return { path, value };
+  }
+
+  return undefined;
 }
 
 /**
