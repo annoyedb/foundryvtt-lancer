@@ -11,6 +11,7 @@ import type { SystemTemplates } from "../system-template";
 import { renderTemplateStep } from "./_render";
 import { Flow, type FlowState, type Step } from "./flow";
 import { LancerFlowState } from "./interfaces";
+import type { LocaleFlag } from "../util/localization/llp-cards";
 
 const lp = LANCER.log_prefix;
 
@@ -174,7 +175,9 @@ export async function initAttackData(
   // If we only have an actor, it's a basic attack
   if (!state.item) {
     const isTech = LancerFlowState.isTechRoll(state.data);
-    const defaultTitle = isTech ? "TECH ATTACK" : "BASIC ATTACK";
+    const defaultTitle = isTech
+      ? game.i18n.localize("lancer.common.stat.tech.attack.label").toUpperCase()
+      : game.i18n.localize("lancer.pilotSheet.buttons.basicAttack.label").toUpperCase();
     state.data.title = options?.title ?? defaultTitle;
     state.data.attack_type = isTech ? AttackType.Tech : AttackType.Melee; // Virtually all basic attacks are melee, so it's a good default
     state.data.flat_bonus = 0;
@@ -499,7 +502,7 @@ export async function printAttackCard(
 ): Promise<boolean> {
   if (!state.data) throw new TypeError(`Attack flow state missing!`);
   const template = options?.template || `systems/${game.system.id}/templates/chat/attack-card.hbs`;
-  const flags: { attackData: AttackFlag } = {
+  const flags: { attackData: AttackFlag; localeData: LocaleFlag } = {
     attackData: {
       origin: state.actor.id!,
       attackerUuid: state.actor.uuid!,
@@ -514,6 +517,12 @@ export async function printAttackCard(
           crit: hr.crit,
         };
       }),
+    },
+    localeData: {
+      lid: state.item?.system.lid || "",
+      title: "name",
+      trigger: "trigger",
+      effect: "effect",
     },
   };
   state.data.defense = state.data.is_smart ? "E-DEF" : "EVASION";

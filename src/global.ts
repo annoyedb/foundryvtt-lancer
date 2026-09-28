@@ -34,6 +34,7 @@ import type {
   StatusIconConfigOptions,
 } from "./module/settings";
 import type { TerrainHeightToolsAPI } from "./types/terrain-height-tools";
+import type { LocaleFlag } from "./module/util/localization/llp-cards";
 
 interface LancerInitiativeConfig<T extends string = string> {
   /**
@@ -126,6 +127,7 @@ declare module "fvtt-types/configuration" {
       lancer: {
         attackData?: AttackFlag;
         damageData?: DamageFlag;
+        localeData?: LocaleFlag;
       };
     };
   }

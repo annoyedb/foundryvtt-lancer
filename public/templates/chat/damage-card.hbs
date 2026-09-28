@@ -5,7 +5,7 @@
     {{else}}
       <i class="cci cci-large-beam i--4 i--light"> </i>
     {{/if}}
-    <span>{{ title }}</span>
+    <span data-localize="title">{{title}}</span>
   </div>
 
   {{!-- Reliable damage --}}
@@ -78,11 +78,12 @@
     </div>
   {{/if}}
 
-  {{#if message}}
+  {{!-- TODO add on_damage/on_hit effects when V3 LCP data is supported --}}
+  {{!-- {{#if message}}
     <div>
       <span class="effect-text">{{message}}</span>
     </div>
-  {{/if}}
+  {{/if}} --}}
 
   {{#if overkill_heat}}
     <div class="card clipped">

@@ -1,7 +1,7 @@
 <div class="card clipped-bot" {{#if item_uuid}} data-uuid="{{item_uuid}}" {{/if}} style="margin: 0px;">
   <div class="lancer-header lancer-weapon medium">
     <i class="cci cci-weapon i--4 i--light"> </i>
-    <span>{{ title }}</span>
+    <span data-localize="title">{{ title }}</span>
     {{!-- TODO: refactor reroll button --}}
     <!-- <a class="flow-button roll-attack lancer-button lancer-macro" data-macro="{{rerollMacroData}}" title="Reroll this attack">
       <i class="fas fa-dice-d20 i--4 i--light"></i>
@@ -44,10 +44,11 @@
   {{/if}}
   {{#if effect}}
     <div class="card clipped">
-      <div class="lancer-mini-header">{{decorate-card (upper-case (localize "lancer.common.descriptor.effect.label"))}}</div>
-      {{#if effect.effect_type}} {{{eff-preview effect}}} {{/if}} {{#unless effect.effect_type}}<span class="effect-text"
-    >{{{effect}}}</span
-    >{{/unless}}
+      <div class="lancer-mini-header">
+        {{decorate-card (upper-case (localize "lancer.common.descriptor.effect.label"))}}
+      </div>{{#if effect.effect_type}} {{{eff-preview effect}}} {{/if}} {{#unless effect.effect_type}}<!--
+  ---><span class="effect-text" data-localize="effect">{{{effect}}}<!--
+  ---></span>{{/unless}}
     </div>
   {{/if}}
   {{#if on_attack}}
@@ -55,7 +56,7 @@
       <div class="lancer-mini-header collapse-trigger" data-collapse-id="{{_uuid}}-effect">
         {{decorate-card (upper-case (localize "lancer.common.activation.onAttack.label"))}}
       </div>
-      <span class="effect-text collapse" data-collapse-id="{{_uuid}}-effect">{{{on_attack}}}</span>
+      <span class="effect-text collapse" data-collapse-id="{{_uuid}}-effect" data-localize="effect">{{{on_attack}}}</span>
     </div>
   {{/if}}
   {{#if on_hit}}
@@ -63,7 +64,7 @@
       <div class="lancer-mini-header collapse-trigger" data-collapse-id="{{_uuid}}-effect">
         {{decorate-card (upper-case (localize "lancer.common.activation.onHit.label"))}}
       </div>
-      <span class="effect-text collapse" data-collapse-id="{{_uuid}}-effect">{{{on_hit}}}</span>
+      <span class="effect-text collapse" data-collapse-id="{{_uuid}}-effect" data-localize="effect">{{{on_hit}}}</span>
     </div>
   {{/if}}
   {{#if on_crit}}
@@ -71,7 +72,7 @@
       <div class="lancer-mini-header collapse-trigger" data-collapse-id="{{_uuid}}-effect">
         {{decorate-card (upper-case (localize "lancer.common.activation.onCrit.label"))}}
       </div>
-      <span class="effect-text collapse" data-collapse-id="{{_uuid}}-effect">{{{on_crit}}}</span>
+      <span class="effect-text collapse" data-collapse-id="{{_uuid}}-effect" data-localize="effect">{{{on_crit}}}</span>
     </div>
   {{/if}}
   {{{tag-list "tags"}}}

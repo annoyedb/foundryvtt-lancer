@@ -8,6 +8,7 @@ import { Damage, type DamageData } from "../models/bits/damage";
 import type { UUIDRef } from "../source-template";
 import { LancerToken, LancerTokenDocument } from "../token";
 import { tokenDocFromUuidSync } from "../util/misc";
+import type { LocaleFlag } from "../util/localization/llp-cards";
 import { renderTemplateStep } from "./_render";
 import { Flow, type FlowState, type Step } from "./flow";
 import { LancerFlowState } from "./interfaces";
@@ -553,8 +554,13 @@ async function printDamageCard(
     paracausal: state.data.paracausal,
     half_damage: state.data.half_damage,
   };
-  const flags = {
+
+  const flags: { damageData: DamageFlag; localeData: LocaleFlag } = {
     damageData,
+    localeData: {
+      lid: state.item?.system.lid || "",
+      title: "name",
+    },
   };
   await renderTemplateStep(state.actor, template, state.data, flags);
   return true;

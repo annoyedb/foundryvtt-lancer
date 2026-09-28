@@ -23,11 +23,6 @@ const PACK_DIRECTORIES: Record<string, string> = { core: "lancer-data" };
 const EMPTY_FILE_BYTES = 3;
 
 /**
- * English is the auto-generated source locale files are translated from
- */
-const SOURCE_LANGUAGE = "en";
-
-/**
  * Fake, copied from build-lcp.mjs. Hopefully will eventually have something proper to actually fetch
  */
 const TRANSLATION_VERSION = "0.1.0";
@@ -76,9 +71,13 @@ export async function listOfficialLocales(packs: LCPData[]): Promise<OfficialLoc
       if (!match) continue;
       const [, directory, code] = match;
       const packId = packsByDirectory.get(directory);
-      // Directories with no row in the table (lancer-srd) have nothing to attach to,
-      // and a language with no translations should be ignored
-      if (!packId || code === SOURCE_LANGUAGE || file.size <= EMPTY_FILE_BYTES) continue;
+      /**
+       * Directories with no row in the table (lancer-srd) and a language with no translations
+       * should be ignored. As of writing, there may be empty translation files and this somewhat
+       * future-proofs for cases where more localizations are supported but may not have available
+       * translations built from Weblate.
+       */
+      if (!packId || file.size <= EMPTY_FILE_BYTES) continue;
 
       locales.push({
         packId,

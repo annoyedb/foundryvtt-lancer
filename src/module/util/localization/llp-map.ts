@@ -19,12 +19,31 @@ import type { ActionData } from "../../models/bits/action";
 import type { CounterData } from "../../models/bits/counter";
 import type { LLPLocalizationIndexOverrides } from "../../settings";
 import { slugify } from "../lid";
-import { hasTranslations, hasTranslationsFor, lookupTranslation, normalizeSlug, rebuildLLPIndex } from "./llp-index";
+import {
+  hasTranslations,
+  hasTranslationsFor,
+  lookupTranslation,
+  normalizePath,
+  normalizeSlug,
+  rebuildLLPIndex,
+} from "./llp-index";
 import { CORE_PATCH_TARGET, getInstalledPatches, normalizeLanguageCode } from "./llp-import";
 import { EntryType } from "../../enums";
 import { get_pack_id } from "../doc";
 
 const lp = LANCER.log_prefix + " LLP |";
+
+let llpSources = new Map<string, { lid: string; paths: Set<string> }>();
+
+let translationsAreReady: () => void;
+/**
+ * Await this when you need to wait for the localization map but you're for some reason requesting earlier than it can finish (e.g. chat cards).
+ *
+ * This is a super basic implementation and does not cover when the index gets rebuilt but uh we'll cross that bridge when we get there
+ */
+export const translationsReady = new Promise<void>(r => {
+  translationsAreReady = r;
+});
 
 //---
 
@@ -33,8 +52,6 @@ const stats = {
   documents: new Set<string>(),
   missed: new Set<string>(),
 };
-
-let llpSources = new Map<string, { lid: string; paths: Set<string> }>();
 
 const reportStats = foundry.utils.debounce(() => {
   const sum = Array.from(stats.missed).reduce(
@@ -70,8 +87,32 @@ const reportStats = foundry.utils.debounce(() => {
  */
 let overrides = new Map<string, string>();
 
-function normalizePath(path: string): string {
-  return path.split(".").map(normalizeSlug).join(".");
+/**
+ * Converts a Foundry data path to a positional path understood by the LLP index. Collapses indexed
+ * @param path
+ * @returns
+ * @remarks
+ * This function helps anything requesting localization by the indexer from Foundry by just letting it give a path to return for
+ * `lookupTranslation`
+ *
+ * It's jank because it loops around to converting Foundry paths into LLP paths into indexer but uh
+ */
+export function normalizeFoundryPath(path: string): string {
+  return normalizePath(
+    path
+      // system.foo -> foo
+      .replace(/^system\./, "")
+      // profiles.0 -> profile_0
+      .replace(/\bprofiles\.(\d+)/g, "profile_$1")
+      // ranks.0 -> rank_0
+      .replace(/\branks\.(\d+)/g, "rank_$1")
+      // traits.0 -> trait_0
+      .replace(/\btraits\.(\d+)/g, "trait_$1")
+      // actions.0, active_actions.0, or passive_actions.0 -> action_0
+      .replace(/\b(?:active_actions|passive_actions|actions)\.(\d+)/g, "action_$1")
+      // synergies.0, active_synergies.0, or passive_synergies.0 -> synergy_0
+      .replace(/\b(?:active_synergies|passive_synergies|synergies)\.(\d+)/g, "synergy_$1")
+  );
 }
 
 function resolveLLPPath(lid: string, path: string): void {
@@ -97,12 +138,12 @@ function removeLLPKey(key: string): void {
 /**
  * Attempts to find a translation hit against given paths/subpaths and applies it to the object given at the target field.
  * @param lid - LID of the target
- * @param obj - Object (`LancerItem`, `LancerActor`, `system`, whatever) that directly contains the field being translated
+ * @param obj - Object (`LancerItem`, `LancerActor`, `system`, whatever) with accessible string keys that directly contains the field being translated
  * @param field - Property on `obj` that will receive the translated text
  * @param paths - LLP path containing the translated text to apply onto `obj`[`field`]
  */
 function apply(lid: string, obj: unknown, field: string, paths: string[]): void {
-  const target = obj as Record<string, unknown>; // Type cast basically just to satisfy TS as some object with string key properties
+  const target = obj as Record<string, unknown>; // Should be some object with string key properties
   if (typeof target?.[field] !== "string" || !target[field]) return;
   for (const path of paths) {
     const hit = lookupTranslation(lid, path);
@@ -521,6 +562,7 @@ export function patchGetIndex(): void {
 export async function refreshLLPTranslations(): Promise<void> {
   await rebuildLLPIndex();
   rebuildOverrides(await loadOverrides());
+  translationsAreReady(); // Signal that indices/overrides have been built/loaded respectively
 
   const start = performance.now();
   let reset = 0;

@@ -53,7 +53,22 @@ async function initSystemUseData(state: FlowState<LancerFlowState.SystemUseData>
   if (!state.data.effect && state.item.is_npc_feature()) {
     // Reactions need to combine the trigger and effect
     if (state.item.system.type === NpcFeatureType.Reaction) {
-      state.data.effect = `<p><b>TRIGGER</b></p><p>${state.item.system.trigger}</p><p><b>EFFECT</b></p><p>${state.item.system.effect}</p>`;
+      const i18nTrigger = game.i18n.localize("lancer.common.activation.trigger.label");
+      const i18nEffect = game.i18n.localize("lancer.common.descriptor.effect.label");
+      state.data.effect = `
+        <p>
+          <b data-localize-foundry="${i18nTrigger}">
+            ${i18nTrigger.toUpperCase()}
+          </b>
+        </p>
+        <p data-localize-subpath="trigger">${state.item.system.trigger}</p>
+        <p>
+          <b data-localize-foundry="${i18nEffect}">
+            ${i18nEffect.toUpperCase()}
+          </b>
+        </p>
+        <p data-localize-subpath="effect">${state.item.system.effect}</p>
+      `;
     } else {
       state.data.effect = state.item.system.effect;
     }
@@ -85,6 +100,12 @@ async function printSystemCard(
     //     return { id: t.target.id, setConditions: !!t.usedLockOn ? { lockon: !t.usedLockOn } : undefined };
     //   }),
     // },
+    localeData: {
+      lid: state.item.system.lid,
+      title: "name",
+      trigger: "trigger",
+      effect: "effect",
+    },
   };
   await renderTemplateStep(state.actor, template, state.data, flags);
 

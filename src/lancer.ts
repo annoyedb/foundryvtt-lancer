@@ -76,6 +76,7 @@ import { LancerTerrain } from "./module/terrain";
 import { LancerToken, LancerTokenDocument, extendTokenConfig } from "./module/token";
 import { lookupOwnedDeployables } from "./module/util/lid";
 import { patchGetIndex, refreshLLPTranslations, refreshLLPTranslationsSoon } from "./module/util/localization/llp-map";
+import { translateChatCard } from "./module/util/localization/llp-cards";
 import { getInstalledPatches } from "./module/util/localization/llp-import";
 import { fulfillImportActor } from "./module/util/requests";
 
@@ -666,6 +667,9 @@ Hooks.on("renderChatMessageHTML", async (cm, el, data) => {
   // Handle clickable refs in chat messages
   handleRefClickOpen(html);
 });
+
+// Translate chat messages per client locale
+Hooks.on("renderChatMessageHTML", translateChatCard);
 
 Hooks.on("hotbarDrop", (_bar, data, slot) => {
   onHotbarDrop(_bar, data, slot);
