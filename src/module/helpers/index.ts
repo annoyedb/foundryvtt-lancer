@@ -391,7 +391,7 @@ export function registerHandlebarsHelpers() {
     function (this: unknown, value: string | HelperOptions, options?: HelperOptions) {
       if (!options) {
         const block = value as HelperOptions;
-        return new Handlebars.SafeString(`// ${block.fn(this)} //`);
+        return new Handlebars.SafeString(`<span class="decorated-card">// ${block.fn(this)} //</span>`);
       }
 
       return `// ${value} //`;

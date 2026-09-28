@@ -20,15 +20,6 @@ export type LocaleFlag = {
 };
 
 /**
- * TypeScript's hasOwnProperty/hasOwn but narrows down `key` to `keyof typeof T` so that you can check if any `object` has `key` without TS screaming.
- * @param object
- * @param key
- */
-export function hasOwnKey<T extends object>(object: T, key: PropertyKey): key is keyof T {
-  return Object.prototype.hasOwnProperty.call(object, key);
-}
-
-/**
  * Applies (or restores) translations to chat cards through the `renderChatMessageHTML` hook
  * @param message
  * @param html
@@ -45,46 +36,104 @@ export async function translateChatCard(
 
   await translationsReady; // Hold function until index is built
 
+  // Tags
+  const tags = html.querySelectorAll<HTMLElement>("[data-localize-tag]");
+  if (tags) {
+    translateChatTags(tags);
+  }
+
   // LLP stuff
   const paths = html.querySelectorAll<HTMLElement>("[data-localize]");
   if (paths) {
-    for (const path of paths) {
-      const subPaths = path.querySelectorAll<HTMLElement>("[data-localize-subpath]");
-      if (subPaths.length) {
-        // Resolve cards with subpaths like NPC reactions
-        // TODO: test NPC reactions
-        for (const subPath of subPaths) {
-          const localeKey = subPath.dataset.localizeSubpath;
-          if (!localeKey || !hasOwnKey(data, localeKey)) continue;
-
-          const translationPath = data[localeKey];
-          if (!translationPath) continue;
-
-          const translation = lookupFoundryTranslation(data.lid, translationPath);
-          if (translation) subPath.innerHTML = translation;
-          console.log("TRANSLATE", data, translation);
-        }
-      } else {
-        // TODO turn into general func and reuse above after testing NPC reactions
-        const localeKey = path.dataset.localize; // `data-localize`/`data-localize-subpath` value correlates to a key in `localeData`...
-        if (!localeKey || !hasOwnKey(data, localeKey)) continue; // (which are optional)
-
-        const translationPath = data[localeKey]; // ... when combined gives us the localization subpath...
-        if (!translationPath) continue;
-
-        const translation = lookupFoundryTranslation(data.lid, translationPath); // ... which we use with the localedata's LID to get the string
-        if (translation) path.innerHTML = translation;
-        console.log("TRANSLATE", data, localeKey, translationPath, translation);
-      }
-    }
+    translateChatContents(paths, data);
   }
 
   // Foundry stuff
   const nativePaths = html.querySelectorAll<HTMLElement>("[data-localize-foundry]");
   if (nativePaths) {
-    for (const element of nativePaths) {
-      const localeKey = element.dataset.localizeFoundry;
-      if (localeKey) element.textContent = game.i18n.localize(localeKey).toUpperCase();
+    translateChatNative(nativePaths, data);
+  }
+}
+
+/**
+ *
+ * @param tags - Array of HTML elements
+ */
+function translateChatTags(tags: NodeListOf<HTMLElement>): void {
+  for (const tag of tags) {
+    const lid = tag.dataset.localizeTag;
+    if (!lid) continue;
+
+    const value = tag.dataset.tagValue ?? "?";
+    const interpolateValue = (text: string) => text.replaceAll("{VAL}", value);
+    const name = lookupFoundryTranslation(lid, "name");
+    const description = lookupFoundryTranslation(lid, "description");
+
+    const nameElement = tag.querySelector<HTMLElement>("[data-tag-name]");
+    if (name && nameElement) nameElement.textContent = interpolateValue(name);
+
+    if (description) {
+      const localizedDescription = interpolateValue(description);
+      tag.dataset.tooltip = localizedDescription;
+
+      const descriptionElement = tag.querySelector<HTMLElement>("[data-tag-description]");
+      if (descriptionElement) descriptionElement.textContent = localizedDescription;
     }
   }
+}
+
+/**
+ *
+ * @param tags - Array of HTML elements
+ */
+function translateChatContents(contents: NodeListOf<HTMLElement>, data: LocaleFlag): void {
+  for (const path of contents) {
+    const subPaths = path.querySelectorAll<HTMLElement>("[data-localize-subpath]");
+    if (subPaths.length) {
+      // Resolve cards with subpaths like NPC reactions
+      // TODO: test NPC reactions
+      for (const subPath of subPaths) {
+        const localeKey = subPath.dataset.localizeSubpath;
+        if (!localeKey || !hasOwnKey(data, localeKey)) continue;
+
+        const translationPath = data[localeKey];
+        if (!translationPath) continue;
+
+        const translation = lookupFoundryTranslation(data.lid, translationPath);
+        if (translation) subPath.innerHTML = translation;
+        console.log("TRANSLATE", data, translation);
+      }
+    } else {
+      // TODO turn into general func and reuse above after testing NPC reactions
+      const localeKey = path.dataset.localize; // `data-localize`/`data-localize-subpath` value correlates to a key in `localeData`...
+      if (!localeKey || !hasOwnKey(data, localeKey)) continue; // (which are optional)
+
+      const translationPath = data[localeKey]; // ... when combined gives us the localization subpath...
+      if (!translationPath) continue;
+
+      const translation = lookupFoundryTranslation(data.lid, translationPath); // ... which we use with the localedata's LID to get the string
+      if (translation) path.innerHTML = translation;
+      console.log("TRANSLATE", data, localeKey, translationPath, translation);
+    }
+  }
+}
+
+/**
+ *
+ * @param tags - Array of HTML elements
+ */
+function translateChatNative(nativeContents: NodeListOf<HTMLElement>, data: LocaleFlag): void {
+  for (const element of nativeContents) {
+    const localeKey = element.dataset.localizeFoundry;
+    if (localeKey) element.textContent = game.i18n.localize(localeKey).toUpperCase();
+  }
+}
+
+/**
+ * TypeScript's hasOwnProperty/hasOwn but narrows down `key` to `keyof typeof T` so that you can check if any `object` has `key` without TS screaming.
+ * @param object
+ * @param key
+ */
+export function hasOwnKey<T extends object>(object: T, key: PropertyKey): key is keyof T {
+  return Object.prototype.hasOwnProperty.call(object, key);
 }
