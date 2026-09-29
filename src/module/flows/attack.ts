@@ -506,9 +506,11 @@ export async function printAttackCard(
 
   const localeData: LocaleFlag = {
     lid: state.item?.system.lid || "",
-    title: "name",
-    trigger: "trigger",
-    effect: "effect",
+    fields: {
+      title: "name",
+      trigger: "trigger",
+      effect: "effect",
+    },
   };
   if (state.item?.is_mech_weapon()) {
     // TODO test when I figure out wtf item to use for testing
@@ -516,10 +518,10 @@ export async function printAttackCard(
     const profileIndex = state.item.system.profiles.indexOf(profile);
     if (profileIndex >= 0) {
       const profilePath = `system.profiles.${profileIndex}`;
-      localeData.effect = createTranslationRef(profile, "effect", `${profilePath}.effect`);
-      localeData.onAttack = createTranslationRef(profile, "on_attack", `${profilePath}.on_attack`);
-      localeData.onHit = createTranslationRef(profile, "on_hit", `${profilePath}.on_hit`);
-      localeData.onCrit = createTranslationRef(profile, "on_crit", `${profilePath}.on_crit`);
+      localeData.fields.effect = createTranslationRef(profile, "effect", `${profilePath}.effect`);
+      localeData.fields.onAttack = createTranslationRef(profile, "on_attack", `${profilePath}.on_attack`);
+      localeData.fields.onHit = createTranslationRef(profile, "on_hit", `${profilePath}.on_hit`);
+      localeData.fields.onCrit = createTranslationRef(profile, "on_crit", `${profilePath}.on_crit`);
     }
   } // etc...
 

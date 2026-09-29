@@ -559,7 +559,9 @@ async function printDamageCard(
     damageData,
     localeData: {
       lid: state.item?.system.lid || "",
-      title: "name",
+      fields: {
+        title: "name",
+      },
     },
   };
   await renderTemplateStep(state.actor, template, state.data, flags);

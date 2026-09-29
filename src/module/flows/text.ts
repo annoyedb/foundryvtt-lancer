@@ -29,12 +29,17 @@ export class SimpleTextFlow extends Flow<LancerFlowState.TextRollData> {
   }
 }
 
-export async function printGenericCard(state: FlowState<any>, options?: { template?: string }): Promise<boolean> {
+export async function printGenericCard(
+  state: FlowState<any>,
+  options?: { template?: string },
+  flags?: any
+): Promise<boolean> {
   if (!state.data) throw new TypeError(`Flow state missing!`);
   renderTemplateStep(
     state.actor,
     options?.template || `systems/${game.system.id}/templates/chat/generic-card.hbs`,
-    state.data
+    state.data,
+    flags
   );
   return true;
 }

@@ -687,7 +687,7 @@ export class LancerItem<out SubType extends Item.SubType = Item.SubType> extends
     const actionName = this.system.core_system.active_actions[0]?.name ?? this.system.core_system.active_name;
     const i18nTitle = game.i18n
       .format("lancer.chatCard.title.coreActivation.label", {
-        title: actionName ? actionName?.toString() : game.i18n.localize("lancer.common.activation.unknown.label"),
+        title: actionName ? actionName.toString() : game.i18n.localize("lancer.common.activation.unknown.label"),
       })
       .toUpperCase();
     // Construct a fake "action" for the frame's core system

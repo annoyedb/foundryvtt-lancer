@@ -6,6 +6,8 @@ import { LancerFlowState } from "./interfaces";
 import { Flow, type FlowState } from "./flow";
 import { renderTemplateStep } from "./_render";
 import { NpcFeatureType, SystemType } from "../enums";
+import type { LocaleFlag } from "../util/localization/llp-cards";
+import { createTranslationRef } from "../util/localization/llp-map";
 
 const lp = LANCER.log_prefix;
 
@@ -91,8 +93,14 @@ async function printSystemCard(
   if (!state.data) throw new TypeError(`Flow state missing!`);
   if (!state.item || (!state.item.is_mech_system() && !state.item.is_weapon_mod() && !state.item.is_npc_feature()))
     throw new TypeError(`Only mech systems, mods, and NPC features can do system flows!`);
+  if (!state.data.type) throw new TypeError(`System flow state missing type!`);
   const template = options?.template || `systems/${game.system.id}/templates/chat/system-card.hbs`;
-  const flags = {
+  const title = createTranslationRef(state.item, "name", "name");
+  title.format = {
+    key: `lancer.chatCard.title.${state.data.type.toLowerCase()}.label`,
+    data: { title: null },
+  };
+  const flags: { localeData: LocaleFlag } = {
     // TODO: forced save data here
     // attackData: {
     //   origin: state.actor.id,
@@ -102,9 +110,11 @@ async function printSystemCard(
     // },
     localeData: {
       lid: state.item.system.lid,
-      title: "name",
-      trigger: "trigger",
-      effect: "effect",
+      fields: {
+        title,
+        trigger: "trigger",
+        effect: "effect",
+      },
     },
   };
   await renderTemplateStep(state.actor, template, state.data, flags);

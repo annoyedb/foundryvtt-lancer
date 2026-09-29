@@ -5,6 +5,15 @@
  *
  * Overrides (through the localization settings submenu) are applied directly using Foundry's `setProperty` function since
  * they should have fully qualified dotpaths.
+ *
+ * ---
+ *
+ * There are three key-value sources frankensteined here (and in turn llp-cards.ts) that I try to be semantically consistent with:
+ *  - COMP/CON; also known as LCP Language Patches or LLPs for short - these are sourced from string extractors built by beeftime, third-party sources, and the COMP/CON output repo for C/C's Weblate stuff
+ *  - Foundry; also known as game.i18n or 'the system' - these are sourced from locale files in `src/public/lang`, and whatever shipped with Foundry and other user modules.
+ *  - Index; also known as 'the indexer' - is everything in src/util/localization, sourced from `translations` in llp-index.ts, as well as `overrides` and `translationCandidates` in llp-map.ts
+ *
+ * All of which naturally have their own dotpaths (not to be confused with Foundry data model dotpaths)
  */
 import type { LancerActor, LancerDEPLOYABLE } from "../../actor/lancer-actor";
 import { LANCER } from "../../config";
@@ -121,16 +130,28 @@ export function normalizeFoundryPath(path: string): string {
  */
 const translationCandidates = new WeakMap<object, Map<string, string[]>>();
 
+/**
+ * @param foundryPath - Foundry data model dotpath
+ * @candidates - Possible indexer candidates
+ * @param format - Unholy matrimony of the indexer and Foundry for inserting translations retrieved from
+ * the indexer into Foundry's `game.i18n.format` function (see `lookupFoundryTranslation`). Refer to actual implementation for further clarification
+ * @remarks yo dawg I heard you like keys so I added another key map into your keys for your other keys to key off of
+ */
 export type TranslationRef = {
   foundryPath: string;
   candidates: string[];
+  format?: {
+    // Foundry system i18n stuff NOT indexer or LLP keys; DO NOT MIX THEM UP
+    key: string; // game.i18n keys (e.g. `lancer.chatCard.title.coreActivation.label` -> "Core Activation :: {title}")
+    data: Record<string, string | null>; // placeholder keys inside game.i18n keys (e.g. `title` in "Core Activation :: {title}") mapped to a replacement string. `null` placeholders receive the resolved LLP translation instead (e.g. indexer resolved string, "Bongo Blast", would replace "Core Activation :: {title}" entirely)
+  };
 };
 
 /**
  * Stores an object with its possible candidate paths in the candidates cache
  * @param obj -
  * @param field -
- * @param candidates -
+ * @param candidates - Possible indexer candidates
  * @remarks Since candidates are stored per-object, something like say a mech system may exist as:
  *  - compendium item
  *  - world item
@@ -154,7 +175,7 @@ function storeTranslationCandidates(obj: object, field: string, candidates: stri
 
 /**
  * Given some object, searches the cached translation candidates for that object and returns its candidates.
- * @param obj - Created during prepareData phase of a document
+ * @param obj - Object created during prepareData phase of a document
  * @param field - Property on `obj` that will receive the translated text; same as `apply`
  * @param foundryPath - Full Foundry system dotpath
  * @returns
@@ -172,7 +193,7 @@ export function createTranslationRef(
 }
 
 /**
- * Looks up a translation for a document's LID and a Foundry subpath (e.g. `name`, `description`). This function normalizes
+ * Looks up a translation for a document's LID and a Foundry subpath (e.g. `system.name`). This function normalizes
  * both inputs.
  * @param lid
  * @param source
@@ -183,9 +204,14 @@ export function lookupFoundryTranslation(lid: string, source: string | Translati
     typeof source === "string" ? { foundryPath: source, candidates: [normalizeFoundryPath(source)] } : source;
 
   const override = overrides.get(`${lid}.${reference.foundryPath}`);
-  if (override !== undefined) return override;
+  const translation = override ?? lookupTranslationCandidates(lid, reference.candidates)?.value;
+  if (translation === undefined) return undefined;
 
-  return lookupTranslationCandidates(lid, reference.candidates)?.value;
+  if (!reference.format) return translation;
+  const formatData = Object.fromEntries(
+    Object.entries(reference.format.data).map(([key, value]) => [key, value ?? translation])
+  );
+  return game.i18n.format(reference.format.key, formatData);
 }
 
 // ---

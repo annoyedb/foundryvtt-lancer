@@ -163,6 +163,13 @@ export async function printActionUseCard(
   const titlePath = `${localePath}.${isCoreSystem ? "active_name" : "name"}`;
   const triggerPath = `${localePath}.trigger`;
   const effectPath = `${localePath}.${isCoreSystem ? "active_effect" : "detail"}`;
+  const title = createTranslationRef(state.data.action, "name", titlePath);
+  if (isCoreSystem) {
+    title.format = {
+      key: "lancer.chatCard.title.coreActivation.label",
+      data: { title: null },
+    };
+  }
   const flags = {
     actionData: {
       actor: state.actor.id,
@@ -171,9 +178,11 @@ export async function printActionUseCard(
     },
     localeData: {
       lid: state.item?.system.lid || "",
-      title: createTranslationRef(state.data.action, "name", titlePath),
-      trigger: createTranslationRef(state.data.action, "trigger", triggerPath),
-      effect: createTranslationRef(state.data.action, "detail", effectPath),
+      fields: {
+        title,
+        trigger: createTranslationRef(state.data.action, "trigger", triggerPath),
+        effect: createTranslationRef(state.data.action, "detail", effectPath),
+      },
     },
   };
 
