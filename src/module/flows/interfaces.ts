@@ -299,14 +299,6 @@ export namespace LancerFlowState {
     effect: string;
   }
 
-  // TODO: do Reaction and Text need to extend BaseRollData? Shouldn't typically have a roll...
-  export interface ReactionRollData {
-    title: string;
-    trigger: string;
-    effect: string;
-    tags?: TagData[];
-  }
-
   export interface TextRollData {
     title: string;
     description: string;

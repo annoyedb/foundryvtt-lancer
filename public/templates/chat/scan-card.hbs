@@ -2,7 +2,7 @@
   <div class="lancer-header lancer-primary">{{upper-case (localize "lancer.commonSheet.buttons.scan.label")}} // 🞂 {{upper-case name}} 🞀</div>
   <div class="scan-result">
     <div class="scan-classes">
-      TIER {{tier}}
+      {{upper-case (localize "lancer.common.stat.tier.label")}} {{tier}}
       {{class}}
       {{#if templates.length}}
         ::
