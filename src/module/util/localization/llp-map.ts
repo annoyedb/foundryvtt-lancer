@@ -195,8 +195,8 @@ export function createTranslationRef(
 /**
  * Looks up a translation for a document's LID and a Foundry subpath (e.g. `system.name`). This function normalizes
  * both inputs.
- * @param lid
- * @param source
+ * @param lid - Document LID
+ * @param source - Foundry subpath
  * @returns undefined when no translation is installed for the active language
  */
 export function lookupFoundryTranslation(lid: string, source: string | TranslationRef): string | undefined {

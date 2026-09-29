@@ -75,7 +75,14 @@ import { TalentModel } from "./module/models/items/talent";
 import { LancerTerrain } from "./module/terrain";
 import { LancerToken, LancerTokenDocument, extendTokenConfig } from "./module/token";
 import { lookupOwnedDeployables } from "./module/util/lid";
-import { patchGetIndex, refreshLLPTranslations, refreshLLPTranslationsSoon } from "./module/util/localization/llp-map";
+import {
+  createTranslationRef,
+  lookupFoundryTranslation,
+  patchGetIndex,
+  refreshLLPTranslations,
+  refreshLLPTranslationsSoon,
+  translationsReady,
+} from "./module/util/localization/llp-map";
 import { translateChatCard } from "./module/util/localization/llp-cards";
 import { getInstalledPatches } from "./module/util/localization/llp-import";
 import { fulfillImportActor } from "./module/util/requests";
@@ -250,6 +257,11 @@ Hooks.once("init", () => {
     fromLid: fromLid,
     fromLidMany: fromLidMany,
     fromLidSync: fromLidSync,
+    i18n: {
+      createTranslationRef,
+      lookupTranslation: lookupFoundryTranslation,
+      ready: translationsReady,
+    },
   };
 
   // Record Configuration Values

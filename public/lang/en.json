@@ -1099,7 +1099,7 @@
         "label": "{total} / {max} Remaining"
       },
       "reserve": {
-        "label": "<span><b>{label}</b></span>{description}"
+        "label": "<p style=\"text-align:center;\"><b>{label}</b></p>{description}"
       }
     },
     "activeEffects": {

@@ -53,6 +53,21 @@
       "title": "lancer.tour.lcp.clearData.title",
       "content": "lancer.tour.lcp.clearData.content",
       "inApp": true
+    },
+    {
+      "id": "languagePacks",
+      "selector": ".lcp-manager button.content-expand",
+      "title": "lancer.tour.lcp.languagePacks.title",
+      "content": "lancer.tour.lcp.languagePacks.content",
+      "inApp": true,
+      "click": true
+    },
+    {
+      "id": "llpImport",
+      "selector": ".lcp-manager .locale-row",
+      "title": "lancer.tour.lcp.llpImport.title",
+      "content": "lancer.tour.lcp.llpImport.content",
+      "inApp": true
     }
   ],
   "suggestedNextTours": ["lancer.npc", "lancer.pilot-import"],
@@ -86,7 +101,15 @@
       },
       "clearData": {
         "title": "Clear Data",
-        "content": "Click here to delete imported content and core data.<br><br>This <b><i>CANNOT</i></b> be undone and the only way to restore is to rebuild the core data and re-import the lcp files."
+        "content": "Click here to delete imported content and core data.<br><br>This <b><i>CANNOT</i></b> be undone and the only way to restore them is to rebuild the core data and re-import the lcp files."
+      },
+      "languagePacks": {
+        "title": "LCP Language Packs",
+        "content": "Official LCP Language Packs (LLPs) can be downloaded in the same way as LCPs.<br><br>With multiple LLPs installed, a player can be playing in a language independent from yours."
+      },
+      "llpImport": {
+        "title": "Importing LLPs",
+        "content": "You can select, install, and manage LLPs in the same way as LCPs."
       }
     }
   }
