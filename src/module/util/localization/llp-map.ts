@@ -178,7 +178,7 @@ function storeTranslationCandidates(obj: object, field: string, candidates: stri
  * @param obj - Object created during prepareData phase of a document
  * @param field - Property on `obj` that will receive the translated text; same as `apply`
  * @param foundryPath - Full Foundry system dotpath
- * @returns
+ * @returns `TranslationRef` object. See implementation for more details
  */
 export function createTranslationRef(
   obj: object | null | undefined,

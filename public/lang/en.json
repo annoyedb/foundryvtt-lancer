@@ -1060,6 +1060,9 @@
         },
         "coreActivation": {
           "label": "Core Activation :: {title}"
+        },
+        "reserve": {
+          "label": "Reserve :: {title}"
         }
       },
       "attack": {
@@ -1094,6 +1097,9 @@
       },
       "remaining": {
         "label": "{total} / {max} Remaining"
+      },
+      "reserve": {
+        "label": "<span><b>{label}</b></span>{description}"
       }
     },
     "activeEffects": {

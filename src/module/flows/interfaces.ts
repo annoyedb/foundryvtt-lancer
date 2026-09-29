@@ -6,6 +6,7 @@ import type { RangeData } from "../models/bits/range";
 import { Tag, type TagData } from "../models/bits/tag";
 import { LancerToken } from "../token";
 import { DamageHudData } from "../apps/damage";
+import type { LocaleFlag } from "../util/localization/llp-cards";
 
 // -------- Flow state data types -------------------------------------
 // Each flow uses one of these data types to track its state.
@@ -310,10 +311,12 @@ export namespace LancerFlowState {
     title: string;
     description: string;
     tags?: TagData[];
+    flags?: { localeData: LocaleFlag };
   }
 
   export interface HTMLToChatData {
     html: string;
+    flags?: { localeData: LocaleFlag };
   }
 
   export interface ActionTrackData extends TextRollData {
